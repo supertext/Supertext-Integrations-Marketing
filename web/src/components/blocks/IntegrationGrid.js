@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import IntegrationCard, { integrationHref } from '../IntegrationCard';
 import SectionHead from './SectionHead';
-import { format } from '@/lib/i18n';
 
 const CATEGORIES = ['cms', 'pim', 'ecommerce', 'email', 'design', 'docs', 'support', 'pm', 'code', 'automation', 'language', 'analytics', 'ai'];
 
@@ -14,7 +13,7 @@ function RequestPills({ items, locale, t }) {
     <div className="request-pills">
       <span className="request-label">{t.requestGroupTitle}</span>
       {items.map((i) => (
-        <Link key={i.slug} href={integrationHref(i, locale)} className="chip request" aria-label={format(t, 'requestPillLabel', { system: i.system })}>
+        <Link key={i.slug} href={integrationHref(i, locale)} className="chip request">
           <span aria-hidden="true">+</span> {i.system}
         </Link>
       ))}

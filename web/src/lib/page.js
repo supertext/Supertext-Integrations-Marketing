@@ -29,7 +29,7 @@ export async function pageMetadata(slug, locale) {
 }
 
 /** Markdown answer → plain text for structured data (links keep their text, list items become sentences). */
-const plainText = (md = '') =>
+export const plainText = (md = '') =>
   md
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/[*_`]/g, '')

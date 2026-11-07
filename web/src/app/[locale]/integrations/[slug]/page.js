@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Blocks from '@/components/Blocks';
 import SectionHead from '@/components/blocks/SectionHead';
 import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
-import IntegrationCard, { integrationHref } from '@/components/IntegrationCard';
+import IntegrationCard from '@/components/IntegrationCard';
+import PlannedIntegration from '@/components/PlannedIntegration';
 import { Check } from '@/components/Icons';
-import { getIntegration, getIntegrations, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
+import { getIntegration, getIntegrations, getRequestCounts, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
 import { JsonLd, ORG, SITE_URL, alternates, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { faqJsonLd } from '@/lib/page';
 import { localizeVersions } from '@/lib/versions';
@@ -16,10 +17,20 @@ import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n'
 export async function generateMetadata({ params }) {
   const { locale, slug } = await params;
   const item = await getIntegration(slug, locale).catch(() => null);
-  if (!item || !hasPlugin(item)) return {};
+  if (!item) return {};
   const t = strings(locale);
-  const title = item.seo?.metaTitle || `${format(t, 'integrationTitle', { system: item.system })} | Supertext`;
-  const description = item.seo?.metaDescription ? metaDescription([item.seo.metaDescription]) : metaDescription([item.summary, localizeVersions(item.supportedVersions, locale)], t.metaTail);
+  const planned = !hasPlugin(item);
+  // Systems without a plugin yet: their own title and description, about the plugin to come.
+  const title =
+    item.seo?.metaTitle ||
+    (planned
+      ? format(t, item.stage === 'roadmap' ? 'plannedMetaTitleRoadmap' : 'plannedMetaTitleRequest', { system: item.system })
+      : `${format(t, 'integrationTitle', { system: item.system })} | Supertext`);
+  const description = item.seo?.metaDescription
+    ? metaDescription([item.seo.metaDescription])
+    : planned
+      ? metaDescription([item.summary, format(t, item.stage === 'roadmap' ? 'plannedLeadRoadmap' : 'plannedLeadRequest', { system: item.system })])
+      : metaDescription([item.summary, localizeVersions(item.supportedVersions, locale)], t.metaTail);
   const alt = alternates(locale, `/integrations/${slug}`, await translatedLocales('/integrations', slug));
   const image = mediaUrl(item.seo?.ogImage) || mediaUrl(item.screenshot);
   return {
@@ -39,9 +50,13 @@ export default async function IntegrationPage({ params }) {
   if (!isLocale(locale)) notFound();
   const [item, all] = await Promise.all([getIntegration(slug, locale), getIntegrations(locale)]);
   if (!item) notFound();
-  // No plugin yet: the system's place on the roadmap, or the request form.
-  if (!hasPlugin(item)) redirect(integrationHref(item, locale));
   const t = strings(locale);
+  // No plugin yet: a page about the plugin to come, with the request button.
+  if (!hasPlugin(item)) {
+    const counts = await getRequestCounts();
+    const cards = all.map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
+    return <PlannedIntegration item={{ ...item, logoUrl: mediaUrl(item.logo) }} locale={locale} t={t} all={cards} requests={counts[item.slug] || 0} />;
+  }
   const release = all.find((i) => i.slug === slug)?.release;
   const related = all.filter((i) => i.category === item.category && i.slug !== slug && hasPlugin(i)).slice(0, 4)
     .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));

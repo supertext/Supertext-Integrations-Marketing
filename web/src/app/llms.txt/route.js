@@ -71,13 +71,14 @@ export async function GET() {
   const planned = integrations.filter((i) => i.stage === 'roadmap');
   if (planned.length) {
     lines.push(`## On the roadmap (no plugin yet): ${SITE_URL}/en/roadmap`);
-    for (const i of planned) lines.push(`- ${i.system} (${CATEGORY[i.category] || i.category}): ${i.summary}`);
+    for (const i of planned) lines.push(`- [${i.system}](${SITE_URL}/en/integrations/${i.slug}) (${CATEGORY[i.category] || i.category}): ${i.summary}`);
     lines.push('');
   }
   const requestable = integrations.filter((i) => i.stage === 'request');
   if (requestable.length) {
     lines.push(`## Not built yet, can be requested: ${SITE_URL}/en/support?kind=request`);
-    lines.push(requestable.map((i) => i.system).join(', '), '');
+    for (const i of requestable) lines.push(`- [${i.system}](${SITE_URL}/en/integrations/${i.slug}): ${i.summary}`);
+    lines.push('');
   }
   if (news.length) {
     lines.push(`## News: ${SITE_URL}/en/news`);

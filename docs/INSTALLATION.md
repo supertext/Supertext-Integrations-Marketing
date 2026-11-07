@@ -69,6 +69,9 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 | `REVALIDATE_SECRET` | Secret of the Strapi webhook that refreshes the cache |
 | `SITE_URL` | Public URL of the website (canonical links, sitemap, structured data) |
 | `ALLOW_INDEXING` | `true` lets search engines and AI crawlers index the site (robots.txt, `noindex` tags). Leave unset until the site runs on its real domain with final prices. |
+| `GOOGLE_SITE_VERIFICATION` | Google Search Console's HTML tag token (the `content` value; several comma-separated): shown as a meta tag on every page. |
+| `GOOGLE_SITE_VERIFICATION_FILE` | Google Search Console's HTML file name, e.g. `google1a2b3c4d.html` (several comma-separated): the site answers it at `/google1a2b3c4d.html`. |
+| `BING_SITE_VERIFICATION` | Bing Webmaster Tools' meta tag token (`msvalidate.01`). |
 | `STRIPE_PORTAL_URL` | Optional: Stripe customer portal login link, shown after checkout |
 | `TURNSTILE_SITE_KEY` | Optional: Cloudflare Turnstile site key for the support form (with `TURNSTILE_SECRET_KEY` on `cms`) |
 
@@ -119,6 +122,7 @@ A request that can't be forwarded (no token, GitHub error) stays in the CMS with
 
 - `robots.txt`, `sitemap.xml` (every page and integration in each translated language, with hreflang) and `llms.txt` (a plain-text summary for AI assistants, built from the CMS) are generated on request.
 - While `ALLOW_INDEXING` isn't `true`, robots.txt blocks everything and every page carries `noindex`. When you switch it on, AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended …) are allowed explicitly.
+- **Google Search Console:** on the real domain, add a *Domain* property and verify it with the DNS TXT record Google shows (covers every subdomain and protocol). Before that, a *URL prefix* property for the Railway address works with the HTML file method: set `GOOGLE_SITE_VERIFICATION_FILE` to the file name Google gives you (or the HTML tag method with `GOOGLE_SITE_VERIFICATION`; note that `/` redirects to a language, so use the file method). Then submit `sitemap.xml` under *Sitemaps*: robots.txt names it even before the launch. Google only crawls once `ALLOW_INDEXING=true`.
 - After launching on the real domain: set `SITE_URL` and `ALLOW_INDEXING=true` on `web`, then submit `https://<domain>/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
 
 ## Updating

@@ -502,3 +502,11 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .article-body pre { background: var(--dark-green); color: var(--mint); padding: 16px 18px; border-radius: 12px; overflow-x: auto; font-size: 14px; line-height: 1.6; margin: 16px 0; }
 .article-body code { font-size: .92em; }
 .article-body :not(pre) > code { background: var(--grey); padding: 1px 6px; border-radius: 6px; }
+.status.roadmap { background: #e3eefc; color: #1d4a8a; border: 1px solid #b9d0f2; }
+.status.request { background: var(--solid-white); color: var(--grey-three); border: 1px dashed var(--grey-two); }
+.planned-cta { background: var(--mint-alpha); border-color: var(--mint-darken); }
+.planned-cta p { font-size: 17px; }
+.planned-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px; }
+.planned-faq { display: grid; gap: 16px; margin: 0; }
+.planned-faq dt { font-weight: 600; }
+.planned-faq dd { margin: 4px 0 0; color: var(--grey-three); }

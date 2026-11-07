@@ -9,7 +9,8 @@ const AI_CRAWLERS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Cl
 export default function robots() {
   if (!indexingAllowed()) {
     // Not launched yet (ALLOW_INDEXING isn't true): keep everything out of search results.
-    return { rules: [{ userAgent: '*', disallow: '/' }] };
+    // The sitemap is still named, so Search Console can read it before the launch.
+    return { rules: [{ userAgent: '*', disallow: '/' }], sitemap: `${SITE_URL}/sitemap.xml` };
   }
   return {
     rules: [

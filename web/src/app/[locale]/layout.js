@@ -26,6 +26,11 @@ export async function generateMetadata({ params }) {
     description: seo?.metaDescription ? metaDescription([seo.metaDescription]) : undefined,
     applicationName: 'Supertext',
     robots: indexingAllowed() ? undefined : { index: false, follow: true },
+    // Search engines' ownership checks (meta tag method): GOOGLE_SITE_VERIFICATION, BING_SITE_VERIFICATION.
+    verification: {
+      ...(process.env.GOOGLE_SITE_VERIFICATION && { google: process.env.GOOGLE_SITE_VERIFICATION.split(',').map((s) => s.trim()) }),
+      ...(process.env.BING_SITE_VERIFICATION && { other: { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } }),
+    },
   };
 }
 

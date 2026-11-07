@@ -558,6 +558,29 @@ async function addGuides(strapi) {
   return true;
 }
 
+/** Pages for systems without a plugin yet (November 2026): their "About" text, where still empty. */
+async function addPlannedAbout(strapi) {
+  const about = require('./seed/planned-about.json');
+  for (const [slug, aboutSystem] of Object.entries(about)) {
+    const doc = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'draft', filters: { slug }, fields: ['aboutSystem', 'updatedAt'] });
+    if (!doc || doc.aboutSystem) continue;
+    const live = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'published', filters: { slug }, fields: ['updatedAt'] });
+    const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+    await strapi.documents(INTEGRATION).update({ documentId: doc.documentId, locale: 'en', data: { aboutSystem } });
+    if (edited) continue;
+    await strapi.documents(INTEGRATION).publish({ documentId: doc.documentId, locale: 'en' });
+    // Existing language versions get the reviewed wording of the new text (unless an editor is on them).
+    const { applyReviewed, dictionary } = require('./translate-site');
+    for (const locale of ['de', 'fr', 'it']) {
+      const target = await strapi.documents(INTEGRATION).findOne({ documentId: doc.documentId, locale, status: 'draft', fields: ['updatedAt'] });
+      const published = await strapi.documents(INTEGRATION).findOne({ documentId: doc.documentId, locale, status: 'published', fields: ['updatedAt'] });
+      if (!target || (published && new Date(target.updatedAt) - new Date(published.updatedAt) > 1000)) continue;
+      await applyReviewed(strapi, INTEGRATION, doc.documentId, locale, dictionary(locale));
+    }
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -583,6 +606,7 @@ const UPDATES = [
   { id: '2026-11-news-mcp', run: (strapi) => addNewsAndMcp(strapi) },
   { id: '2026-11-roadmap-menu', run: (strapi) => addRoadmapMenu(strapi) },
   { id: '2026-11-guides', run: (strapi) => addGuides(strapi) },
+  { id: '2026-11-planned-about', run: (strapi) => addPlannedAbout(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

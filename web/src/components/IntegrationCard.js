@@ -3,10 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Mark from './Mark';
 
-/** Where a card leads: the plugin's page, its place on the roadmap, or the request form. */
+/** Every integration has its page, also the ones without a plugin yet (with the request button). */
 export function integrationHref(item, locale) {
-  if (item.stage === 'roadmap') return `/${locale}/roadmap#${item.slug}`;
-  if (item.stage === 'request') return `/${locale}/support?kind=request&platform=${item.slug}`;
   return `/${locale}/integrations/${item.slug}`;
 }
 

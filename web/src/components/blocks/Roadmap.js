@@ -17,7 +17,7 @@ function SystemCard({ item, count, locale, t }) {
       <div className="integration-top">
         <Mark name={item.system} logo={item.logoUrl} />
         <div>
-          <h3>{plugin ? <Link href={`/${locale}/integrations/${item.slug}`}>{item.system}</Link> : item.system}</h3>
+          <h3><Link href={`/${locale}/integrations/${item.slug}`}>{item.system}</Link></h3>
           <span className="roadmap-category">{t[`category_${item.category}`]}</span>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default async function Roadmap({ block, integrations, locale, t }) {
                   <h3>{t[`category_${c}`]}</h3>
                   <div className="request-pills">
                     {list.map((i) => (
-                      <Link key={i.slug} id={i.slug} href={integrationHref(i, locale)} className="chip request" aria-label={format(t, 'requestPillLabel', { system: i.system })}>
+                      <Link key={i.slug} id={i.slug} href={integrationHref(i, locale)} className="chip request">
                         <span aria-hidden="true">+</span> {i.system}
                         {counts[i.slug] > 0 && <span className="count">{counts[i.slug]}</span>}
                       </Link>
