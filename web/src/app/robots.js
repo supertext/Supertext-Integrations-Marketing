@@ -10,7 +10,8 @@ export default function robots() {
   if (!indexingAllowed()) {
     // Not launched yet (ALLOW_INDEXING isn't true): keep everything out of search results.
     // The sitemap is still named, so Search Console can read it before the launch.
-    return { rules: [{ userAgent: '*', disallow: '/' }], sitemap: `${SITE_URL}/sitemap.xml` };
+    // Search engines may fetch the sitemap (Search Console reads it), nothing else yet.
+    return { rules: [{ userAgent: '*', allow: '/sitemap.xml', disallow: '/' }], sitemap: `${SITE_URL}/sitemap.xml` };
   }
   return {
     rules: [
