@@ -74,7 +74,7 @@ Visitors ask questions, report problems or suggest ideas on the **Support** page
 
 ## News
 
-**News article** entries make up `/news` (menu "News", footer, RSS feed per language at `/<lang>/news/feed.xml`). Fields: *title*, *excerpt* (the teaser on the card and the lead of the article), *body* (Markdown), *date* (sorts the list; shown on the article), *category* (`plugins`, `website`, `roadmap`: the filter on the list), *systems* (integration slugs, comma-separated, e.g. `typo3,contao`: their logos or screenshot on the card and their cards below the article) and an optional *cover* image (otherwise the first system's screenshot, else the logos). Links to `/en/...` are adapted to the reader's language. New articles are translated like other content after the next start; publish the language versions you have checked.
+**News article** entries make up `/news` (menu "News", footer, RSS feed per language at `/<lang>/news/feed.xml`). Fields: *title*, *excerpt* (the teaser on the card and the lead of the article), *body* (Markdown), *date* (sorts the list; shown on the article; **a date in the future schedules the article**: published in Strapi, it stays off the website, the feed and the sitemap until that minute, and the preview shows it before), *category* (`plugins`, `guides`, `website`, `roadmap`: the filter on the list), *systems* (integration slugs, comma-separated, e.g. `typo3,contao`: their logos or screenshot on the card and their cards below the article) and an optional *cover* image (otherwise the first system's screenshot, else the logos). Links to `/en/...` are adapted to the reader's language. New articles are translated like other content after the next start; publish the language versions you have checked.
 
 ## Roadmap page
 

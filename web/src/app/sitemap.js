@@ -39,7 +39,7 @@ export default async function sitemap() {
   // News: the list in every language, each article in the languages it's translated into.
   const newsLanguages = Object.fromEntries([...LOCALES.map((l) => [l, `${SITE_URL}/${l}/news`]), ['x-default', `${SITE_URL}/en/news`]]);
   for (const l of LOCALES) entries.push({ url: `${SITE_URL}/${l}/news`, changeFrequency: 'weekly', priority: 0.6, alternates: { languages: newsLanguages } });
-  const articles = Object.fromEntries(await Promise.all(LOCALES.map(async (l) => [l, await listAll('/articles', l, ['slug', 'updatedAt'])])));
+  const articles = Object.fromEntries(await Promise.all(LOCALES.map(async (l) => [l, (await listAll('/articles', l, ['slug', 'updatedAt', 'date'])).filter((a) => !a.date || new Date(a.date) <= new Date())])));
   for (const slug of new Set(Object.values(articles).flat().map((a) => a.slug))) {
     const locales = LOCALES.filter((l) => articles[l].some((a) => a.slug === slug));
     const languages = Object.fromEntries(locales.map((l) => [l, `${SITE_URL}/${l}/news/${slug}`]));

@@ -498,3 +498,7 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .status.live { background: var(--mint-alpha); color: #12704a; border: 1px solid var(--mint-darken); }
 .status.dev { background: #fef3c6; color: #7a4a00; border: 1px solid #f2d27a; }
+.news-visual.cat-guides { background: linear-gradient(135deg, #e7f6ec, var(--grey)); }
+.article-body pre { background: var(--dark-green); color: var(--mint); padding: 16px 18px; border-radius: 12px; overflow-x: auto; font-size: 14px; line-height: 1.6; margin: 16px 0; }
+.article-body code { font-size: .92em; }
+.article-body :not(pre) > code { background: var(--grey); padding: 1px 6px; border-radius: 6px; }

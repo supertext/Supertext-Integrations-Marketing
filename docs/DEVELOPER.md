@@ -27,7 +27,7 @@ Browser ──► web (Next.js 16, App Router) ──REST + read token──► 
 | `api::global.global` | Single type: navigation, header links, footer, default SEO |
 | `api::github-release.github-release` | No i18n, no drafts; written by the sync |
 | `api::subscription.subscription` | No i18n, no drafts, no API routes; written by the webhook |
-| `api::article.article` | News. Localized `title`, `excerpt`, `body`, `seo`; shared `slug`, `date`, `category` (`plugins`, `website`, `roadmap`), `systems` (integration slugs), `cover`. Pages `web/src/app/[locale]/news` (list, `[slug]`, `feed.xml`) |
+| `api::article.article` | News. Localized `title`, `excerpt`, `body`, `seo`; shared `slug`, `date` (future = scheduled: `getArticles` filters `date <= now` to the minute, `getArticle` returns a future one only in draft mode, the sitemap filters too), `category` (`plugins`, `guides`, `website`, `roadmap`), `systems` (integration slugs), `cover`. Pages `web/src/app/[locale]/news` (list, `[slug]`, `feed.xml`) |
 | `api::roadmap-item.roadmap-item` | Localized `title`, `description`; shared `phase` (`now`, `next`, `later`), `url`, `order`. Shown by the *Roadmap* block |
 | `api::support-request.support-request` | No i18n, no drafts, no API routes; written by `api::support` (form and GitHub webhook) |
 

@@ -150,9 +150,16 @@ export async function getRequestCounts() {
 
 const ARTICLE_LIST = { fields: ['title', 'slug', 'date', 'category', 'excerpt', 'systems'], populate: { cover: true }, sort: ['date:desc'] };
 
-/** News articles, newest first (in the language if translated, else English). */
+/**
+ * Scheduled publishing: an article dated in the future stays off the site until its date
+ * (to the minute, so the cached requests stay the same for a minute).
+ */
+const nowMinute = () => new Date(Math.floor(Date.now() / 60000) * 60000).toISOString();
+export const isScheduled = (article) => !!article?.date && new Date(article.date) > new Date();
+
+/** Published news articles, newest first (in the language if translated, else English). */
 export async function getArticles(locale, limit = 100) {
-  const query = { ...ARTICLE_LIST, pagination: { pageSize: limit } };
+  const query = { ...ARTICLE_LIST, filters: { date: { $lte: nowMinute() } }, pagination: { pageSize: limit } };
   const [own, english] = await Promise.all([
     locale === 'en' ? null : strapi('/articles', { ...query, locale }).catch(() => []),
     strapi('/articles', { ...query, locale: 'en' }).catch(() => []),
@@ -161,5 +168,10 @@ export async function getArticles(locale, limit = 100) {
   return (english || []).map((a) => bySlug.get(a.slug) || a);
 }
 
-export const getArticle = (slug, locale) =>
-  localized('/articles', { filters: { slug: { $eq: slug } }, populate: { cover: true, seo: { populate: '*' } } }, locale);
+/** One article; a scheduled one only in preview (draft mode). */
+export async function getArticle(slug, locale) {
+  const article = await localized('/articles', { filters: { slug: { $eq: slug } }, populate: { cover: true, seo: { populate: '*' } } }, locale);
+  if (!isScheduled(article)) return article;
+  const { isEnabled } = await draftMode();
+  return isEnabled ? article : null;
+}

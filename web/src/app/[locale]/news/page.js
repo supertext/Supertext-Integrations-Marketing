@@ -5,7 +5,7 @@ import { getArticles, getIntegrations, imageProps, mediaUrl } from '@/lib/strapi
 import { isLocale, LOCALES, strings } from '@/lib/i18n';
 import { JsonLd, SITE_URL, alternates, indexingAllowed, social } from '@/lib/seo';
 
-const CATEGORIES = ['plugins', 'website', 'roadmap'];
+const CATEGORIES = ['plugins', 'guides', 'website', 'roadmap'];
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;

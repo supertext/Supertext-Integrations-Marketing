@@ -548,6 +548,16 @@ async function addRoadmapMenu(strapi) {
   return true;
 }
 
+/** Step-by-step guides (November 2026): four news articles, scheduled one a week by their date. */
+async function addGuides(strapi) {
+  const ARTICLE = 'api::article.article';
+  for (const data of require('./seed/guides')) {
+    if (await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: data.slug }, fields: ['id'] })) continue;
+    await strapi.documents(ARTICLE).create({ locale: 'en', data, status: 'published' });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -572,6 +582,7 @@ const UPDATES = [
   { id: '2026-11-roadmap', run: (strapi) => addRoadmap(strapi) },
   { id: '2026-11-news-mcp', run: (strapi) => addNewsAndMcp(strapi) },
   { id: '2026-11-roadmap-menu', run: (strapi) => addRoadmapMenu(strapi) },
+  { id: '2026-11-guides', run: (strapi) => addGuides(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
