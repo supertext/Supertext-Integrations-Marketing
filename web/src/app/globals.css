@@ -385,7 +385,7 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .support-form label, .support-form fieldset { display: grid; gap: 6px; font-size: 14px; font-weight: 500; }
 .support-form fieldset { border: 0; padding: 0; margin: 0; }
 .support-form legend { margin-bottom: 6px; }
-.support-form input:not([type=radio]), .support-form select, .support-form textarea {
+.support-form input:not([type=radio]):not([type=checkbox]), .support-form select, .support-form textarea {
   width: 100%; border: 1px solid var(--green-grey); background: var(--white); border-radius: 12px;
   padding: 11px 13px; font: inherit; font-weight: 400; color: var(--dark-green);
 }
@@ -512,5 +512,6 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .planned-faq dd { margin: 4px 0 0; color: var(--grey-three); }
 .attachments { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
 .attachments input[type='file'] { padding: 10px; border: 1px dashed var(--grey-two); border-radius: 10px; background: var(--solid-white); width: 100%; }
-.attachments .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--grey-three); }
-.attachments .check input { margin-top: 3px; }
+.support-form .attachments .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; font-weight: 400; color: var(--grey-three); cursor: pointer; }
+.support-form .attachments .check input[type=checkbox] { width: 18px; height: 18px; min-width: 18px; padding: 0; margin: 1px 0 0; border-radius: 4px; accent-color: var(--dark-green); flex: none; }
+.support-form .attachments input[type=file]:not([type=checkbox]) { font-size: 14px; border-style: dashed; background: var(--white); cursor: pointer; }
