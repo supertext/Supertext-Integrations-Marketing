@@ -18,6 +18,13 @@ const KINDS = ['question', 'bug', 'feature', 'request', 'other'];
 // Statuses a plugin request's sender hears about, with the email for each.
 const STATUS_MAIL = { in_development: ['requestDevSubject', 'requestDev'], live: ['requestLiveSubject', 'requestLive'] };
 const REQUEST_LABEL = 'plugin-request';
+// Attachments: screenshots, PDFs and text files (logs, XLIFF), up to 5 files of 5 MB each.
+const ATTACHMENTS = { max: 5, maxBytes: 5 * 1024 * 1024 };
+const ATTACHMENT_TYPES = {
+  png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp',
+  pdf: 'application/pdf', txt: 'text/plain', log: 'text/plain', csv: 'text/csv', json: 'application/json',
+  xml: 'application/xml', xlf: 'application/xliff+xml', xliff: 'application/xliff+xml', html: 'text/html',
+};
 const LOCALES = ['en', 'de', 'fr', 'it'];
 const REPLY_MARK = '<!-- supertext:reply -->';
 const INTERNAL_MARK = '<!-- internal -->';
@@ -138,6 +145,43 @@ module.exports = ({ strapi }) => {
     return strapi.documents('api::integration.integration').findFirst({ locale: 'en', status: 'published', filters: { slug }, fields: ['system', 'slug', 'repo', 'stage'] });
   }
 
+  /** Validates uploaded files (formidable objects) and returns them as a list. */
+  function checkAttachments(files) {
+    const list = (Array.isArray(files) ? files : files ? [files] : []).filter((f) => f && f.size > 0);
+    if (list.length > ATTACHMENTS.max) throw fail(400, `At most ${ATTACHMENTS.max} files.`, 'files');
+    for (const f of list) {
+      const ext = String(f.originalFilename || f.name || '').split('.').pop().toLowerCase();
+      if (!ATTACHMENT_TYPES[ext] || f.size > ATTACHMENTS.maxBytes) throw fail(400, 'Please check the files.', 'files');
+    }
+    return list;
+  }
+
+  /** Puts the files into the Media Library (folder "Support attachments") under neutral names. */
+  async function storeAttachments(list, reference) {
+    if (!list.length) return [];
+    const upload = strapi.plugin('upload').service('upload');
+    let folder = null;
+    try {
+      const folders = strapi.plugin('upload').service('folder');
+      folder = (await strapi.db.query('plugin::upload.folder').findOne({ where: { name: 'Support attachments', parent: null } }))?.id
+        ?? (await folders.create({ name: 'Support attachments' }))?.id ?? null;
+    } catch (error) {
+      strapi.log.warn(`[support] No attachments folder: ${error.message}`);
+    }
+    const stored = [];
+    for (const [index, file] of list.entries()) {
+      const ext = String(file.originalFilename || file.name).split('.').pop().toLowerCase();
+      // The original name may contain personal data: store as SR-0012-1.png.
+      const name = `${reference}-${index + 1}.${ext}`;
+      const [saved] = await upload.upload({
+        data: { fileInfo: { name, alternativeText: `${reference} attachment ${index + 1}`, caption: reference, ...(folder && { folder }) } },
+        files: { ...file, originalFilename: name, name, mimetype: ATTACHMENT_TYPES[ext] },
+      });
+      if (saved) stored.push(saved);
+    }
+    return stored;
+  }
+
   function issueBody(request) {
     const facts = [
       `**Platform:** ${request.platformName || 'Not specified'}`,
@@ -151,10 +195,27 @@ module.exports = ({ strapi }) => {
       '',
       described(request.message) ? redact(request.message) : '_No description._',
       '',
+      ...attachmentLines(request),
       '---',
       `Sent through the Supertext integrations website (${request.reference}). The sender's contact details stay in the Supertext CMS; answers on this issue are emailed to them.`,
       `<!-- supertext:support-request ${request.reference} locale=${request.locale} -->`,
     ].join('\n');
+  }
+
+  /** Attachments in the issue: links (images shown) when the sender allowed it, else only how many. */
+  function attachmentLines(request) {
+    const files = request.attachments || [];
+    if (!files.length) return [];
+    if (!request.attachmentsPublic) return [`_${files.length} attachment(s), not public: in the Supertext CMS (${request.reference})._`, ''];
+    const base = (process.env.URL || '').replace(/\/$/, '');
+    return [
+      '**Attachments:**',
+      ...files.map((f) => {
+        const url = /^https?:/.test(f.url) ? f.url : `${base}${f.url}`;
+        return /^image\//.test(f.mime) ? `![${f.name}](${url})` : `- [${f.name}](${url})`;
+      }),
+      '',
+    ];
   }
 
   /** A plugin request: comment on the open issue for the same system, or open one. */
@@ -249,7 +310,7 @@ module.exports = ({ strapi }) => {
 
   return {
     /** The website's form. Returns the reference; GitHub and email follow without failing the form. */
-    async submit(input, { ip }) {
+    async submit(input, { ip, files } = {}) {
       if (clean(input.website, 10)) throw fail(400, 'Invalid request', 'invalid'); // honeypot
       if (Number(input.elapsedMs) > 0 && Number(input.elapsedMs) < 3000) throw fail(400, 'Invalid request', 'invalid');
       if (rateLimited(ip || 'unknown')) throw fail(429, 'Too many requests. Please try again later.', 'rateLimit');
@@ -265,6 +326,7 @@ module.exports = ({ strapi }) => {
       const subject = kind === 'request' ? `Plugin request: ${requested}`.slice(0, 140) : clean(input.subject, 140);
       if (kind !== 'request' && (subject.length < 5 || text.length < 20)) throw fail(400, 'Please describe your request in a few words.', 'tooShort');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw fail(400, 'Please enter a valid email address.', 'email');
+      const uploads = checkAttachments(files);
 
       const locale = LOCALES.includes(input.locale) ? input.locale : 'en';
       const created = await strapi.documents(UID).create({
@@ -289,7 +351,17 @@ module.exports = ({ strapi }) => {
         },
       });
       const reference = `SR-${String(created.id).padStart(4, '0')}`;
-      let request = await strapi.documents(UID).update({ documentId: created.documentId, data: { reference } });
+      let attachments = [];
+      try {
+        attachments = await storeAttachments(uploads, reference);
+      } catch (error) {
+        strapi.log.warn(`[support] ${reference}: attachments not saved: ${error.message}`);
+      }
+      let request = await strapi.documents(UID).update({
+        documentId: created.documentId,
+        data: { reference, attachments: attachments.map((f) => f.id), attachmentsPublic: ['true', 'on', '1', true].includes(input.attachmentsPublic) },
+        populate: { attachments: true },
+      });
 
       try {
         request = await forward(request);

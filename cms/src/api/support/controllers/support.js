@@ -8,7 +8,8 @@ module.exports = ({ strapi }) => ({
     if (!token || ctx.request.headers.authorization !== `Bearer ${token}`) return ctx.unauthorized();
     const ip = String(ctx.request.headers['x-visitor-ip'] || ctx.request.ip || '').split(',')[0].trim();
     try {
-      ctx.body = await strapi.service('api::support.support').submit(ctx.request.body || {}, { ip });
+      // JSON, or multipart form data with files in "attachments".
+      ctx.body = await strapi.service('api::support.support').submit(ctx.request.body || {}, { ip, files: ctx.request.files?.attachments });
     } catch (error) {
       if (!error.status) strapi.log.error(`[support] Submit failed: ${error.stack || error.message}`);
       ctx.status = error.status && error.status < 500 ? error.status : 502;

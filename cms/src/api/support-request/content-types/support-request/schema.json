@@ -5,7 +5,7 @@
     "singularName": "support-request",
     "pluralName": "support-requests",
     "displayName": "Support request",
-    "description": "Sent from the website's support form; forwarded as a GitHub issue (without contact details) and updated by the GitHub webhook. Plugin requests (kind request) for the same system share one issue; notified lists the statuses the sender was emailed about."
+    "description": "Sent from the website's support form; forwarded as a GitHub issue (without contact details) and updated by the GitHub webhook. Plugin requests (kind request) for the same system share one issue; notified lists the statuses the sender was emailed about. attachments: screenshots and files from the form (Media Library folder \"Support attachments\", stored under neutral names); linked in the public issue only when the sender allowed it (attachmentsPublic)."
   },
   "options": {
     "draftAndPublish": false
@@ -106,6 +106,18 @@
     },
     "notified": {
       "type": "json"
+    },
+    "attachments": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "attachmentsPublic": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

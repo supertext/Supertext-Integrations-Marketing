@@ -6,7 +6,11 @@ import { format } from '@/lib/i18n';
 const KINDS = ['question', 'bug', 'feature', 'request'];
 const CATEGORIES = ['cms', 'pim', 'ecommerce', 'email', 'design', 'docs', 'support', 'pm', 'code', 'automation', 'language', 'analytics', 'ai'];
 const OTHER = '__other';
-const ERRORS = { invalid: 'errInvalid', rateLimit: 'errRateLimit', captcha: 'errCaptcha', tooShort: 'errTooShort', email: 'errEmail', system: 'errSystem' };
+const ERRORS = { invalid: 'errInvalid', rateLimit: 'errRateLimit', captcha: 'errCaptcha', tooShort: 'errTooShort', email: 'errEmail', system: 'errSystem', files: 'errFiles', tooLarge: 'errFiles' };
+// Same limits as the CMS: up to 5 files of 5 MB, images, PDF and text files.
+const FILE_ACCEPT = '.png,.jpg,.jpeg,.gif,.webp,.pdf,.txt,.log,.csv,.json,.xml,.xlf,.xliff,.html';
+const MAX_FILES = 5;
+const MAX_BYTES = 5 * 1024 * 1024;
 
 /**
  * The support form. Posts to /api/support (which forwards to the CMS) and shows the reference.
@@ -36,20 +40,22 @@ export default function SupportForm({ locale, t, platforms, requestable = [], in
   async function submit(event) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const data = Object.fromEntries(form.entries());
-    if (data.platform === OTHER) data.platform = '';
+    if (form.get('platform') === OTHER) form.set('platform', '');
+    const files = form.getAll('attachments').filter((f) => f && f.size > 0);
+    form.delete('attachments');
+    if (files.length > MAX_FILES || files.some((f) => f.size > MAX_BYTES)) {
+      setState({ status: 'error', message: t.errFiles });
+      return;
+    }
+    for (const f of files) form.append('attachments', f, f.name);
+    form.set('locale', locale);
+    form.set('elapsedMs', String(Date.now() - started.current));
+    if (form.get('cf-turnstile-response')) form.set('turnstileToken', form.get('cf-turnstile-response'));
+    form.delete('cf-turnstile-response');
     setState({ status: 'sending' });
     try {
-      const res = await fetch('/api/support', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...data,
-          locale,
-          elapsedMs: Date.now() - started.current,
-          turnstileToken: data['cf-turnstile-response'] || undefined,
-        }),
-      });
+      // Multipart, so screenshots and files go along.
+      const res = await fetch('/api/support', { method: 'POST', body: form });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw Object.assign(new Error('failed'), { code: body.code });
       setState({ status: 'sent', reference: body.reference, issueUrl: body.issueUrl, request });
@@ -156,6 +162,20 @@ export default function SupportForm({ locale, t, platforms, requestable = [], in
         <input name="email" type="email" required maxLength={254} autoComplete="email" aria-describedby="email-help" />
         <small id="email-help">{t.fEmailHelp}</small>
       </label>
+
+      {!request && (
+        <fieldset className="attachments">
+          <label>
+            <span>{t.fAttachments}</span>
+            <input type="file" name="attachments" multiple accept={FILE_ACCEPT} aria-describedby="files-help" />
+            <small id="files-help">{t.fAttachmentsHelp}</small>
+          </label>
+          <label className="check">
+            <input type="checkbox" name="attachmentsPublic" value="true" />
+            <span>{t.fAttachmentsPublic}</span>
+          </label>
+        </fieldset>
+      )}
 
       {/* Left empty by people; bots fill it in. */}
       <label className="hp" aria-hidden="true">

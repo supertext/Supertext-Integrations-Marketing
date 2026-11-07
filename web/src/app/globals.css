@@ -510,3 +510,7 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .planned-faq { display: grid; gap: 16px; margin: 0; }
 .planned-faq dt { font-weight: 600; }
 .planned-faq dd { margin: 4px 0 0; color: var(--grey-three); }
+.attachments { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+.attachments input[type='file'] { padding: 10px; border: 1px dashed var(--grey-two); border-radius: 10px; background: var(--solid-white); width: 100%; }
+.attachments .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--grey-three); }
+.attachments .check input { margin-top: 3px; }
