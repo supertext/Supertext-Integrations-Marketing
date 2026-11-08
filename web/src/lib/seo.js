@@ -38,6 +38,7 @@ export function alternates(locale, path, locales = LOCALES) {
 export function brandTitle(title, max = 60) {
   if (!title) return title;
   const base = title.replace(/\s*\|\s*Supertext\s*$/i, '');
+  if (/supertext/i.test(base)) return base;
   const full = `${base} | Supertext`;
   return full.length <= max ? full : base;
 }
