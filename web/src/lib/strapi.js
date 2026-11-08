@@ -83,7 +83,8 @@ export async function getIntegrations(locale) {
   const bySlug = new Map((own || []).map((i) => [i.slug, i]));
   return (english || []).map((i) => {
     const item = bySlug.get(i.slug) || i;
-    return { ...item, release: releases.get(item.repo) || null };
+    // Videos are shared by all languages: the English version has the current ones.
+    return { ...item, demoVideo: i.demoVideo, installVideo: i.installVideo, release: releases.get(item.repo) || null };
   });
 }
 

@@ -3,6 +3,7 @@
 const integrations = require('./seed/integrations');
 const content = require('./seed/content');
 const { importScreenshots } = require('./screenshots');
+const { syncVideos } = require('./videos');
 const { runContentUpdates } = require('./content-updates');
 const { translateSite } = require('./translate-site');
 
@@ -191,6 +192,7 @@ module.exports = {
     await step('Web API token', () => ensureWebToken(strapi));
     await step('Seed content', () => seed(strapi));
     await step('Content updates', () => runContentUpdates(strapi));
+    await step('Videos', () => syncVideos(strapi));
 
     // Screenshots come from GitHub; don't hold up the start for them.
     // Then the first German, French and Italian versions (in the background, takes a while).

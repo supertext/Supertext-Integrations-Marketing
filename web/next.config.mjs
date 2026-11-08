@@ -19,7 +19,8 @@ const nextConfig = {
         source: '/:path*',
         headers: [
           // Only the Strapi admin may show the site in a frame (its preview pane).
-          { key: 'Content-Security-Policy', value: `frame-ancestors 'self' ${strapiUrl}` },
+          // Frames on the site: only the YouTube player (privacy-enhanced, after a click) and Cloudflare Turnstile.
+          { key: 'Content-Security-Policy', value: `frame-ancestors 'self' ${strapiUrl}; frame-src 'self' https://www.youtube-nocookie.com https://challenges.cloudflare.com` },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
         ],

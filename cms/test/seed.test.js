@@ -48,3 +48,14 @@ test('every seeded plugin has details', () => {
     assert.ok(i.features.length >= 3, `${i.slug}: features`);
   }
 });
+
+test('every video belongs to a seeded integration with a plugin and is a YouTube id', () => {
+  const videos = require('../src/seed/videos');
+  const { YOUTUBE_ID } = require('../src/videos');
+  const bySlug = new Map(integrations.map((i) => [i.slug, i]));
+  for (const [slug, ids] of Object.entries(videos)) {
+    assert.ok(bySlug.get(slug)?.repo, `${slug} has a plugin`);
+    assert.equal(ids.length, 2, `${slug}: [demo, install]`);
+    for (const id of ids) assert.ok(id === null || YOUTUBE_ID.test(id), `${slug}: ${id}`);
+  }
+});

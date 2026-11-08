@@ -148,6 +148,24 @@
         }
       }
     },
+    "demoVideo": {
+      "type": "string",
+      "maxLength": 200,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "installVideo": {
+      "type": "string",
+      "maxLength": 200,
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
     "integrationType": {
       "type": "text",
       "pluginOptions": {

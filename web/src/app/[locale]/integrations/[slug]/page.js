@@ -8,6 +8,8 @@ import Mark from '@/components/Mark';
 import IntegrationCard from '@/components/IntegrationCard';
 import PlannedIntegration from '@/components/PlannedIntegration';
 import { Check } from '@/components/Icons';
+import VideoPlayer from '@/components/VideoPlayer';
+import { youtubeId } from '@/lib/video';
 import { getIntegration, getIntegrations, getRequestCounts, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
 import { JsonLd, ORG, SITE_URL, alternates, brandTitle, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { plainText } from '@/lib/page';
@@ -61,7 +63,13 @@ export default async function IntegrationPage({ params }) {
     const cards = all.map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
     return <PlannedIntegration item={{ ...item, logoUrl: mediaUrl(item.logo) }} locale={locale} t={t} all={cards} requests={counts[item.slug] || 0} />;
   }
-  const release = all.find((i) => i.slug === slug)?.release;
+  const listed = all.find((i) => i.slug === slug);
+  const release = listed?.release;
+  // Demo and install videos (English, on YouTube), shared by all languages.
+  const videos = [
+    { id: youtubeId(listed?.demoVideo ?? item.demoVideo), label: t.videoDemo },
+    { id: youtubeId(listed?.installVideo ?? item.installVideo), label: t.videoInstall },
+  ].filter((v) => v.id);
   const related = all.filter((i) => i.category === item.category && i.slug !== slug && hasPlugin(i)).slice(0, 4)
     .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
   const screenshot = imageProps(item.screenshot);
@@ -145,6 +153,20 @@ export default async function IntegrationPage({ params }) {
               <section className="card detail-section">
                 <h2>{t.howItWorks}</h2>
                 <Markdown locale={locale}>{item.description}</Markdown>
+              </section>
+            )}
+            {videos.length > 0 && (
+              <section className="card detail-section">
+                <h2 className="video-title">
+                  {t.videosTitle}
+                  {locale !== 'en' && <span className="video-lang">{t.videoEnglish}</span>}
+                </h2>
+                <div className={`videos${videos.length === 1 ? ' single' : ''}`}>
+                  {videos.map((v) => (
+                    <VideoPlayer key={v.id} id={v.id} label={v.label} playLabel={t.videoPlay} title={format(t, 'videoFrameTitle', { system: item.system, video: v.label })} />
+                  ))}
+                </div>
+                <p className="video-note">{t.videoPrivacy}</p>
               </section>
             )}
             {item.features?.length > 0 && (

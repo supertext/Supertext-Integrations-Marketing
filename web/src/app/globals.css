@@ -368,6 +368,24 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .integration .versions { font-size: 12px; color: var(--grey-two); }
 .detail-section { display: grid; gap: 14px; }
 .detail-section h2 { font-size: 20px; }
+/* Videos (click to play: nothing loads from YouTube before the click) */
+.video-title .video-lang { font-family: var(--font-body); font-size: 14px; font-weight: 400; color: var(--grey-two); margin-left: 6px; }
+.videos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.videos.single { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 620px) { .videos { grid-template-columns: minmax(0, 1fr); } }
+.video { margin: 0; display: grid; gap: 10px; }
+.video figcaption { font-size: 15px; font-weight: 500; }
+.video-frame { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-tile); overflow: hidden; background: var(--dark-green); }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-poster {
+  position: absolute; inset: 0; width: 100%; border: 0; padding: 0; cursor: pointer; color: var(--dark-green);
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 25% 20%, #78ffaf40, transparent 55%), radial-gradient(circle at 85% 90%, #288d8966, transparent 50%), var(--dark-green);
+}
+.video-play { width: 64px; height: 64px; border-radius: 999px; background: var(--mint); display: flex; align-items: center; justify-content: center; padding-left: 4px; transition: transform .2s, background .2s; }
+.video-poster:hover .video-play, .video-poster:focus-visible .video-play { transform: scale(1.08); background: var(--mint-darken); }
+.video-poster:focus-visible { outline: 3px solid var(--mint); outline-offset: -3px; }
+.video-note { font-size: 13px; color: var(--grey-two); }
 .check-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; color: var(--grey-three); }
 .check-list svg { width: 18px; height: 18px; margin-top: 2px; }
