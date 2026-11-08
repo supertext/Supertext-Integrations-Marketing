@@ -44,6 +44,7 @@ Other one-time changes to existing content (the seed only fills an empty site) l
 ## SEO and GEO
 
 - Metadata per page in `web/src/lib/page.js` and the integration page: titles (no double brand; every title names Supertext), descriptions, canonical and hreflang (`lib/seo.js` → `alternates`). Integration pages: title "{System} AI translation plugin | Supertext", H1 "Supertext AI translation for {System}", description from summary and supported versions (`lib/seo.js` → `metaDescription`: about 155 characters, cut at a word, with a short call to action when short).
+- The integration grid (`blocks/IntegrationGrid.js`) is a server component; only the category buttons (`blocks/GridFilter.js`) run in the browser and show or hide the groups (`?category=` picks the first one). Pass client components only the strings and fields they use: everything passed to them is sent to the browser.
 - The integration grid shows one heading per category under *All*; the footer has plain language links besides the dropdown, so crawlers find every language. A language without its own translation shows the English text, so its canonical points to the English page and it isn't listed as an alternate.
 - Open Graph and Twitter tags on every page; default image `app/[locale]/opengraph-image.js`.
 - Structured data (JSON-LD): Organization and WebSite on every page, SoftwareApplication and BreadcrumbList on integration pages, FAQPage wherever a page or integration has an FAQ block (answers as plain text).
