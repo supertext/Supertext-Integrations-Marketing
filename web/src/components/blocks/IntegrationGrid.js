@@ -1,9 +1,7 @@
-'use client';
-
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
 import IntegrationCard, { integrationHref } from '../IntegrationCard';
 import SectionHead from './SectionHead';
+import GridFilter from './GridFilter';
 
 const CATEGORIES = ['cms', 'pim', 'ecommerce', 'email', 'design', 'docs', 'support', 'pm', 'code', 'automation', 'language', 'analytics', 'ai'];
 
@@ -37,64 +35,54 @@ function SdkCard({ locale, t }) {
   );
 }
 
+/**
+ * The integrations, one group per category, rendered on the server. The filter buttons (GridFilter)
+ * only show and hide groups; "?category=" picks the first one shown.
+ */
 export default function IntegrationGrid({ block, integrations, locale, t, initialCategory }) {
   const fixed = block.category && block.category !== 'all' ? block.category : null;
-  const [category, setCategory] = useState(
-    fixed || (CATEGORIES.includes(initialCategory) ? initialCategory : 'all')
-  );
-  const counts = useMemo(() => {
-    const c = { all: integrations.length };
-    for (const i of integrations) c[i.category] = (c[i.category] || 0) + 1;
-    return c;
-  }, [integrations]);
-  const shown = category === 'all' ? integrations : integrations.filter((i) => i.category === category);
+  const counts = { all: integrations.length };
+  for (const i of integrations) counts[i.category] = (counts[i.category] || 0) + 1;
+  const category = fixed || (CATEGORIES.includes(initialCategory) && counts[initialCategory] ? initialCategory : 'all');
+  const filters = !fixed && block.showFilters !== false;
+  const gridId = `integration-grid-${block.id ?? 'main'}`;
 
-  const choose = (value) => {
-    setCategory(value);
-    const url = new URL(window.location.href);
-    if (value === 'all') url.searchParams.delete('category');
-    else url.searchParams.set('category', value);
-    window.history.replaceState(null, '', url);
-  };
+  const groups = (fixed ? [fixed] : CATEGORIES.filter((c) => counts[c])).map((c) => {
+    const items = integrations.filter((i) => i.category === c);
+    return { c, cards: items.filter((i) => i.stage !== 'request'), requests: items.filter((i) => i.stage === 'request') };
+  });
+  // The SDK card closes the last group with cards; with a category chosen, it follows that group.
+  const sdkGroup = groups.map((g) => g.cards.length > 0).lastIndexOf(true);
+  const Heading = block.title ? 'h3' : 'h2';
+  const options = ['all', ...CATEGORIES]
+    .filter((c) => c === 'all' || counts[c])
+    .map((c) => ({ value: c, label: c === 'all' ? t.all : t[`category_${c}`], count: counts[c] || 0 }));
 
   return (
     <section className="section">
-      <div className="container">
+      <div className="container integration-grid" id={gridId} data-category={fixed ? 'fixed' : category}>
         <SectionHead title={block.title} subtitle={block.subtitle} />
-        {!fixed && block.showFilters !== false && (
-          <div className="filters" role="group">
-            {['all', ...CATEGORIES].filter((c) => c === 'all' || counts[c]).map((c) => (
-              <button key={c} type="button" className="chip" aria-pressed={category === c} onClick={() => choose(c)}>
-                {c === 'all' ? t.all : t[`category_${c}`]}
-                <span className="count">{counts[c] || 0}</span>
-              </button>
-            ))}
-          </div>
-        )}
-        {shown.length ? (
-          // "All": one group per category with its own heading (h2 when the section has no title).
-          (() => {
-            const groups = (category === 'all' ? CATEGORIES.filter((c) => counts[c]) : [category]).map((c) => {
-              const items = shown.filter((i) => i.category === c);
-              return { c, cards: items.filter((i) => i.stage !== 'request'), requests: items.filter((i) => i.stage === 'request') };
-            });
-            const sdkGroup = groups.map((g) => g.cards.length > 0).lastIndexOf(true);
-            const Heading = block.title ? 'h3' : 'h2';
-            return groups.map(({ c, cards, requests }, index) => (
-              <div key={c} className="integration-group">
-                {category === 'all' && <Heading className="group-title">{t[`category_${c}`]}</Heading>}
-                {(cards.length > 0 || index === sdkGroup) && (
-                  <div className="integrations">
-                    {cards.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
-                    {index === sdkGroup && <SdkCard locale={locale} t={t} />}
-                  </div>
-                )}
-                {requests.length > 0 && <RequestPills items={requests} locale={locale} t={t} />}
-              </div>
-            ));
-          })()
+        {filters && <GridFilter gridId={gridId} options={options} initial={category} />}
+        {groups.length ? (
+          groups.map(({ c, cards, requests }, index) => (
+            <div key={c} className="integration-group" data-group={c} hidden={!fixed && category !== 'all' && c !== category}>
+              {!fixed && <Heading className="group-title">{t[`category_${c}`]}</Heading>}
+              {(cards.length > 0 || index === sdkGroup) && (
+                <div className="integrations">
+                  {cards.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
+                  {index === sdkGroup && <SdkCard locale={locale} t={t} />}
+                </div>
+              )}
+              {requests.length > 0 && <RequestPills items={requests} locale={locale} t={t} />}
+            </div>
+          ))
         ) : (
           <p className="empty">{t.noResults}</p>
+        )}
+        {filters && (
+          <div className="integrations sdk-filtered">
+            <SdkCard locale={locale} t={t} />
+          </div>
         )}
         <p className="roadmap-link">
           <Link href={`/${locale}/roadmap`} className="btn btn-text">{t.roadmapLink} →</Link>

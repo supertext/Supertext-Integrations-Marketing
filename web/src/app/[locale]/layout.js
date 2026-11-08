@@ -67,7 +67,7 @@ export default async function LocaleLayout({ children, params }) {
           </div>
         )}
         <Announcement announcement={global?.announcement} locale={locale} />
-        <Header global={global} locale={locale} t={t} />
+        <Header global={global} locale={locale} t={{ language: t.language, menu: t.menu }} />
         <main>{children}</main>
         <Footer global={global} locale={locale} t={t} />
       </body>

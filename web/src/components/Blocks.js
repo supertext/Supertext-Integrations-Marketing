@@ -11,6 +11,10 @@ import LogoStrip from './blocks/LogoStrip';
 import IntegrationGrid from './blocks/IntegrationGrid';
 import PlanCards from './blocks/PlanCards';
 import Roadmap from './blocks/Roadmap';
+
+// Client components get only the strings they use: everything passed to them is sent to the browser.
+const PLAN_STRINGS = ['annual', 'billedAnnually', 'checkoutFailed', 'choosePlatform', 'free', 'learnMore', 'monthly', 'notBuyable', 'perMonth', 'platform', 'redirecting', 'subscribe'];
+const pick = (t, keys) => Object.fromEntries(keys.map((k) => [k, t[k]]));
 import { getIntegrations, imageProps, mediaUrl } from '@/lib/strapi';
 
 const STATIC = {
@@ -47,7 +51,7 @@ export default async function Blocks({ blocks, locale, t, searchParams = {} }) {
     if (block.__component === 'blocks.plan-cards') {
       return (
         <Suspense key={key}>
-          <PlanCards block={block} integrations={integrations} locale={locale} t={t} />
+          <PlanCards block={block} integrations={integrations.map(({ slug, system, stage }) => ({ slug, system, stage }))} locale={locale} t={pick(t, PLAN_STRINGS)} />
         </Suspense>
       );
     }

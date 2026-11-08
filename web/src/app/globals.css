@@ -519,3 +519,12 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 /* Planned systems: "How to translate it today" */
 .planned-today h3 { font-size: 16px; margin-top: 24px; }
 .planned-today .prose ol { padding-left: 1.4em; display: grid; gap: 8px; }
+
+/* Integration grid: the filter only toggles groups (server-rendered). With a category chosen, the
+   group headings go and the SDK card follows the group, unless that group closes with it anyway. */
+.integration-grid:not([data-category='all']):not([data-category='fixed']) .group-title { display: none; }
+.integration-grid .sdk-filtered { display: none; margin-top: 24px; }
+.integration-grid:not([data-category='all']):not([data-category='fixed']) .sdk-filtered { display: grid; }
+.integration-grid:not([data-category='all']):not([data-category='fixed']) .integration-group .sdk-card { display: none; }
+.integration-group[hidden] { display: none; }
+.integration-grid:not([data-category='all']) .integration-group { margin-top: 0; }
