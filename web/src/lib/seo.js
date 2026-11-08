@@ -36,9 +36,10 @@ export function alternates(locale, path, locales = LOCALES) {
 
 /** "Title | Supertext", without the suffix when that would pass the ~60 characters search results show. */
 export function brandTitle(title, max = 60) {
-  if (!title || /supertext/i.test(title)) return title;
-  const full = `${title} | Supertext`;
-  return full.length > max ? title : full;
+  if (!title) return title;
+  const base = title.replace(/\s*\|\s*Supertext\s*$/i, '');
+  const full = `${base} | Supertext`;
+  return full.length <= max ? full : base;
 }
 
 /** Open Graph / Twitter defaults for one page. */
