@@ -9,7 +9,7 @@ import IntegrationCard from '@/components/IntegrationCard';
 import PlannedIntegration from '@/components/PlannedIntegration';
 import { Check } from '@/components/Icons';
 import VideoPlayer from '@/components/VideoPlayer';
-import { youtubeId } from '@/lib/video';
+import { posterFor, youtubeId } from '@/lib/video';
 import { getIntegration, getIntegrations, getRequestCounts, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
 import { JsonLd, ORG, SITE_URL, alternates, brandTitle, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { plainText } from '@/lib/page';
@@ -67,8 +67,8 @@ export default async function IntegrationPage({ params }) {
   const release = listed?.release;
   // Demo and install videos (English, on YouTube), shared by all languages.
   const videos = [
-    { id: youtubeId(listed?.demoVideo ?? item.demoVideo), label: t.videoDemo },
-    { id: youtubeId(listed?.installVideo ?? item.installVideo), label: t.videoInstall },
+    { id: youtubeId(listed?.demoVideo ?? item.demoVideo), label: t.videoDemo, poster: posterFor(slug, 'demo') },
+    { id: youtubeId(listed?.installVideo ?? item.installVideo), label: t.videoInstall, poster: posterFor(slug, 'install') },
   ].filter((v) => v.id);
   const related = all.filter((i) => i.category === item.category && i.slug !== slug && hasPlugin(i)).slice(0, 4)
     .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
@@ -163,7 +163,7 @@ export default async function IntegrationPage({ params }) {
                 </h2>
                 <div className={`videos${videos.length === 1 ? ' single' : ''}`}>
                   {videos.map((v) => (
-                    <VideoPlayer key={v.id} id={v.id} label={v.label} playLabel={t.videoPlay} title={format(t, 'videoFrameTitle', { system: item.system, video: v.label })} />
+                    <VideoPlayer key={v.id} id={v.id} label={v.label} poster={v.poster} playLabel={t.videoPlay} title={format(t, 'videoFrameTitle', { system: item.system, video: v.label })} />
                   ))}
                 </div>
                 <p className="video-note">{t.videoPrivacy}</p>

@@ -1,4 +1,5 @@
 // YouTube videos on integration pages. Editors may enter the id or paste a YouTube link.
+import POSTERS from './video-posters.js';
 const ID = /^[\w-]{11}$/;
 
 /** The 11-character YouTube id of an id or link (youtu.be, watch?v=, embed/, shorts/, live/), else null. */
@@ -20,3 +21,6 @@ export function youtubeId(value) {
 
 /** Privacy-enhanced embed; only loaded after the visitor clicks play. */
 export const embedUrl = (id) => `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+
+/** Our own poster picture (public/videos, made by scripts/video-posters.py), or null for the plain tile. */
+export const posterFor = (slug, kind) => (POSTERS.includes(`${slug}-${kind}`) ? `/videos/${slug}-${kind}.webp` : null);

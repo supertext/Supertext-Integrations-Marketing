@@ -15,3 +15,12 @@ test('YouTube ids from ids and links', () => {
 test('embeds use the privacy-enhanced domain', () => {
   assert.equal(embedUrl('-an7zWZb27I'), 'https://www.youtube-nocookie.com/embed/-an7zWZb27I?autoplay=1&rel=0');
 });
+
+test('posters: our own pictures where they exist, otherwise none', async () => {
+  const { posterFor } = await import('../src/lib/video.js');
+  const { existsSync } = await import('node:fs');
+  assert.equal(posterFor('strapi', 'demo'), '/videos/strapi-demo.webp');
+  assert.equal(posterFor('no-such-system', 'demo'), null);
+  const { default: list } = await import('../src/lib/video-posters.js');
+  for (const name of list) assert.ok(existsSync(new URL(`../public/videos/${name}.webp`, import.meta.url)), name);
+});
