@@ -173,6 +173,14 @@
         }
       }
     },
+    "translateToday": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "builtInTranslation": {
       "type": "richtext",
       "pluginOptions": {

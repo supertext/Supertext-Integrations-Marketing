@@ -25,9 +25,13 @@ export default function PlannedIntegration({ item, locale, t, all, requests = 0 
   const available = sameCategory.filter((i) => !i.stage || i.stage === 'live' || i.stage === 'in_development').slice(0, 6);
   const others = sameCategory.filter((i) => i.stage === 'roadmap' || i.stage === 'request');
   const until = ['plannedUntilFiles', 'plannedUntilSdk', 'plannedUntilMcp', 'plannedUntilTeam'];
+  // "How to translate it today" (CMS): a lead paragraph, numbered steps and a tip.
+  const today = item.translateToday || '';
+  const lead = today.split(/\n\s*\n/)[0];
+  const steps = today.split('\n').filter((line) => /^\d+\.\s/.test(line)).map((line) => plainText(line.replace(/^\d+\.\s+/, '')));
   const faq = [
     [format(t, 'plannedFaqExists', system), roadmap ? t.plannedFaqExistsRoadmap : t.plannedFaqExistsRequest],
-    [format(t, 'plannedFaqToday', system), format(t, 'plannedFaqTodayAnswer', system)],
+    [format(t, 'plannedFaqToday', system), today ? plainText(lead) : format(t, 'plannedFaqTodayAnswer', system)],
   ];
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -36,6 +40,16 @@ export default function PlannedIntegration({ item, locale, t, all, requests = 0 
         '@type': 'FAQPage',
         mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: plainText(a) } })),
       },
+      ...(steps.length
+        ? [
+            {
+              '@type': 'HowTo',
+              name: format(t, 'plannedUntilTitle', system),
+              description: plainText(lead),
+              step: steps.map((text, i) => ({ '@type': 'HowToStep', position: i + 1, text })),
+            },
+          ]
+        : []),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -90,6 +104,12 @@ export default function PlannedIntegration({ item, locale, t, all, requests = 0 
                 <Markdown locale={locale}>{item.aboutSystem}</Markdown>
               </section>
             )}
+            <section className="card detail-section planned-today">
+              <h2>{format(t, 'plannedUntilTitle', system)}</h2>
+              {today && <Markdown locale={locale}>{today}</Markdown>}
+              {today && <h3>{t.plannedMoreWays}</h3>}
+              <Markdown locale={locale}>{until.map((k) => `- ${t[k]}`).join('\n')}</Markdown>
+            </section>
             <section className="card detail-section">
               <h2>{t.plannedWhatTitle}</h2>
               <ul className="check-list">
@@ -97,10 +117,6 @@ export default function PlannedIntegration({ item, locale, t, all, requests = 0 
                   <li key={k}><Check /><span>{format(t, k, system)}</span></li>
                 ))}
               </ul>
-            </section>
-            <section className="card detail-section">
-              <h2>{format(t, 'plannedUntilTitle', system)}</h2>
-              <Markdown locale={locale}>{until.map((k) => `- ${t[k]}`).join('\n')}</Markdown>
             </section>
             <section className="card detail-section">
               <h2>{t.faqHeading}</h2>

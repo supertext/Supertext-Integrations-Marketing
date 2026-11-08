@@ -56,6 +56,7 @@ const slugify = (s) => s.toLowerCase().replace(/\(.*?\)/g, '').replace(/[^a-z0-9
 
 const PLANNED = require('./planned');
 const PLANNED_ABOUT = require('./planned-about.json');
+const PLANNED_TODAY = require('./planned-today.json');
 
 const live = LIST.map(([system, category, link, integrationType, summary, stage = 'live'], index) => ({
   system,
@@ -83,6 +84,7 @@ const planned = PLANNED.map(([system, category, stage, summary], index) => ({
   order: (LIST.length + index + 1) * 10,
   summary,
   aboutSystem: PLANNED_ABOUT[slugify(system)],
+  translateToday: PLANNED_TODAY[slugify(system)],
 }));
 
 module.exports = [...live, ...planned];

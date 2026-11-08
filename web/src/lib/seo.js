@@ -34,6 +34,13 @@ export function alternates(locale, path, locales = LOCALES) {
   return { canonical: `/${own}${path}`, languages };
 }
 
+/** "Title | Supertext", without the suffix when that would pass the ~60 characters search results show. */
+export function brandTitle(title, max = 60) {
+  if (!title || /supertext/i.test(title)) return title;
+  const full = `${title} | Supertext`;
+  return full.length > max ? title : full;
+}
+
 /** Open Graph / Twitter defaults for one page. */
 export function social({ title, description, path, locale, image }) {
   // Without an own image: the generated default (app/[locale]/opengraph-image.js).

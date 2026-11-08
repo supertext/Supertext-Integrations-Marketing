@@ -548,6 +548,36 @@ async function addRoadmapMenu(strapi) {
   return true;
 }
 
+/**
+ * Pages for systems without a plugin yet (November 2026): "How to translate it today", where still
+ * empty. The language versions are queued for the background translation (Supertext), which then
+ * re-applies the reviewed wording of the other texts; versions an editor is working on are left alone.
+ */
+async function addPlannedToday(strapi) {
+  const today = require('./seed/planned-today.json');
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  const edited = (draft, live) => !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+  const docs = strapi.documents(INTEGRATION);
+  for (const [slug, translateToday] of Object.entries(today)) {
+    const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug }, fields: ['translateToday', 'updatedAt'] });
+    if (!doc || doc.translateToday) continue;
+    const live = await docs.findFirst({ locale: 'en', status: 'published', filters: { slug }, fields: ['updatedAt'] });
+    const wasEdited = edited(doc, live);
+    await docs.update({ documentId: doc.documentId, locale: 'en', data: { translateToday } });
+    if (wasEdited) continue;
+    await docs.publish({ documentId: doc.documentId, locale: 'en' });
+    for (const locale of ['de', 'fr', 'it']) {
+      const target = await docs.findOne({ documentId: doc.documentId, locale, status: 'draft', fields: ['updatedAt'] });
+      const published = await docs.findOne({ documentId: doc.documentId, locale, status: 'published', fields: ['updatedAt'] });
+      if (target && published && edited(target, published)) continue;
+      state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+    }
+  }
+  await store.set({ key: 'autoTranslations', value: state });
+  return true;
+}
+
 /** Step-by-step guides (November 2026): four news articles, scheduled one a week by their date. */
 async function addGuides(strapi) {
   const ARTICLE = 'api::article.article';
@@ -607,6 +637,7 @@ const UPDATES = [
   { id: '2026-11-roadmap-menu', run: (strapi) => addRoadmapMenu(strapi) },
   { id: '2026-11-guides', run: (strapi) => addGuides(strapi) },
   { id: '2026-11-planned-about', run: (strapi) => addPlannedAbout(strapi) },
+  { id: '2026-11-planned-today', run: (strapi) => addPlannedToday(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

@@ -22,7 +22,7 @@ Browser ──► web (Next.js 16, App Router) ──REST + read token──► 
 | Type | Notes |
 | --- | --- |
 | `api::page.page` | `title`, `slug` (localized, may contain `/`), `seo`, `blocks` (dynamic zone) |
-| `api::integration.integration` | Shared across languages: `system`, `slug`, `category`, `stage`, `repo`, `url`, `logo`, `screenshot`, `order`, `technology`, `supportedVersions`, `license`. Localized: `integrationType`, `summary`, `aboutSystem`, `features`, `description`, `seo`, `blocks`. (`status` is reserved by draft & publish, hence `stage`: `live`, `in_development`, `roadmap`, `request`; the last two have no plugin, no page and no repo.) |
+| `api::integration.integration` | Shared across languages: `system`, `slug`, `category`, `stage`, `repo`, `url`, `logo`, `screenshot`, `order`, `technology`, `supportedVersions`, `license`. Localized: `integrationType`, `summary`, `aboutSystem`, `translateToday`, `features`, `description`, `seo`, `blocks`. (`status` is reserved by draft & publish, hence `stage`: `live`, `in_development`, `roadmap`, `request`; the last two have no plugin and no repo; their page is `components/PlannedIntegration.js`, with `translateToday` as its step-by-step section and HowTo structured data.) |
 | `api::service-plan.service-plan` | Shared: prices, `currency`, flags, Stripe price IDs, `platforms`, `order`. Localized: names, texts, `features`. |
 | `api::global.global` | Single type: navigation, header links, footer, default SEO |
 | `api::github-release.github-release` | No i18n, no drafts; written by the sync |

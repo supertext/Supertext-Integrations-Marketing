@@ -6,7 +6,7 @@ import Markdown from '@/components/Markdown';
 import NewsCard, { articleSystems, newsDate } from '@/components/NewsCard';
 import SectionHead from '@/components/blocks/SectionHead';
 import { getArticle, getArticles, getIntegrations, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
-import { JsonLd, ORG, SITE_URL, alternates, indexingAllowed, metaDescription, social } from '@/lib/seo';
+import { JsonLd, ORG, SITE_URL, alternates, brandTitle, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { isLocale, strings } from '@/lib/i18n';
 
 export async function generateMetadata({ params }) {
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
   const image = mediaUrl(seo.ogImage) || mediaUrl(article.cover);
   const base = social({ title, description, path: alt.canonical, locale, image });
   return {
-    title: /supertext/i.test(title) ? { absolute: title } : title,
+    title: { absolute: brandTitle(title) },
     description,
     alternates: alt,
     robots: seo.noIndex || !indexingAllowed() ? { index: false, follow: !seo.noIndex } : undefined,

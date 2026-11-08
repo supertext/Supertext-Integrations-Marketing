@@ -2,12 +2,12 @@ import { notFound } from 'next/navigation';
 import Blocks from '@/components/Blocks';
 import { getPage, mediaUrl, translatedLocales } from './strapi';
 import { isLocale, strings } from './i18n';
-import { JsonLd, alternates, indexingAllowed, metaDescription, social } from './seo';
+import { JsonLd, alternates, brandTitle, indexingAllowed, metaDescription, social } from './seo';
 
 const pathOf = (slug) => (slug === 'home' ? '' : `/${slug}`);
 
-/** Titles that already name Supertext are used as they are (no "| Supertext" twice). */
-const titleOf = (text) => (/supertext/i.test(text || '') ? { absolute: text } : text);
+/** "| Supertext" is added only where it fits, and never twice. */
+const titleOf = (text) => ({ absolute: brandTitle(text) });
 
 export async function pageMetadata(slug, locale) {
   const page = await getPage(slug, locale).catch(() => null);

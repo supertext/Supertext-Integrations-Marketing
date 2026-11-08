@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
 import { getIntegration, mediaUrl, translatedLocales } from '@/lib/strapi';
-import { JsonLd, SITE_URL, alternates, indexingAllowed, metaDescription, social } from '@/lib/seo';
+import { JsonLd, SITE_URL, alternates, indexingAllowed, brandTitle, metaDescription, social } from '@/lib/seo';
 import { format, isLocale, strings } from '@/lib/i18n';
 import { localizeVersions } from '@/lib/versions';
 
@@ -16,9 +16,8 @@ export async function generateMetadata({ params }) {
   if (!item?.fileExport) return {};
   const t = strings(locale);
   const xliffOnly = !/html/i.test(item.fileFormats || '');
-  const full = format(t, xliffOnly ? 'filesMetaTitleXliff' : 'filesMetaTitle', { system: item.system });
   // Search results cut titles at about 60 characters; long ones drop the brand suffix instead.
-  const title = full.length > 60 ? full.replace(/\s*\|\s*Supertext$/, '') : full;
+  const title = brandTitle(format(t, xliffOnly ? 'filesMetaTitleXliff' : 'filesMetaTitle', { system: item.system }).replace(/\s*\|\s*Supertext$/, ''));
   const description = metaDescription([item.fileIntro]);
   const alt = alternates(locale, `/integrations/${slug}/files`, await translatedLocales('/integrations', slug));
   return {
