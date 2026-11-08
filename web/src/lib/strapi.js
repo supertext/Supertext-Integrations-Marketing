@@ -165,7 +165,11 @@ export async function getArticles(locale, limit = 100) {
     strapi('/articles', { ...query, locale: 'en' }).catch(() => []),
   ]);
   const bySlug = new Map((own || []).map((a) => [a.slug, a]));
-  return (english || []).map((a) => bySlug.get(a.slug) || a);
+  const merged = (english || []).map((a) => bySlug.get(a.slug) || a);
+  // Articles written for one language only (German-first guides) have no English version.
+  const englishSlugs = new Set((english || []).map((a) => a.slug));
+  const ownOnly = (own || []).filter((a) => !englishSlugs.has(a.slug));
+  return [...merged, ...ownOnly].sort((x, y) => new Date(y.date) - new Date(x.date)).slice(0, limit);
 }
 
 /** One article; a scheduled one only in preview (draft mode). */

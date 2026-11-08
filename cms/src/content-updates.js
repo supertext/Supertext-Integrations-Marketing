@@ -578,6 +578,59 @@ async function addPlannedToday(strapi) {
   return true;
 }
 
+/**
+ * German content (November 2026): the Swiss German page (English and German written separately),
+ * German-first guides, two comparison drafts, German titles and descriptions for the main systems.
+ */
+async function addGermanContent(strapi) {
+  const ARTICLE = 'api::article.article';
+  const { swissGermanEn, swissGermanDe, footerSwiss, germanArticles, germanDrafts, germanSeo } = require('./seed/german');
+  const edited = (draft, live) => !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+
+  // The page: English first, then the German version (published, so the background translation
+  // leaves it alone and only French and Italian are machine-translated).
+  let page = await strapi.documents(PAGE).findFirst({ locale: 'en', filters: { slug: swissGermanEn.slug }, fields: ['id'] });
+  if (!page) page = await strapi.documents(PAGE).create({ locale: 'en', data: swissGermanEn, status: 'published' });
+  const de = await strapi.documents(PAGE).findOne({ documentId: page.documentId, locale: 'de', fields: ['id'] });
+  if (!de) {
+    await strapi.documents(PAGE).update({ documentId: page.documentId, locale: 'de', data: swissGermanDe });
+    await strapi.documents(PAGE).publish({ documentId: page.documentId, locale: 'de' });
+  }
+
+  // Footer: next to the comparison link.
+  for (const locale of ['en', 'de', 'fr', 'it']) {
+    const draft = await strapi.documents(GLOBAL).findFirst({ locale, status: 'draft', populate: { footerColumns: { populate: '*' } } });
+    if (!draft) continue;
+    const footerColumns = stripIds(draft.footerColumns || []);
+    const column = footerColumns.find((c) => (c.links || []).some((l) => /\/compare$/.test(l.url)));
+    if (!column || column.links.some((l) => l.url === footerSwiss.url)) continue;
+    const at = column.links.findIndex((l) => /\/compare$/.test(l.url)) + 1;
+    column.links.splice(at, 0, { label: footerSwiss.label[locale], url: footerSwiss.url });
+    const live = await strapi.documents(GLOBAL).findFirst({ locale, status: 'published', fields: ['updatedAt'] });
+    await strapi.documents(GLOBAL).update({ documentId: draft.documentId, locale, data: { footerColumns } });
+    if (!edited(draft, live)) await strapi.documents(GLOBAL).publish({ documentId: draft.documentId, locale });
+  }
+
+  // German-only articles: the guides published (each appears on its date), the comparisons as drafts.
+  for (const [list, status] of [[germanArticles, 'published'], [germanDrafts, 'draft']]) {
+    for (const data of list) {
+      if (await strapi.documents(ARTICLE).findFirst({ locale: 'de', filters: { slug: data.slug }, fields: ['id'] })) continue;
+      await strapi.documents(ARTICLE).create({ locale: 'de', data, ...(status === 'published' ? { status } : {}) });
+    }
+  }
+
+  // German titles and descriptions, where the German version has none of its own yet.
+  for (const [slug, [metaTitle, metaDescription]] of Object.entries(germanSeo)) {
+    const draft = await strapi.documents(INTEGRATION).findFirst({ locale: 'de', status: 'draft', filters: { slug }, populate: { seo: { populate: '*' } } });
+    if (!draft || draft.seo?.metaTitle) continue;
+    const live = await strapi.documents(INTEGRATION).findFirst({ locale: 'de', status: 'published', filters: { slug }, fields: ['updatedAt'] });
+    const seo = { ...mediaToIds(stripIds(draft.seo || {})), metaTitle, metaDescription };
+    await strapi.documents(INTEGRATION).update({ documentId: draft.documentId, locale: 'de', data: { seo } });
+    if (!edited(draft, live)) await strapi.documents(INTEGRATION).publish({ documentId: draft.documentId, locale: 'de' });
+  }
+  return true;
+}
+
 /** Step-by-step guides (November 2026): four news articles, scheduled one a week by their date. */
 async function addGuides(strapi) {
   const ARTICLE = 'api::article.article';
@@ -638,6 +691,7 @@ const UPDATES = [
   { id: '2026-11-guides', run: (strapi) => addGuides(strapi) },
   { id: '2026-11-planned-about', run: (strapi) => addPlannedAbout(strapi) },
   { id: '2026-11-planned-today', run: (strapi) => addPlannedToday(strapi) },
+  { id: '2026-11-german', run: (strapi) => addGermanContent(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

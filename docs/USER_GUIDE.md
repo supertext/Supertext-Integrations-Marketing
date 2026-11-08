@@ -114,3 +114,9 @@ The dark bar at the very top of every page, for short-lived news like the SDK la
 - Without Stripe price IDs, the button explains that online checkout opens soon.
 
 After paying, the customer lands on a thank-you page and the order appears under **Subscription**, with plan, platform, status and the end of the current period.
+
+## Articles in one language only
+
+An article can exist in German (or any other language) without an English version: create it in that language only. It appears on that language's news page, feed and sitemap, and nowhere else. The German-first guides (`typo3-automatisch-uebersetzen` and others) work this way. The background translation only translates from English, so it leaves these articles alone.
+
+The comparison articles `weglot-alternative` and `wpml-alternative` are drafts: check what they say about the other products against the vendors' current documentation, then publish them.

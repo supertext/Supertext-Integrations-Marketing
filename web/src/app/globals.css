@@ -528,3 +528,7 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .integration-grid:not([data-category='all']):not([data-category='fixed']) .integration-group .sdk-card { display: none; }
 .integration-group[hidden] { display: none; }
 .integration-grid:not([data-category='all']) .integration-group { margin-top: 0; }
+
+/* Notes in articles (Markdown "> …") */
+.prose blockquote { margin: 0; padding: 14px 18px; border-left: 3px solid var(--mint); background: var(--grey); border-radius: 0 var(--radius-tile) var(--radius-tile) 0; }
+.prose blockquote p { color: var(--dark-green); }
