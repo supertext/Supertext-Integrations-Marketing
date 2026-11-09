@@ -374,6 +374,33 @@ module.exports = ({ strapi }) => {
       return { reference, issueUrl: request.issueUrl || null };
     },
 
+    /**
+     * Requests that couldn't be forwarded (no token yet, missing permission, GitHub down) are tried again
+     * every hour for a week. The sender already has the confirmation email; nothing is sent again.
+     */
+    async retryFailed() {
+      const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const failed = await strapi.documents(UID).findMany({
+        filters: { status: 'failed', createdAt: { $gte: since } },
+        populate: { attachments: true },
+        limit: 50,
+      });
+      let forwarded = 0;
+      for (const request of failed) {
+        try {
+          await forward(request);
+          forwarded++;
+          strapi.log.info(`[support] ${request.reference} forwarded to GitHub on retry`);
+        } catch (error) {
+          await strapi.documents(UID).update({ documentId: request.documentId, data: { notes: error.message.slice(0, 2000) } });
+          // The same cause will stop the others too.
+          strapi.log.warn(`[support] Retry of ${request.reference} failed: ${error.message}`);
+          break;
+        }
+      }
+      return { failed: failed.length, forwarded };
+    },
+
     /** Checks the GitHub webhook signature (HMAC-SHA256 of the raw body). */
     verifySignature(raw, signature) {
       const secret = process.env.GITHUB_WEBHOOK_SECRET;

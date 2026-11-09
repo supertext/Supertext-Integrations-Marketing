@@ -118,7 +118,7 @@ The support page (`/support`) sends requests to the CMS (type *Support request*)
 6. Optional: Cloudflare Turnstile (`TURNSTILE_SITE_KEY` on `web`, `TURNSTILE_SECRET_KEY` on `cms`). Without it the form is protected by a hidden field, a minimum filling time and a limit of five requests per hour and address.
 7. Recommended: in the ruleset "Protect main", require a pull request for changes to `main`, with organisation admins as bypass actors. Claude's workflow only works on branches and opens pull requests, but the rule makes sure nothing reaches `main` without review.
 
-A request that can't be forwarded (no token, GitHub error) stays in the CMS with the status *failed* and the error in *notes*; the sender still gets the confirmation email.
+A request that can't be forwarded (no token, GitHub error) stays in the CMS with the status *failed* and the error in *notes*; the sender still gets the confirmation email. The CMS tries failed requests again every hour (at :41) for a week, so they go through once the token works.
 
 ## Search engines and AI assistants
 
@@ -141,7 +141,7 @@ Pushes to `main` redeploy both services on Railway. If a push doesn't deploy, ch
 | Subscriptions don't appear in Strapi | The Stripe webhook URL or `STRIPE_WEBHOOK_SECRET` is wrong. Stripe → *Webhooks* shows the failed deliveries. |
 | Statistics page without the adoption section | `PLUGIN_HEALTH_STATS_TOKEN` is missing or differs from Plugin Health's `COMMANDO_STATS_TOKEN` (the `web` log says `[stats] Plugin Health answered 401`), or there are fewer installations than the block's *minCount*. |
 | No version numbers on the integration pages | The nightly sync couldn't reach GitHub (rate limit). Set `GITHUB_TOKEN`. See the log (`[github]`). |
-| Support requests stay at *failed* | `GITHUB_ISSUES_TOKEN` is missing, expired or lacks *Issues: write*; see *notes* on the request and the log (`[support]`). |
+| Support requests stay at *failed* | `GITHUB_ISSUES_TOKEN` is missing, expired or lacks *Issues: write*; see *notes* on the request and the log (`[support]`). *Resource not accessible by personal access token*: the token doesn't cover that repository (choose *All repositories*, including the private Supertext-Integrations-Marketing), or the organisation hasn't approved it yet (Supertext organisation → *Settings → Personal access tokens → Pending requests*). Failed requests are retried every hour. |
 | Answers aren't emailed | Webhook not set up or `GITHUB_WEBHOOK_SECRET` differs (GitHub → webhook → *Recent deliveries* shows 401), or `SMTP_HOST` is missing (the log says "No SMTP_HOST"). |
 | Claude doesn't react to a support issue | The `support` label was added by an account without write access, or `ANTHROPIC_API_KEY` is missing; see the repo's *Actions → Support triage*. |
 | "Error loading the plugin supertext" | The plugin isn't in `package.json`: run `npm run plugin` in `cms/`. |
