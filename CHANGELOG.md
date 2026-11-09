@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Social previews: links to integration pages show the plugin's card (the same image as its GitHub social preview, with a screenshot of the plugin where there is one); every other page shows the site's own card. Replaces the generated default image.
 - WordPress: links and the synced release follow the renamed repository `Supertext/Wordpress-Polylang-Supertext-Translation` (seed, WordPress guide, and a one-time content update for the live site).
 - Videos on integration pages: a *See it in action* card after *How it works* with the plugin's demo and its install and configuration video (English, "(English)" noted on German, French and Italian pages), side by side on desktop and stacked on phones. Each video shows a picture from the video itself (our own image, not a YouTube thumbnail) with a light play button, ready for all 25 plugins with videos. Nothing loads from YouTube until the visitor clicks play; then the privacy-enhanced player (youtube-nocookie.com) starts. Fields *demoVideo* and *installVideo* on each integration, filled for Strapi, Contao, Directus, TYPO3 and Joomla; more are one line in `cms/src/seed/videos.js`. The site now allows frames only from YouTube's privacy-enhanced domain and Cloudflare Turnstile.
 - Strapi 5 CMS with reusable blocks (hero, plan cards, feature cards, use case, comparison table, integration grid, logo strip, FAQ, call to action, rich text, notice) for pages and integration pages.

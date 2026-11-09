@@ -1,4 +1,5 @@
 import { LOCALES } from './i18n';
+import { DEFAULT_CARD } from './og-cards';
 
 export const SITE_URL = (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
 
@@ -43,10 +44,12 @@ export function brandTitle(title, max = 60) {
   return full.length <= max ? full : base;
 }
 
+const absolute = (url) => (/^https?:\/\//.test(url) ? url : `${SITE_URL}${url}`);
+
 /** Open Graph / Twitter defaults for one page. */
 export function social({ title, description, path, locale, image }) {
-  // Without an own image: the generated default (app/[locale]/opengraph-image.js).
-  const images = [image || `${SITE_URL}/${locale}/opengraph-image`];
+  // Without an own image: the site's card (lib/og-cards.js), the same as the repo's GitHub social preview.
+  const images = [{ url: absolute(image || DEFAULT_CARD), width: image ? undefined : 1280, height: image ? undefined : 640 }];
   return {
     openGraph: {
       type: 'website',

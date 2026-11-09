@@ -6,6 +6,7 @@ import { getIntegration, mediaUrl, translatedLocales } from '@/lib/strapi';
 import { JsonLd, SITE_URL, alternates, indexingAllowed, brandTitle, metaDescription, social } from '@/lib/seo';
 import { format, isLocale, strings } from '@/lib/i18n';
 import { localizeVersions } from '@/lib/versions';
+import { ogCard } from '@/lib/og-cards';
 
 // /integrations/<slug>/files: translating with your own agency or CAT tool through the plugin's
 // XLIFF and HTML export and import. Only for integrations whose fileExport is filled in.
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }) {
     description,
     alternates: alt,
     robots: indexingAllowed() ? undefined : { index: false, follow: true },
-    ...social({ title, description, path: alt.canonical, locale, image: mediaUrl(item.screenshot) }),
+    ...social({ title, description, path: alt.canonical, locale, image: ogCard(item.repo) || mediaUrl(item.screenshot) }),
   };
 }
 

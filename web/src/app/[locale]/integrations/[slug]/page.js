@@ -11,6 +11,7 @@ import { Check } from '@/components/Icons';
 import VideoPlayer from '@/components/VideoPlayer';
 import { posterFor, youtubeId } from '@/lib/video';
 import { getIntegration, getIntegrations, getRequestCounts, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
+import { ogCard } from '@/lib/og-cards';
 import { JsonLd, ORG, SITE_URL, alternates, brandTitle, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { plainText } from '@/lib/page';
 import { faqJsonLd } from '@/lib/page';
@@ -38,7 +39,8 @@ export async function generateMetadata({ params }) {
       ? metaDescription([format(t, 'plannedMetaDescription', system), format(t, roadmap ? 'plannedMetaRoadmap' : 'plannedMetaRequest', system)])
       : metaDescription([named(item.summary), localizeVersions(item.supportedVersions, locale), firstSentence(item.description)], t.metaTail);
   const alt = alternates(locale, `/integrations/${slug}`, await translatedLocales('/integrations', slug));
-  const image = mediaUrl(item.seo?.ogImage) || mediaUrl(item.screenshot);
+  // An image set in the CMS wins; then the plugin's card (its GitHub social preview); then its screenshot.
+  const image = mediaUrl(item.seo?.ogImage) || ogCard(item.repo) || mediaUrl(item.screenshot);
   return {
     title: { absolute: title },
     description,
