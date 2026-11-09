@@ -601,3 +601,5 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
   .stats-table th, .stats-table td { padding: 10px 12px; }
 }
 .stats-note { margin: 0 0 24px; padding: 10px 14px; background: var(--mint-alpha); border-left: 3px solid var(--mint); border-radius: 0 var(--radius-tile) var(--radius-tile) 0; font-size: 14px; }
+.stats-bar { max-width: 72px; }
+.stats-bars { justify-content: flex-start; }

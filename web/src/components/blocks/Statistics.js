@@ -88,18 +88,26 @@ function Bars({ rows }) {
 }
 
 function Adoption({ health, integrations, locale, t, min, nf }) {
-  const totals = health?.totals;
-  if (!totals || totals.installations < min) {
-    if (totals) console.info(`[stats] Adoption hidden: ${totals.installations} installations (${totals.plugins} plugins), below minCount ${min}`);
+  if (!health?.totals) return null;
+  // Only plugins that belong to an integration count (test reports from other tools stay out).
+  const plugins = health.plugins
+    .map((p) => ({ ...p, integration: integrationFor(p.plugin, integrations) }))
+    .filter((p) => p.installations > 0 && p.integration);
+  const sum = (key) => plugins.reduce((n, p) => n + (p[key] || 0), 0);
+  const totals = { installations: sum('installations'), active: sum('active'), up_to_date: sum('up_to_date'), outdated: sum('outdated') };
+  if (totals.installations < min) {
+    console.info(`[stats] Adoption hidden: ${totals.installations} installations (${plugins.length} plugins), below minCount ${min}`);
     return null;
   }
   const released = totals.up_to_date + totals.outdated;
-  const langs = totals.languages;
+  const langs = health.totals.languages;
   const languageRows = langs && langs.reported >= min ? (langs.supertext || []).filter((l) => l.value).slice(0, 10) : [];
-  const plugins = health.plugins
-    .map((p) => ({ ...p, integration: integrationFor(p.plugin, integrations) }))
-    .filter((p) => p.installations > 0);
-  const growth = (totals.growth || []).filter((g) => g.total > 0);
+  // Growth: the plugins' months added up, with the running total.
+  const perMonth = new Map();
+  for (const p of plugins) for (const g of p.growth || []) perMonth.set(g.month, (perMonth.get(g.month) || 0) + g.new);
+  const months = [...(health.totals.growth || []).map((g) => g.month)].sort();
+  let running = 0;
+  const growth = months.map((month) => ({ month, total: (running += perMonth.get(month) || 0) })).filter((g) => g.total > 0);
 
   return (
     <section className="stats-section" aria-labelledby="stats-adoption">
