@@ -29,6 +29,10 @@
       "type": "integer",
       "default": 10,
       "min": 1
+    },
+    "includeLocal": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

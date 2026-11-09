@@ -4,11 +4,11 @@
 const PLUGIN_HEALTH_URL = (process.env.PLUGIN_HEALTH_URL || 'https://pluginhealth.supertext.com').replace(/\/$/, '');
 
 /** The statistics (see Plugin Health's developer guide → Statistics API), or null when unavailable. */
-export async function getPluginHealthStats() {
+export async function getPluginHealthStats(includeLocal = false) {
   const token = process.env.PLUGIN_HEALTH_STATS_TOKEN;
   if (!token) return null;
   try {
-    const res = await fetch(`${PLUGIN_HEALTH_URL}/api/v1/stats`, {
+    const res = await fetch(`${PLUGIN_HEALTH_URL}/api/v1/stats${includeLocal ? '?local=1' : ''}`, {
       headers: { Authorization: `Bearer ${token}` },
       next: { revalidate: 3600 },
       signal: AbortSignal.timeout(10000),

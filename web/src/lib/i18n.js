@@ -8,6 +8,7 @@ export const isLocale = (value) => LOCALES.includes(value);
 
 const STRINGS = {
   en: {
+    statsIncludesTest: 'For now, the installation figures include test and development sites.',
     statsAdoption: 'Adoption',
     statsAdoptionText: 'Sites that run a Supertext plugin, reported by the plugins themselves.',
     statsInstallations: 'Installations',
@@ -262,6 +263,7 @@ const STRINGS = {
     sdkCardCta: 'See the SDKs',
   },
   de: {
+    statsIncludesTest: 'Vorerst zählen auch Test- und Entwicklungsinstallationen mit.',
     statsAdoption: 'Verbreitung',
     statsAdoptionText: 'Websites mit einem Supertext-Plugin, gemeldet von den Plugins selbst.',
     statsInstallations: 'Installationen',
@@ -516,6 +518,7 @@ const STRINGS = {
     sdkCardCta: 'Zu den SDKs',
   },
   fr: {
+    statsIncludesTest: 'Pour l’instant, les installations de test et de développement sont comptées aussi.',
     statsAdoption: 'Adoption',
     statsAdoptionText: 'Les sites qui utilisent un plugin Supertext, d’après les plugins eux-mêmes.',
     statsInstallations: 'Installations',
@@ -770,6 +773,7 @@ const STRINGS = {
     sdkCardCta: 'Voir les SDK',
   },
   it: {
+    statsIncludesTest: 'Per ora sono incluse anche le installazioni di test e di sviluppo.',
     statsAdoption: 'Diffusione',
     statsAdoptionText: 'I siti che usano un plugin Supertext, secondo i plugin stessi.',
     statsInstallations: 'Installazioni',

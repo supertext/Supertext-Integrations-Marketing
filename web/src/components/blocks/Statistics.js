@@ -285,7 +285,7 @@ function Demand({ integrations, counts, support, locale, t, min, nf }) {
 export default async function Statistics({ block, integrations, locale, t }) {
   const min = Math.max(1, block.minCount ?? 10);
   const [health, repos, counts, support] = await Promise.all([
-    block.showAdoption !== false ? getPluginHealthStats() : null,
+    block.showAdoption !== false ? getPluginHealthStats(!!block.includeLocal) : null,
     block.showPace !== false ? getRepoStats() : new Map(),
     block.showDemand !== false ? getRequestCounts() : {},
     block.showDemand !== false ? getSupportStats() : null,
@@ -299,6 +299,7 @@ export default async function Statistics({ block, integrations, locale, t }) {
     <section className="section statistics" style={{ paddingTop: block.title ? undefined : 0 }}>
       <div className="container">
         <SectionHead title={block.title} subtitle={block.subtitle} />
+        {block.includeLocal && block.showAdoption !== false && <p className="stats-note">{t.statsIncludesTest}</p>}
         {block.showAdoption !== false && <Adoption health={health} integrations={integrations} locale={locale} t={t} min={min} nf={nf} />}
         {block.showPace !== false && <Pace integrations={integrations} repos={repos} locale={locale} t={t} nf={nf} />}
         {block.showDemand !== false && <Demand integrations={integrations} counts={counts} support={support} locale={locale} t={t} min={min} nf={nf} />}

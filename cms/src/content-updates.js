@@ -682,6 +682,28 @@ async function syncSharedIntegrationFields(strapi) {
   return true;
 }
 
+/** Statistics page: count test and development installations too, for now (November 2026). */
+async function statisticsIncludeLocal(strapi) {
+  const answers = {
+    en: 'For now, yes: until enough live sites report, the installation figures include test and development installations (localhost, .test and similar). A note on the page says so.',
+    de: 'Vorerst ja: Bis genug Live-Websites melden, zählen Test- und Entwicklungsinstallationen (localhost, .test und ähnliche) mit. Ein Hinweis auf der Seite sagt das.',
+    fr: 'Pour l’instant, oui : tant que trop peu de sites en production envoient leurs données, les installations de test et de développement (localhost, .test, etc.) sont comptées. Une note sur la page le signale.',
+    it: 'Per ora sì: finché i siti in produzione sono pochi, contiamo anche le installazioni di test e di sviluppo (localhost, .test e simili). Una nota sulla pagina lo indica.',
+  };
+  for (const locale of ['en', 'de', 'fr', 'it']) {
+    const draft = await strapi.documents(PAGE).findFirst({ locale, status: 'draft', filters: { slug: 'statistics' }, populate: { seo: { populate: '*' }, blocks: { on: { 'blocks.faq': { populate: '*' }, 'blocks.hero': { populate: '*' }, 'blocks.cta-band': { populate: '*' }, 'blocks.statistics': true } } } });
+    if (!draft) continue;
+    const blocks = stripIds(draft.blocks || []).map((b) => {
+      if (b.__component === 'blocks.statistics') return { ...b, includeLocal: true };
+      if (b.__component === 'blocks.faq' && b.items?.length >= 4) return { ...b, items: b.items.map((item, i) => (i === 3 ? { ...item, answer: answers[locale] } : item)) };
+      return b;
+    });
+    await strapi.documents(PAGE).update({ documentId: draft.documentId, locale, data: { blocks: mediaToIds(blocks) } });
+    await strapi.documents(PAGE).publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 /** Step-by-step guides (November 2026): four news articles, scheduled one a week by their date. */
 async function addGuides(strapi) {
   const ARTICLE = 'api::article.article';
@@ -770,6 +792,7 @@ const UPDATES = [
   { id: '2026-11-german', run: (strapi) => addGermanContent(strapi) },
   { id: '2026-11-statistics', run: (strapi) => addStatisticsPage(strapi) },
   { id: '2026-11-shared-fields', run: (strapi) => syncSharedIntegrationFields(strapi) },
+  { id: '2026-11-statistics-local', run: (strapi) => statisticsIncludeLocal(strapi) },
   { id: '2026-11-wordpress-repo', run: (strapi) => renameWordPressRepo(strapi) },
 ];
 

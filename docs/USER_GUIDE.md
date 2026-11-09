@@ -90,7 +90,7 @@ The page **statistics** (`/statistics`, in the footer next to the roadmap) is bu
 - **Development pace** from the plugins' GitHub repositories (synced every night): live plugins, in development and on the roadmap (from the integrations' *stage*), releases in the last 30 and 90 days, issues closed and open and the median time to close one (issues opened by people only, not automated ones), and the latest releases.
 - **Demand and support** from this site: the ten most requested systems, support requests answered and the median time to the first answer.
 
-*minCount* (default 10) keeps small numbers off the page so no single site can be recognised: a plugin with fewer installations shows *new*, and the adoption section and the support figures appear only from that number up. *showAdoption*, *showPace* and *showDemand* switch the sections.
+*minCount* (default 10) keeps small numbers off the page so no single site can be recognised: a plugin with fewer installations shows *new*, and the adoption section and the support figures appear only from that number up. *showAdoption*, *showPace* and *showDemand* switch the sections. *includeLocal* counts test and development installations (localhost, `.test` and similar) too and shows a note saying so; it is on for now, while few live sites report. When you switch it off, also change the FAQ answer *Do test and development sites count?* back to *No*.
 
 ## Comparison page
 
