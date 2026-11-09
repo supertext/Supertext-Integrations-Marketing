@@ -653,6 +653,35 @@ async function addStatisticsPage(strapi) {
   return true;
 }
 
+/**
+ * Fields that are the same in every language (not localized) can drift when they were changed in one
+ * language's rows only (the repository renames of November 2026 left the old names in de, fr and it).
+ * Copies them from the English rows to the other languages, drafts to drafts and published to published.
+ */
+async function syncSharedIntegrationFields(strapi) {
+  const attributes = strapi.contentType(INTEGRATION).attributes;
+  const shared = Object.entries(attributes)
+    .filter(([, a]) => a.pluginOptions?.i18n?.localized === false && !['relation', 'media', 'component', 'dynamiczone'].includes(a.type))
+    .map(([name]) => name);
+  const query = strapi.db.query(INTEGRATION);
+  const english = await query.findMany({ where: { locale: 'en' }, select: ['documentId', 'publishedAt', ...shared] });
+  let fixed = 0;
+  for (const row of english) {
+    const data = Object.fromEntries(shared.map((name) => [name, row[name]]));
+    const others = await query.findMany({
+      where: { documentId: row.documentId, locale: { $ne: 'en' }, publishedAt: row.publishedAt ? { $notNull: true } : { $null: true } },
+      select: ['id', ...shared],
+    });
+    for (const other of others) {
+      if (shared.every((name) => JSON.stringify(other[name] ?? null) === JSON.stringify(data[name] ?? null))) continue;
+      await query.update({ where: { id: other.id }, data });
+      fixed++;
+    }
+  }
+  if (fixed) strapi.log.info(`[setup] Copied the shared integration fields (${shared.join(', ')}) to ${fixed} language versions`);
+  return true;
+}
+
 /** Step-by-step guides (November 2026): four news articles, scheduled one a week by their date. */
 async function addGuides(strapi) {
   const ARTICLE = 'api::article.article';
@@ -740,6 +769,7 @@ const UPDATES = [
   { id: '2026-11-planned-today', run: (strapi) => addPlannedToday(strapi) },
   { id: '2026-11-german', run: (strapi) => addGermanContent(strapi) },
   { id: '2026-11-statistics', run: (strapi) => addStatisticsPage(strapi) },
+  { id: '2026-11-shared-fields', run: (strapi) => syncSharedIntegrationFields(strapi) },
   { id: '2026-11-wordpress-repo', run: (strapi) => renameWordPressRepo(strapi) },
 ];
 
