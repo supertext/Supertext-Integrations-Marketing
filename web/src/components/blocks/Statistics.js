@@ -308,11 +308,15 @@ export default async function Statistics({ block, integrations, locale, t }) {
     <section className="section statistics" style={{ paddingTop: block.title ? undefined : 0 }}>
       <div className="container">
         <SectionHead title={block.title} subtitle={block.subtitle} />
-        {block.includeLocal && block.showAdoption !== false && <p className="stats-note">{t.statsIncludesTest}</p>}
         {block.showAdoption !== false && <Adoption health={health} integrations={integrations} locale={locale} t={t} min={min} nf={nf} showSmall={!!block.includeLocal} />}
         {block.showPace !== false && <Pace integrations={integrations} repos={repos} locale={locale} t={t} nf={nf} />}
         {block.showDemand !== false && <Demand integrations={integrations} counts={counts} support={support} locale={locale} t={t} min={min} nf={nf} />}
-        {updated && <p className="stats-updated">{format(t, 'statsUpdated', { date: updated })}</p>}
+        {(updated || block.includeLocal) && (
+          <p className="stats-updated">
+            {updated && `${format(t, 'statsUpdated', { date: updated })}. `}
+            {block.includeLocal && block.showAdoption !== false && t.statsIncludesTest}
+          </p>
+        )}
       </div>
     </section>
   );
