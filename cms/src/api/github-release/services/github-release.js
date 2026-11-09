@@ -15,6 +15,12 @@ async function github(path, token) {
     },
   });
   if (res.status === 404) return null;
+  if ((res.status === 403 || res.status === 429) && res.headers.get('x-ratelimit-remaining') === '0') {
+    const reset = Number(res.headers.get('x-ratelimit-reset')) * 1000;
+    const error = new Error(`GitHub rate limit reached${reset ? ` until ${new Date(reset).toISOString()}` : ''}${token ? '' : ' (set GITHUB_TOKEN)'}`);
+    error.rateLimited = true;
+    throw error;
+  }
   if (!res.ok) throw new Error(`GitHub ${res.status} for ${path}`);
   return res.json();
 }
@@ -69,6 +75,7 @@ module.exports = factories.createCoreService(UID, ({ strapi }) => ({
         const release = list[0] || null;
         const since = (days) => list.filter((r) => r.published_at && Date.now() - new Date(r.published_at) <= days * DAY).length;
         const issues = await issueStats(repo, token).catch((error) => {
+          if (error.rateLimited) throw error;
           strapi.log.warn(`[github] ${repo} issues: ${error.message}`);
           return {};
         });
@@ -88,6 +95,11 @@ module.exports = factories.createCoreService(UID, ({ strapi }) => ({
         else await strapi.documents(UID).create({ data });
         updated++;
       } catch (error) {
+        if (error.rateLimited) {
+          // Stop here: every further request would fail too. The stored figures stay as they are.
+          strapi.log.warn(`[github] ${error.message}; synced ${updated} of ${repos.length} repos`);
+          return { updated, total: repos.length, rateLimited: true };
+        }
         strapi.log.warn(`[github] ${repo}: ${error.message}`);
       }
     }
