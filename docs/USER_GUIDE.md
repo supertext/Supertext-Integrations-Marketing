@@ -82,6 +82,16 @@ Visitors ask questions, report problems or suggest ideas on the **Support** page
 
 The page **roadmap** (`/roadmap`, linked in the footer and below every integration grid) is built by its *Roadmap* block from the integrations' *stage*: **In development** (`in_development`), **On the roadmap** (`roadmap`, with a "Request the plugin" link and the request count) and **Request a plugin** (`request`, grouped by category, most-requested first), plus plugins released in the last four months. *Roadmap items* (their own content type) add things that aren't integrations, in the column of their *phase* (`now`, `next`, `later`); three are prepared as drafts: publish the ones you want to show. To move a system along, change its *stage* and publish.
 
+## Statistics page
+
+The page **statistics** (`/statistics`, in the footer next to the roadmap) is built by its *Statistics* block. Everything on it updates by itself:
+
+- **Adoption** from Supertext Plugin Health (refreshed hourly): installations, how many run the latest plugin version, installations per month, per plugin the most used system versions, and the most translated languages (from the sites that sent their language settings). Test sites on local addresses don't count.
+- **Development pace** from the plugins' GitHub repositories (synced every night): live plugins, in development and on the roadmap (from the integrations' *stage*), releases in the last 30 and 90 days, issues closed and open and the median time to close one (issues opened by people only, not automated ones), and the latest releases.
+- **Demand and support** from this site: the ten most requested systems, support requests answered and the median time to the first answer.
+
+*minCount* (default 10) keeps small numbers off the page so no single site can be recognised: a plugin with fewer installations shows *new*, and the adoption section and the support figures appear only from that number up. *showAdoption*, *showPace* and *showDemand* switch the sections.
+
 ## Comparison page
 
 The page **compare** (`/compare`) compares Supertext with DeepL and Google Translate: what sets Supertext apart, a side-by-side table, questions. It's linked from the footer and from every integration page. The facts are as of October 2026 (sources in the project document *comparison-research*); check them when you change the page, as DeepL and Google change quickly.

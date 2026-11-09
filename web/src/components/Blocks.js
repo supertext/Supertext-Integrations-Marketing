@@ -11,6 +11,7 @@ import LogoStrip from './blocks/LogoStrip';
 import IntegrationGrid from './blocks/IntegrationGrid';
 import PlanCards from './blocks/PlanCards';
 import Roadmap from './blocks/Roadmap';
+import Statistics from './blocks/Statistics';
 
 // Client components get only the strings they use: everything passed to them is sent to the browser.
 const PLAN_STRINGS = ['annual', 'billedAnnually', 'checkoutFailed', 'choosePlatform', 'free', 'learnMore', 'monthly', 'notBuyable', 'perMonth', 'platform', 'redirecting', 'subscribe'];
@@ -32,10 +33,10 @@ const STATIC = {
 /** Renders a Strapi dynamic zone. Unknown block types are skipped. */
 export default async function Blocks({ blocks, locale, t, searchParams = {} }) {
   if (!blocks?.length) return null;
-  const needsIntegrations = blocks.some((b) => ['blocks.integration-grid', 'blocks.plan-cards', 'blocks.roadmap'].includes(b.__component));
+  const needsIntegrations = blocks.some((b) => ['blocks.integration-grid', 'blocks.plan-cards', 'blocks.roadmap', 'blocks.statistics'].includes(b.__component));
   const integrations = needsIntegrations
     ? (await getIntegrations(locale)).map((i) => ({
-        slug: i.slug, system: i.system, category: i.category, stage: i.stage, summary: i.summary, supportedVersions: i.supportedVersions,
+        slug: i.slug, system: i.system, category: i.category, stage: i.stage, summary: i.summary, supportedVersions: i.supportedVersions, repo: i.repo,
         logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot), release: i.release ? { version: i.release.version, releasedAt: i.release.releasedAt || null } : null,
       }))
     : [];
@@ -44,6 +45,9 @@ export default async function Blocks({ blocks, locale, t, searchParams = {} }) {
     const key = `${block.__component}-${block.id}`;
     if (block.__component === 'blocks.integration-grid') {
       return <IntegrationGrid key={key} block={block} integrations={integrations} locale={locale} t={t} initialCategory={searchParams.category} />;
+    }
+    if (block.__component === 'blocks.statistics') {
+      return <Statistics key={key} block={block} integrations={integrations} locale={locale} t={t} />;
     }
     if (block.__component === 'blocks.roadmap') {
       return <Roadmap key={key} block={block} integrations={integrations} locale={locale} t={t} />;

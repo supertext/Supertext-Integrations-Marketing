@@ -631,6 +631,28 @@ async function addGermanContent(strapi) {
   return true;
 }
 
+/** The statistics page (November 2026), linked in the footer next to the roadmap. */
+async function addStatisticsPage(strapi) {
+  const { statisticsPage, footerStatistics } = require('./seed/statistics');
+  if (!(await strapi.documents(PAGE).findFirst({ locale: 'en', filters: { slug: statisticsPage.slug }, fields: ['id'] }))) {
+    await strapi.documents(PAGE).create({ locale: 'en', data: statisticsPage, status: 'published' });
+  }
+  for (const locale of ['en', 'de', 'fr', 'it']) {
+    const draft = await strapi.documents(GLOBAL).findFirst({ locale, status: 'draft', populate: { footerColumns: { populate: '*' } } });
+    if (!draft) continue;
+    const footerColumns = stripIds(draft.footerColumns || []);
+    const column = footerColumns.find((c) => (c.links || []).some((l) => /\/roadmap$/.test(l.url)));
+    if (!column || column.links.some((l) => l.url === footerStatistics.url)) continue;
+    const at = column.links.findIndex((l) => /\/roadmap$/.test(l.url)) + 1;
+    column.links.splice(at, 0, { label: footerStatistics.label[locale], url: footerStatistics.url });
+    const live = await strapi.documents(GLOBAL).findFirst({ locale, status: 'published', fields: ['updatedAt'] });
+    const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+    await strapi.documents(GLOBAL).update({ documentId: draft.documentId, locale, data: { footerColumns } });
+    if (!edited) await strapi.documents(GLOBAL).publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 /** Step-by-step guides (November 2026): four news articles, scheduled one a week by their date. */
 async function addGuides(strapi) {
   const ARTICLE = 'api::article.article';
@@ -717,6 +739,7 @@ const UPDATES = [
   { id: '2026-11-planned-about', run: (strapi) => addPlannedAbout(strapi) },
   { id: '2026-11-planned-today', run: (strapi) => addPlannedToday(strapi) },
   { id: '2026-11-german', run: (strapi) => addGermanContent(strapi) },
+  { id: '2026-11-statistics', run: (strapi) => addStatisticsPage(strapi) },
   { id: '2026-11-wordpress-repo', run: (strapi) => renameWordPressRepo(strapi) },
 ];
 

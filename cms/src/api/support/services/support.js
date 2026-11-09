@@ -398,6 +398,27 @@ module.exports = ({ strapi }) => {
     },
 
     /** Request counts per system (plugin requests), for the roadmap page. */
+    /**
+     * Support figures for the statistics page: requests (not plugin requests, not failed ones), how many got
+     * an answer, and the median hours to the first answer. Totals only.
+     */
+    async supportStats() {
+      const rows = await strapi.documents(UID).findMany({
+        filters: { kind: { $ne: 'request' }, status: { $ne: 'failed' } },
+        fields: ['createdAt', 'replies', 'status'],
+        limit: 10000,
+      });
+      const firstReply = (r) => (Array.isArray(r.replies) && r.replies[0]?.at ? new Date(r.replies[0].at) - new Date(r.createdAt) : null);
+      const hours = rows.map(firstReply).filter((ms) => ms !== null && ms >= 0).map((ms) => ms / 3600000).sort((a, b) => a - b);
+      const mid = hours.length >> 1;
+      const median = !hours.length ? null : hours.length % 2 ? hours[mid] : (hours[mid - 1] + hours[mid]) / 2;
+      return {
+        requests: rows.length,
+        answered: hours.length,
+        firstReplyHoursMedian: median === null ? null : Math.round(median * 10) / 10,
+      };
+    },
+
     async requestCounts() {
       const rows = await strapi.documents(UID).findMany({ filters: { kind: 'request', platform: { $notNull: true } }, fields: ['platform'], limit: 10000 });
       const counts = {};

@@ -24,6 +24,13 @@ module.exports = ({ strapi }) => ({
     ctx.body = { counts: await strapi.service('api::support.support').requestCounts() };
   },
 
+  /** Support totals for the statistics page (website only). */
+  async supportStats(ctx) {
+    const token = process.env.STRAPI_API_TOKEN;
+    if (!token || ctx.request.headers.authorization !== `Bearer ${token}`) return ctx.unauthorized();
+    ctx.body = await strapi.service('api::support.support').supportStats();
+  },
+
   async github(ctx) {
     const support = strapi.service('api::support.support');
     const raw = ctx.request.body?.[Symbol.for('unparsedBody')];

@@ -45,7 +45,7 @@ Generate each secret with `openssl rand -base64 32`. Never commit values; they l
 | `STRIPE_SECRET_KEY` | Stripe secret key (`sk_live_…`, or `sk_test_…` for testing) |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret of the Stripe webhook endpoint (`whsec_…`) |
 | `STRIPE_AUTOMATIC_TAX` | `true` to let Stripe Tax add Swiss VAT (Stripe Tax must be set up in Stripe) |
-| `GITHUB_TOKEN` | Optional: read-only token for the nightly release sync (raises GitHub's rate limit) |
+| `GITHUB_TOKEN` | Optional: read-only token for the nightly GitHub sync (latest release, release counts and issues for the statistics page). Recommended: without it GitHub allows 60 requests an hour, and the sync needs two to four per repository. |
 | `PLUGIN_REF` | Optional build argument: branch or tag of the Supertext Strapi plugin (default `main`) |
 | `GITHUB_ISSUES_TOKEN` | Support: fine-grained token that opens the GitHub issues (see *Support requests*) |
 | `GITHUB_WEBHOOK_SECRET` | Support: secret of the organisation webhook that sends labels, answers and closing back |
@@ -67,6 +67,8 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 | `STRAPI_API_TOKEN` | Same value as on `cms` (`${{cms.STRAPI_API_TOKEN}}`) |
 | `PREVIEW_SECRET` | Same value as on `cms` (`${{cms.PREVIEW_SECRET}}`) |
 | `REVALIDATE_SECRET` | Secret of the Strapi webhook that refreshes the cache |
+| `PLUGIN_HEALTH_STATS_TOKEN` | The statistics page's adoption figures: the same value as `COMMANDO_STATS_TOKEN` on Supertext Plugin Health. Without it the page shows only development pace and demand. |
+| `PLUGIN_HEALTH_URL` | Optional: Plugin Health's address (default `https://pluginhealth.supertext.com`) |
 | `SITE_URL` | Public URL of the website (canonical links, sitemap, structured data) |
 | `ALLOW_INDEXING` | `true` lets search engines and AI crawlers index the site (robots.txt, `noindex` tags). Leave unset until the site runs on its real domain with final prices. |
 | `GOOGLE_SITE_VERIFICATION` | Google Search Console's HTML tag token (the `content` value; several comma-separated): shown as a meta tag on every page. |
@@ -137,6 +139,7 @@ Pushes to `main` redeploy both services on Railway. If a push doesn't deploy, ch
 | Preview pane stays blank | `CLIENT_URL` (cms), `STRAPI_PUBLIC_URL` (web, at build time) or `PREVIEW_SECRET` don't match. Rebuild `web` after changing `STRAPI_PUBLIC_URL`. On different domains the browser may block the preview cookie; use subdomains of one domain (e.g. `cms.` and `integrations.supertext.com`). |
 | "Checkout is not available right now" | `STRIPE_SECRET_KEY` is missing or wrong, or the price ID doesn't exist in that Stripe mode (test vs. live). See the CMS log (`[shop]`). |
 | Subscriptions don't appear in Strapi | The Stripe webhook URL or `STRIPE_WEBHOOK_SECRET` is wrong. Stripe → *Webhooks* shows the failed deliveries. |
+| Statistics page without the adoption section | `PLUGIN_HEALTH_STATS_TOKEN` is missing or differs from Plugin Health's `COMMANDO_STATS_TOKEN` (the `web` log says `[stats] Plugin Health answered 401`), or there are fewer installations than the block's *minCount*. |
 | No version numbers on the integration pages | The nightly sync couldn't reach GitHub (rate limit). Set `GITHUB_TOKEN`. See the log (`[github]`). |
 | Support requests stay at *failed* | `GITHUB_ISSUES_TOKEN` is missing, expired or lacks *Issues: write*; see *notes* on the request and the log (`[support]`). |
 | Answers aren't emailed | Webhook not set up or `GITHUB_WEBHOOK_SECRET` differs (GitHub → webhook → *Recent deliveries* shows 401), or `SMTP_HOST` is missing (the log says "No SMTP_HOST"). |

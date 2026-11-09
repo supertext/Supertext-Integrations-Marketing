@@ -6,6 +6,7 @@ module.exports = {
   routes: [
     { method: 'POST', path: '/support/requests', handler: 'support.submit', config: { auth: false } },
     { method: 'GET', path: '/support/plugin-requests', handler: 'support.requestCounts', config: { auth: false } },
+    { method: 'GET', path: '/support/stats', handler: 'support.supportStats', config: { auth: false } },
     { method: 'POST', path: '/support/github', handler: 'support.github', config: { auth: false } },
   ],
 };

@@ -4,9 +4,10 @@ const { factories } = require('@strapi/strapi');
 
 const UID = 'api::github-release.github-release';
 
-/** Newest published (non-draft) release of a repo, pre-releases included (0.x plugins are pre-releases). */
-async function latestRelease(repo, token) {
-  const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=5`, {
+const DAY = 24 * 60 * 60 * 1000;
+
+async function github(path, token) {
+  const res = await fetch(`https://api.github.com${path}`, {
     headers: {
       Accept: 'application/vnd.github+json',
       'User-Agent': 'supertext-integrations-cms',
@@ -14,13 +15,42 @@ async function latestRelease(repo, token) {
     },
   });
   if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`GitHub ${res.status} for ${repo}`);
-  const releases = await res.json();
-  return releases.find((r) => !r.draft) || null;
+  if (!res.ok) throw new Error(`GitHub ${res.status} for ${path}`);
+  return res.json();
+}
+
+/** The last 100 published (non-draft) releases of a repo, newest first; pre-releases included (0.x plugins). */
+async function releases(repo, token) {
+  return ((await github(`/repos/${repo}/releases?per_page=100`, token)) || []).filter((r) => !r.draft);
+}
+
+/** Newest published release of a repo. */
+async function latestRelease(repo, token) {
+  return (await releases(repo, token))[0] || null;
+}
+
+/**
+ * Issues of a repo for the statistics page: open and closed, and the hours from opening to closing of each
+ * closed one (one decimal; the page takes the median over all repos).
+ * Issues only (no pull requests), and only those opened by people: automated ones (broken-link reports,
+ * Dependabot) say nothing about support. Up to 300 of the most recent.
+ */
+async function issueStats(repo, token) {
+  const issues = [];
+  for (let page = 1; page <= 3; page++) {
+    const list = (await github(`/repos/${repo}/issues?state=all&per_page=100&page=${page}`, token)) || [];
+    issues.push(...list);
+    if (list.length < 100) break;
+  }
+  const human = issues.filter((i) => !i.pull_request && i.user?.type !== 'Bot');
+  const closed = human.filter((i) => i.state === 'closed' && i.closed_at);
+  const closeHours = closed.map((i) => Math.round(((new Date(i.closed_at) - new Date(i.created_at)) / 3600000) * 10) / 10);
+  return { issuesOpen: human.length - closed.length, issuesClosed: closed.length, closeHours };
 }
 
 module.exports = factories.createCoreService(UID, ({ strapi }) => ({
   latestRelease,
+  issueStats,
 
   /** Updates the release info of every integration that has a GitHub repo. Editorial content is never touched. */
   async syncAll() {
@@ -35,8 +65,17 @@ module.exports = factories.createCoreService(UID, ({ strapi }) => ({
     let updated = 0;
     for (const repo of repos) {
       try {
-        const release = await latestRelease(repo, token);
+        const list = await releases(repo, token);
+        const release = list[0] || null;
+        const since = (days) => list.filter((r) => r.published_at && Date.now() - new Date(r.published_at) <= days * DAY).length;
+        const issues = await issueStats(repo, token).catch((error) => {
+          strapi.log.warn(`[github] ${repo} issues: ${error.message}`);
+          return {};
+        });
         const data = {
+          releases30: since(30),
+          releases90: since(90),
+          ...issues,
           repo,
           version: release ? release.tag_name.replace(/^v/, '') : null,
           url: release ? release.html_url : null,

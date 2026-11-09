@@ -5,7 +5,7 @@
     "singularName": "github-release",
     "pluralName": "github-releases",
     "displayName": "GitHub release",
-    "description": "Filled in automatically every night from GitHub; don't edit."
+    "description": "Filled in automatically every night from GitHub (latest release, release and issue counts for the statistics page); don't edit."
   },
   "options": {
     "draftAndPublish": false
@@ -32,6 +32,21 @@
     },
     "syncedAt": {
       "type": "datetime"
+    },
+    "releases30": {
+      "type": "integer"
+    },
+    "releases90": {
+      "type": "integer"
+    },
+    "issuesOpen": {
+      "type": "integer"
+    },
+    "issuesClosed": {
+      "type": "integer"
+    },
+    "closeHours": {
+      "type": "json"
     }
   }
 }

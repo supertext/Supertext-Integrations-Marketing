@@ -44,6 +44,7 @@ const BLOCK_POPULATE = {
     'blocks.comparison-table': { populate: { columns: { populate: '*' }, rows: true } },
     'blocks.integration-grid': true,
     'blocks.roadmap': true,
+    'blocks.statistics': true,
     'blocks.logo-strip': { populate: '*' },
     'blocks.faq': { populate: '*' },
     'blocks.cta-band': { populate: '*' },
@@ -133,6 +134,29 @@ export async function getRoadmapItems(locale) {
     return (english || []).map((i) => byId.get(i.documentId) || i);
   } catch {
     return [];
+  }
+}
+
+/** Every repo's release and issue figures (GitHub, synced nightly by the CMS), by repo. */
+export async function getRepoStats() {
+  try {
+    const list = (await strapi('/github-releases', { pagination: { pageSize: 200 } })) || [];
+    return new Map(list.map((r) => [r.repo.toLowerCase(), r]));
+  } catch {
+    return new Map();
+  }
+}
+
+/** Support totals: { requests, answered, firstReplyHoursMedian } (null when unavailable). */
+export async function getSupportStats() {
+  try {
+    const res = await fetch(`${STRAPI_URL}/api/support/stats`, {
+      headers: { Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}` },
+      next: { revalidate: 3600 },
+    });
+    return res.ok ? await res.json() : null;
+  } catch {
+    return null;
   }
 }
 

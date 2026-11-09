@@ -202,7 +202,9 @@ module.exports = {
       .catch((e) => strapi.log.warn(`[translate] ${e.message}`));
 
     // First start: fetch the release info right away instead of waiting for the night.
-    if ((await strapi.db.query('api::github-release.github-release').count()) === 0) {
+    // Empty, or synced before the statistics fields existed: sync now instead of waiting for the night.
+    const releasesQuery = strapi.db.query('api::github-release.github-release');
+    if ((await releasesQuery.count()) === 0 || (await releasesQuery.count({ where: { closeHours: { $null: true } } })) > 0) {
       strapi.service('api::github-release.github-release').syncAll().catch((e) => strapi.log.warn(`[github] ${e.message}`));
     }
   },

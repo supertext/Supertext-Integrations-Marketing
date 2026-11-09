@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_blocks_statistics",
+  "info": {
+    "displayName": "Statistics",
+    "icon": "chartPie",
+    "description": "Adoption (Supertext Plugin Health), development pace (GitHub) and demand and support (this site), updated automatically"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "showAdoption": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPace": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDemand": {
+      "type": "boolean",
+      "default": true
+    },
+    "minCount": {
+      "type": "integer",
+      "default": 10,
+      "min": 1
+    }
+  }
+}
