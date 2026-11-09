@@ -204,9 +204,11 @@ module.exports = {
     // First start: fetch the release info right away instead of waiting for the night.
     // Empty, or synced before the statistics fields existed: sync now instead of waiting for the night.
     const releasesQuery = strapi.db.query('api::github-release.github-release');
-    const lastSync = await releasesQuery.findOne({ orderBy: { syncedAt: 'desc' }, select: ['syncedAt'] });
-    const recent = lastSync?.syncedAt && Date.now() - new Date(lastSync.syncedAt) < 60 * 60 * 1000;
-    if ((await releasesQuery.count()) === 0 || (!recent && (await releasesQuery.count({ where: { closeHours: { $null: true } } })) > 0)) {
+    const synced = await releasesQuery.findMany({ select: ['syncedAt', 'closeHours'] });
+    const last = Math.max(0, ...synced.map((r) => (r.syncedAt ? new Date(r.syncedAt).getTime() : 0)));
+    const recent = Date.now() - last < 60 * 60 * 1000;
+    const incomplete = synced.some((r) => !Array.isArray(r.closeHours));
+    if (synced.length === 0 || (!recent && incomplete)) {
       strapi.service('api::github-release.github-release').syncAll().catch((e) => strapi.log.warn(`[github] ${e.message}`));
     }
   },
