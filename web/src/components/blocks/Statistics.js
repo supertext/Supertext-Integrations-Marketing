@@ -87,7 +87,7 @@ function Bars({ rows }) {
   );
 }
 
-function Adoption({ health, integrations, locale, t, min, nf }) {
+function Adoption({ health, integrations, locale, t, min, nf, showSmall }) {
   if (!health?.totals) return null;
   // Only plugins that belong to an integration count (test reports from other tools stay out).
   const plugins = health.plugins
@@ -139,13 +139,14 @@ function Adoption({ health, integrations, locale, t, min, nf }) {
           </thead>
           <tbody>
             {plugins.map((p) => {
-              const shown = p.installations >= min;
+              // Small counts only while test installations are included; system versions identify no site.
+              const shown = showSmall || p.installations >= min;
               const name = p.integration?.system || p.plugin;
               const pluginReleased = p.up_to_date + p.outdated;
-              const versions = shown ? systemVersions(p.system_versions || []).slice(0, 3) : [];
+              const versions = systemVersions(p.system_versions || []).slice(0, 3);
               return (
                 <tr key={p.plugin}>
-                  <th scope="row">
+                  <th scope="row" data-label={t.statsColPlugin}>
                     {p.integration ? (
                       <Link href={`/${locale}/integrations/${p.integration.slug}`} className="stats-system">
                         <Mark name={name} logo={p.integration.logoUrl} />
@@ -155,9 +156,9 @@ function Adoption({ health, integrations, locale, t, min, nf }) {
                       name
                     )}
                   </th>
-                  <td className="num">{shown ? nf.format(p.installations) : <span className="tag">{t.statsNew}</span>}</td>
-                  <td className="num">{shown && pluginReleased >= min ? `${pct(p.up_to_date, pluginReleased)}%` : '–'}</td>
-                  <td>{versions.length ? versions.map((v) => `${v.label} (${pct(v.n, p.installations)}%)`).join(', ') : '–'}</td>
+                  <td className="num" data-label={t.statsColInstallations}>{shown ? nf.format(p.installations) : <span className="tag">{t.statsNew}</span>}</td>
+                  <td className="num" data-label={t.statsColUpToDate}>{pluginReleased > 0 && (showSmall || pluginReleased >= min) ? `${pct(p.up_to_date, pluginReleased)}%` : '–'}</td>
+                  <td data-label={t.statsColVersions}>{versions.length ? versions.map((v) => `${v.label} (${pct(v.n, p.installations)}%)`).join(', ') : '–'}</td>
                 </tr>
               );
             })}
@@ -231,8 +232,8 @@ function Pace({ integrations, repos, locale, t, nf }) {
                         {i.system}
                       </Link>
                     </th>
-                    <td>{r.url ? <a href={r.url} rel="noopener">v{r.version}</a> : `v${r.version}`}</td>
-                    <td><time dateTime={r.releasedAt} title={date(r.releasedAt)}>{ago(t, r.releasedAt)}</time></td>
+                    <td data-label={t.statsColVersion}>{r.url ? <a href={r.url} rel="noopener">v{r.version}</a> : `v${r.version}`}</td>
+                    <td data-label={t.statsColReleased}><time dateTime={r.releasedAt} title={date(r.releasedAt)}>{ago(t, r.releasedAt)}</time></td>
                   </tr>
                 ))}
               </tbody>
@@ -308,7 +309,7 @@ export default async function Statistics({ block, integrations, locale, t }) {
       <div className="container">
         <SectionHead title={block.title} subtitle={block.subtitle} />
         {block.includeLocal && block.showAdoption !== false && <p className="stats-note">{t.statsIncludesTest}</p>}
-        {block.showAdoption !== false && <Adoption health={health} integrations={integrations} locale={locale} t={t} min={min} nf={nf} />}
+        {block.showAdoption !== false && <Adoption health={health} integrations={integrations} locale={locale} t={t} min={min} nf={nf} showSmall={!!block.includeLocal} />}
         {block.showPace !== false && <Pace integrations={integrations} repos={repos} locale={locale} t={t} nf={nf} />}
         {block.showDemand !== false && <Demand integrations={integrations} counts={counts} support={support} locale={locale} t={t} min={min} nf={nf} />}
         {updated && <p className="stats-updated">{format(t, 'statsUpdated', { date: updated })}</p>}

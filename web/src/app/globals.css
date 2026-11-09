@@ -603,3 +603,16 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .stats-note { margin: 0 0 24px; padding: 10px 14px; background: var(--mint-alpha); border-left: 3px solid var(--mint); border-radius: 0 var(--radius-tile) var(--radius-tile) 0; font-size: 14px; }
 .stats-bar { max-width: 72px; }
 .stats-bars { justify-content: flex-start; }
+
+/* Statistics tables as cards on phones: one row per plugin, with the column names as labels. */
+@media (max-width: 640px) {
+  .stats-table-wrap { border: 0; background: none; overflow: visible; }
+  .stats-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .stats-table, .stats-table tbody, .stats-table tr, .stats-table th, .stats-table td { display: block; width: 100%; }
+  .stats-table tr { background: var(--white); border: 1px solid var(--green-grey); border-radius: var(--radius-tile); padding: 12px 16px; margin-bottom: 12px; }
+  .stats-table tbody th, .stats-table td { border: 0; padding: 4px 0; text-align: left; }
+  .stats-table tbody th { padding-bottom: 8px; font-size: 16px; }
+  .stats-table td { display: flex; justify-content: space-between; gap: 16px; }
+  .stats-table td::before { content: attr(data-label); color: var(--text-muted, #4a5b5a); font-size: 13px; }
+  .stats-table td.num { text-align: right; }
+}
