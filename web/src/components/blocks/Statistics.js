@@ -89,7 +89,10 @@ function Bars({ rows }) {
 
 function Adoption({ health, integrations, locale, t, min, nf }) {
   const totals = health?.totals;
-  if (!totals || totals.installations < min) return null;
+  if (!totals || totals.installations < min) {
+    if (totals) console.info(`[stats] Adoption hidden: ${totals.installations} installations (${totals.plugins} plugins), below minCount ${min}`);
+    return null;
+  }
   const released = totals.up_to_date + totals.outdated;
   const langs = totals.languages;
   const languageRows = langs && langs.reported >= min ? (langs.supertext || []).filter((l) => l.value).slice(0, 10) : [];
