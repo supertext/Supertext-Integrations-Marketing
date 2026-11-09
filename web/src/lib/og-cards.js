@@ -33,7 +33,7 @@ const CARDS = new Set([
   'strapi-supertext-translation',
   'supertext-aem-connector',
   'supertext-agent-toolbox',
-  'supertext-api-sdk-and-guide',
+  'supertext-api-sdk-guide',
   'supertext-integrations-marketing',
   'typo3-supertext-translation',
   'umbraco-supertext-translation',
@@ -43,7 +43,7 @@ const CARDS = new Set([
 ]);
 
 /** Repos renamed on GitHub: the old name, as the CMS may still have it, → the card's name. */
-const RENAMED = { 'wordpress-polylang': 'wordpress-polylang-supertext-translation' };
+const RENAMED = { 'wordpress-polylang': 'wordpress-polylang-supertext-translation', 'supertext-api-sdk-and-guide': 'supertext-api-sdk-guide' };
 
 export const DEFAULT_CARD = '/og/supertext-integrations-marketing.png';
 
