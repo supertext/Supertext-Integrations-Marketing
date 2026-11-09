@@ -664,6 +664,31 @@ async function addPlannedAbout(strapi) {
   return true;
 }
 
+/** The WordPress repo was renamed (November 2026): its integration and the WordPress guide link to the new name. */
+async function renameWordPressRepo(strapi) {
+  const OLD = ['https://github.com/Supertext/supertext-wordpress-polylang', 'https://github.com/supertext/wordpress-polylang'];
+  const NEW = 'https://github.com/Supertext/Wordpress-Polylang-Supertext-Translation';
+  const ARTICLE = 'api::article.article';
+  const swap = (text) => OLD.reduce((t, old) => t.split(old).join(NEW), text || '');
+  // repo and url aren't localized: the English version carries them for all languages.
+  for (const status of ['draft', 'published']) {
+    const item = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status, filters: { slug: 'wordpress' }, fields: ['repo', 'url'] });
+    if (!item || (item.repo === 'Supertext/Wordpress-Polylang-Supertext-Translation' && item.url === NEW)) continue;
+    await strapi.db.query(INTEGRATION).update({ where: { id: item.id }, data: { repo: 'Supertext/Wordpress-Polylang-Supertext-Translation', url: NEW } });
+  }
+  // Article bodies (every language, draft and published rows), only the link changes.
+  const rows = await strapi.db.query(ARTICLE).findMany({ select: ['id', 'body'], limit: 1000 });
+  let changed = 0;
+  for (const row of rows) {
+    const body = swap(row.body);
+    if (body === (row.body || '')) continue;
+    await strapi.db.query(ARTICLE).update({ where: { id: row.id }, data: { body } });
+    changed++;
+  }
+  strapi.log.info(`[setup] WordPress repo renamed: ${changed} article versions updated`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -692,6 +717,7 @@ const UPDATES = [
   { id: '2026-11-planned-about', run: (strapi) => addPlannedAbout(strapi) },
   { id: '2026-11-planned-today', run: (strapi) => addPlannedToday(strapi) },
   { id: '2026-11-german', run: (strapi) => addGermanContent(strapi) },
+  { id: '2026-11-wordpress-repo', run: (strapi) => renameWordPressRepo(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

@@ -26,7 +26,7 @@ const LIST = [
   ['TYPO3', 'cms', GH('Typo3-Supertext-Translation'), "TYPO3 extension (Composer) that hooks into TYPO3's own localization; no new UI.", 'Translates pages and content elements as editors localize them'],
   ['Umbraco', 'cms', GH('Umbraco-Supertext-Translation'), 'Umbraco package (NuGet) with a backoffice extension.', 'Translate with Supertext for pages, block lists and grids included'],
   ['Wagtail', 'cms', GH('Wagtail-Supertext-Translation'), 'Python package: a machine translator for wagtail-localize.', "Translates pages and snippets inside wagtail-localize's editor"],
-  ['WordPress (Polylang)', 'cms', GH('supertext-wordpress-polylang'), 'WordPress plugin: a machine-translation service for Polylang Pro, plus professional translation orders.', 'AI translation next to DeepL in Polylang, and human translation orders'],
+  ['WordPress (Polylang)', 'cms', GH('Wordpress-Polylang-Supertext-Translation'), 'WordPress plugin: a machine-translation service for Polylang Pro, plus professional translation orders.', 'AI translation next to DeepL in Polylang, and human translation orders'],
   ['Akeneo PIM', 'pim', GH('Akeneo-Supertext-Translation'), 'Akeneo PIM bundle with a Translate with Supertext action on the product page.', 'Translates products and product models into your other locales'],
   ['AtroPIM', 'pim', GH('AtroPIM-Supertext-Translation'), 'AtroCore module with a button on the product and a mass action in the list.', 'Translates products and other AtroCore records into your other languages'],
   ['Pimcore', 'pim', GH('Pimcore-Supertext-Translation'), 'Pimcore bundle (Composer) with a Translate with Supertext button in Pimcore Studio.', "Translates documents into linked language versions and data objects' localized fields"],

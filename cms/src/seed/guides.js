@@ -102,7 +102,7 @@ ${swissGerman}
 
 ## 2. Install and activate the plugin
 
-Download the plugin ZIP from the [plugin's GitHub page](https://github.com/Supertext/supertext-wordpress-polylang), upload it under **Plugins → Add New → Upload Plugin** and activate **Supertext for Polylang**. A **Supertext** menu appears in the sidebar.
+Download the plugin ZIP from the [plugin's GitHub page](https://github.com/Supertext/Wordpress-Polylang-Supertext-Translation), upload it under **Plugins → Add New → Upload Plugin** and activate **Supertext for Polylang**. A **Supertext** menu appears in the sidebar.
 
 ## 3. Connect it to Polylang
 
