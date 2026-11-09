@@ -47,6 +47,9 @@
     },
     "closeHours": {
       "type": "json"
+    },
+    "issuesAutomated": {
+      "type": "integer"
     }
   }
 }

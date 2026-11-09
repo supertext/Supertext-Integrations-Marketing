@@ -206,7 +206,11 @@ function Pace({ integrations, repos, locale, t, nf }) {
           <Stat value={nf.format(sum('releases30'))} label={t.statsReleases30} />
           <Stat value={nf.format(sum('releases90'))} label={t.statsReleases90} />
           {sum('issuesClosed') > 0 && (
-            <Stat value={nf.format(sum('issuesClosed'))} label={t.statsIssues} note={format(t, 'statsIssuesOpen', { n: nf.format(sum('issuesOpen')) })} />
+            <Stat
+              value={nf.format(sum('issuesClosed'))}
+              label={t.statsIssues}
+              note={[format(t, 'statsIssuesOpen', { n: nf.format(sum('issuesOpen')) }), sum('issuesAutomated') > 0 && format(t, 'statsIssuesAutomated', { n: nf.format(sum('issuesAutomated')) })].filter(Boolean).join(' · ')}
+            />
           )}
           {medianClose !== null && <Stat value={duration(t, medianClose)} label={t.statsCloseTime} />}
         </div>

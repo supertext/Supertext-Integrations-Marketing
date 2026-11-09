@@ -37,9 +37,9 @@ async function latestRelease(repo, token) {
 
 /**
  * Issues of a repo for the statistics page: open and closed, and the hours from opening to closing of each
- * closed one (one decimal; the page takes the median over all repos).
- * Issues only (no pull requests), and only those opened by people: automated ones (broken-link reports,
- * Dependabot) say nothing about support. Up to 300 of the most recent.
+ * closed one (one decimal; the page takes the median over all repos). Issues only, no pull requests; those
+ * opened by bots (the weekly broken-link check) count too, as real problems found and fixed, and
+ * `issuesAutomated` says how many of them there are so the page can say so. Up to 300 of the most recent.
  */
 async function issueStats(repo, token) {
   const issues = [];
@@ -48,10 +48,11 @@ async function issueStats(repo, token) {
     issues.push(...list);
     if (list.length < 100) break;
   }
-  const human = issues.filter((i) => !i.pull_request && i.user?.type !== 'Bot');
+  const human = issues.filter((i) => !i.pull_request);
   const closed = human.filter((i) => i.state === 'closed' && i.closed_at);
+  const issuesAutomated = human.filter((i) => i.user?.type === 'Bot').length;
   const closeHours = closed.map((i) => Math.round(((new Date(i.closed_at) - new Date(i.created_at)) / 3600000) * 10) / 10);
-  return { issuesOpen: human.length - closed.length, issuesClosed: closed.length, closeHours };
+  return { issuesOpen: human.length - closed.length, issuesClosed: closed.length, issuesAutomated, closeHours };
 }
 
 module.exports = factories.createCoreService(UID, ({ strapi }) => ({
