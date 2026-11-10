@@ -11,4 +11,8 @@ module.exports = {
   typo3: ['w1YkIkAydGo', '-an7zWZb27I'],
   joomla: ['PAX3EgXrrvM', 'RllAjEP8UfM'],
   pimcore: ['mCmIhNJVrPo', 'uEXrrLKK450'],
+  'akeneo-pim': ['2tDNP57e-vk', 'KHWWBNthN2w'],
+  apostrophecms: ['rG489iGxb3o', 'DOfyeyPCq24'],
+  atropim: ['odUthkwUgsY', 'SkxXxUefBwk'],
+  'craft-cms': ['cLhsUdmYnNM', '_XZVCavrUZc'],
 };
