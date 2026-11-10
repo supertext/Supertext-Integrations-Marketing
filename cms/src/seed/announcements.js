@@ -1,6 +1,6 @@
 'use strict';
 
-const SDK_REPO = 'https://github.com/Supertext/Supertext-API-SDK-and-Guide';
+const SDK_REPO = 'https://github.com/Supertext/Supertext-API-SDK-Guide';
 
 const sdkAnnouncement = {
   enabled: true,

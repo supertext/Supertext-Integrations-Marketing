@@ -1,8 +1,8 @@
 'use strict';
 
-// The Supertext SDKs (github.com/Supertext/Supertext-API-SDK-and-Guide): the /sdk page,
+// The Supertext SDKs (github.com/Supertext/Supertext-API-SDK-Guide): the /sdk page,
 // the start-page section and the menu links that point to it.
-const SDK_REPO = 'https://github.com/Supertext/Supertext-API-SDK-and-Guide';
+const SDK_REPO = 'https://github.com/Supertext/Supertext-API-SDK-Guide';
 const GUIDE = `${SDK_REPO}/blob/main/docs/integration-guide.md`;
 const ACCOUNT_URL = 'https://www.supertext.com/person/en/account/signin';
 const API_KEY_URL = 'https://www.supertext.com/en/integrations/api';
