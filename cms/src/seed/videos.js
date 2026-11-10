@@ -10,4 +10,5 @@ module.exports = {
   directus: ['JQVH7uhWT6c', 'O9Ipe4iiPcE'],
   typo3: ['w1YkIkAydGo', '-an7zWZb27I'],
   joomla: ['PAX3EgXrrvM', 'RllAjEP8UfM'],
+  pimcore: ['mCmIhNJVrPo', 'uEXrrLKK450'],
 };
