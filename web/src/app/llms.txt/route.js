@@ -2,7 +2,7 @@ import { SITE_URL, indexingAllowed } from '@/lib/seo';
 import { getArticles, getIntegrations, listAll } from '@/lib/strapi';
 
 const PAGE_NOTES = {
-  sdk: 'build your own integration with the Supertext API (TypeScript, PHP, Python, .NET, Java)',
+  sdk: 'build your own integration with the Supertext API (TypeScript, PHP, Python, .NET, Java, Kotlin)',
   roadmap: 'Supertext plugins in development and planned next, and the systems people can request',
   compare: 'how Supertext compares with DeepL and Google Translate: Swiss German, Swiss Standard German, Swiss French and Italian, Romansh, hosting in Switzerland, formal address, professional review',
 };
