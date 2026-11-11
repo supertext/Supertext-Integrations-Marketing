@@ -301,7 +301,7 @@
  },
  "wordpress-wpml": {
   "fileFormats": "XLIFF 1.2 and HTML",
-  "fileReleased": false,
+  "fileReleased": true,
   "fileDocs": "docs/USER_GUIDE.md#translation-files-xliff-or-html",
   "fileIntro": "Export WordPress posts and pages, with title, content, excerpt, the custom fields WPML translates and YOOtheme texts, as XLIFF or HTML, translate them with your agency or CAT tool, and import them as linked draft translations in WPML.",
   "fileExport": "In *Posts* or *Pages*, hover a post and click *Export for translation*, which opens *Supertext → Translation files*. Choose the format and the target languages and download the file. Several languages fit into one XLIFF file; HTML holds one language.",

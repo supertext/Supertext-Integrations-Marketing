@@ -788,6 +788,23 @@ async function addSearchTerms(strapi) {
   return true;
 }
 
+/** WPML 1.0.0 is released (11 November 2026) and its repo dropped "-Public": live, files released, new links. */
+async function releaseWpml(strapi) {
+  const REPO = 'Supertext/Wordpress-WPML-Supertext-Translation';
+  // stage, repo, url and fileReleased aren't localized: every language row gets them.
+  const rows = await strapi.db.query(INTEGRATION).findMany({ where: { slug: 'wordpress-wpml' }, select: ['id'], limit: 100 });
+  for (const row of rows) {
+    await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { stage: 'live', repo: REPO, url: `https://github.com/${REPO}`, fileReleased: true } });
+  }
+  strapi.log.info(`[setup] WordPress (WPML) is live (${rows.length} versions)`);
+  try {
+    await strapi.service('api::github-release.github-release').syncAll();
+  } catch (error) {
+    strapi.log.warn(`[setup] Release sync after the WPML release failed: ${error.message}`);
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -822,6 +839,7 @@ const UPDATES = [
   { id: '2026-11-wordpress-repo', run: (strapi) => renameWordPressRepo(strapi) },
   { id: '2026-11-wpml', run: (strapi) => addWpml(strapi) },
   { id: '2026-11-search-terms', run: (strapi) => addSearchTerms(strapi) },
+  { id: '2026-11-wpml-release', run: (strapi) => releaseWpml(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
