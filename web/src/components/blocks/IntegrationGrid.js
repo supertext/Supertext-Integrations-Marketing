@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import IntegrationCard, { integrationHref } from '../IntegrationCard';
 import SectionHead from './SectionHead';
-import GridFilter, { normalize } from './GridFilter';
+import { normalize } from '@/lib/normalize';
+import GridFilter from './GridFilter';
 
 /** The words a card is found by: name, texts, technology, category and the hidden search words. */
 const searchText = (i, t) =>

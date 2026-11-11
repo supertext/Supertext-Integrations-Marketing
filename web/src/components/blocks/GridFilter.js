@@ -1,13 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-
-/** Lower case without accents, so "typo3", "Créer" and "creer" match. */
-export const normalize = (text) =>
-  String(text || '')
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase();
+import { normalize } from '@/lib/normalize';
 
 const termsOf = (query) => normalize(query).split(/[\s,]+/).filter(Boolean);
 
