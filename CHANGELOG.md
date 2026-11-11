@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- WordPress pages point to each other: the Polylang page says there is also a WPML plugin, and the WPML page the other way round (below the title, all four languages; pairs in `SIBLINGS` on the integration page).
 - WordPress (WPML) 1.0.0 is released: the integration is *Live*, its translation files are marked released and it links to the renamed repository `Supertext/Wordpress-WPML-Supertext-Translation` (one-time content update, followed by a release sync so the version shows right away).
 - Search on the integration grid (start page and `/integrations`): finds integrations as you type by name, summary, type of integration, technology, category and hidden search words (new field *searchTerms*, filled for every integration, e.g. WooCommerce, Onlineshop, MCP), planned and requested systems included. The category counts follow the search, `?q=` makes a search linkable, and no result offers *Request it* with the system already filled in on the support form. Can be switched off per block (*showSearch*). All four languages.
 - WordPress (WPML) added as its own integration (*In development*, right after WordPress (Polylang)): details, translation files, comparison with WPML's own AI translation, questions, the plugin's screenshot and its Plugin Health statistics (`supertext-wordpress-wpml`); created on the live site by a one-time content update and translated into German, French and Italian. Seed entries can now set their own slug (both WordPress plugins would otherwise be `wordpress`).

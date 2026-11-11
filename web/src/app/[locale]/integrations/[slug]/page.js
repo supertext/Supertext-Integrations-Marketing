@@ -18,6 +18,12 @@ import { faqJsonLd } from '@/lib/page';
 import { localizeVersions } from '@/lib/versions';
 import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n';
 
+/** Systems with two plugins: each page points to the other one. */
+const SIBLINGS = {
+  wordpress: { slug: 'wordpress-wpml', key: 'siblingWpml' },
+  'wordpress-wpml': { slug: 'wordpress', key: 'siblingPolylang' },
+};
+
 export async function generateMetadata({ params }) {
   const { locale, slug } = await params;
   const item = await getIntegration(slug, locale).catch(() => null);
@@ -138,6 +144,12 @@ export default async function IntegrationPage({ params }) {
                 <span className="tag">{t[`category_${item.category}`]}</span>
                 {release?.version && <a className="tag version" href={release.url} target="_blank" rel="noopener">v{release.version}</a>}
               </div>
+              {SIBLINGS[item.slug] && (
+                <p className="sibling-plugin">
+                  {t[`${SIBLINGS[item.slug].key}Text`]}{' '}
+                  <Link href={`/${locale}/integrations/${SIBLINGS[item.slug].slug}`}>{t[`${SIBLINGS[item.slug].key}Link`]} →</Link>
+                </p>
+              )}
             </div>
           </div>
         </div>

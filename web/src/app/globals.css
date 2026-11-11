@@ -571,6 +571,8 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .integration-grid[data-searching='true'] .sdk-filtered { display: grid; }
 .integration-grid[data-searching='true'] .integration-group .sdk-card { display: none; }
 .integration-grid[data-searching='true'] .roadmap-link { display: none; }
+.sibling-plugin { font-size: 15px; color: var(--grey-three); margin: 0; }
+.sibling-plugin a { color: var(--dark-green); font-weight: 500; }
 .search-empty p { text-align: center; color: var(--grey-three); padding: 24px 0 8px; }
 .integration-grid:not([data-category='all']) .integration-group { margin-top: 0; }
 
