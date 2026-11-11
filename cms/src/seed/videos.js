@@ -15,4 +15,9 @@ module.exports = {
   apostrophecms: ['rG489iGxb3o', 'DOfyeyPCq24'],
   atropim: ['odUthkwUgsY', 'SkxXxUefBwk'],
   'craft-cms': ['cLhsUdmYnNM', '_XZVCavrUZc'],
+  'django-cms': ['ngN4GzSx0p4', 'F2eCMsZVDpc'],
+  ghost: ['iTV4xqy8EtM', 'GZHbkZylB7w'],
+  grav: ['EGwhpF0xokE', 'qc-KpGdH3og'],
+  hubspot: ['zeLr0ysK5BQ', 'gQkQziL1mUc'],
+  magento: ['xb0Kvxhn1Ec', 'Z0TIIh94WkQ'],
 };
