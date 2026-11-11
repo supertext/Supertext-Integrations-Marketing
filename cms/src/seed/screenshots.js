@@ -23,6 +23,7 @@ module.exports = {
   umbraco: 'docs/images/translated-german.png',
   wagtail: 'docs/images/translation-editor.png',
   wordpress: 'docs/images/orders.png',
+  'wordpress-wpml': 'docs/images/translated-page.png',
   // Until a full-screen capture exists: the best screenshot from the plugin's guides.
   contao: 'docs/images/05-site-structure-translated.png',
   directus: 'docs/images/09-supertext-module.png',

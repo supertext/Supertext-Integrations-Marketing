@@ -762,6 +762,18 @@ async function renameWordPressRepo(strapi) {
   return true;
 }
 
+/** The WPML plugin (November 2026, in development): its own integration right after WordPress (Polylang). */
+async function addWpml(strapi) {
+  const seed = require('./seed/integrations').find((i) => i.slug === 'wordpress-wpml');
+  const existing = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'draft', filters: { slug: 'wordpress-wpml' }, fields: ['id'] });
+  if (existing || !seed) return true;
+  const wordpress = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug: 'wordpress' }, fields: ['order'] });
+  const order = wordpress?.order ? wordpress.order + 5 : seed.order;
+  await strapi.documents(INTEGRATION).create({ locale: 'en', data: { ...seed, order, blocks: [integrationFaq(seed)] }, status: 'published' });
+  strapi.log.info('[setup] Created the WordPress (WPML) integration');
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -794,6 +806,7 @@ const UPDATES = [
   { id: '2026-11-shared-fields', run: (strapi) => syncSharedIntegrationFields(strapi) },
   { id: '2026-11-statistics-local', run: (strapi) => statisticsIncludeLocal(strapi) },
   { id: '2026-11-wordpress-repo', run: (strapi) => renameWordPressRepo(strapi) },
+  { id: '2026-11-wpml', run: (strapi) => addWpml(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

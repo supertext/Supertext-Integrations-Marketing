@@ -26,7 +26,10 @@ export async function getPluginHealthStats(includeLocal = false) {
 }
 
 /** Plugin names in Plugin Health that differ from the repository name the integration links to. */
-const ALIASES = { 'supertext-wordpress-polylang': ['wordpress-polylang-supertext-translation'] };
+const ALIASES = {
+  'supertext-wordpress-polylang': ['wordpress-polylang-supertext-translation'],
+  'supertext-wordpress-wpml': ['wordpress-wpml-supertext-translation-public'],
+};
 
 /** The integration a Plugin Health plugin name belongs to (by repository name), or null. */
 export function integrationFor(plugin, integrations) {

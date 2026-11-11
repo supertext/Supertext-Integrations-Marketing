@@ -27,6 +27,7 @@ const LIST = [
   ['Umbraco', 'cms', GH('Umbraco-Supertext-Translation'), 'Umbraco package (NuGet) with a backoffice extension.', 'Translate with Supertext for pages, block lists and grids included'],
   ['Wagtail', 'cms', GH('Wagtail-Supertext-Translation'), 'Python package: a machine translator for wagtail-localize.', "Translates pages and snippets inside wagtail-localize's editor"],
   ['WordPress (Polylang)', 'cms', GH('Wordpress-Polylang-Supertext-Translation'), 'WordPress plugin: a machine-translation service for Polylang Pro, plus professional translation orders.', 'AI translation next to DeepL in Polylang, and human translation orders'],
+  ['WordPress (WPML)', 'cms', { ...GH('Wordpress-WPML-Supertext-Translation-Public'), slug: 'wordpress-wpml' }, 'WordPress plugin for WPML: bulk actions in the posts and pages lists and a Supertext box in the editor.', 'AI translation into your WPML languages, professional translation orders and XLIFF/HTML translation files', 'in_development'],
   ['Akeneo PIM', 'pim', GH('Akeneo-Supertext-Translation'), 'Akeneo PIM bundle with a Translate with Supertext action on the product page.', 'Translates products and product models into your other locales'],
   ['AtroPIM', 'pim', GH('AtroPIM-Supertext-Translation'), 'AtroCore module with a button on the product and a mass action in the list.', 'Translates products and other AtroCore records into your other languages'],
   ['Pimcore', 'pim', GH('Pimcore-Supertext-Translation'), 'Pimcore bundle (Composer) with a Translate with Supertext button in Pimcore Studio.', "Translates documents into linked language versions and data objects' localized fields"],
@@ -58,9 +59,17 @@ const PLANNED = require('./planned');
 const PLANNED_ABOUT = require('./planned-about.json');
 const PLANNED_TODAY = require('./planned-today.json');
 
-const live = LIST.map(([system, category, link, integrationType, summary, stage = 'live'], index) => ({
+/** An entry with its slug and the details, comparison and translation-file texts filed under it. */
+const withSlug = (slug, entry) => ({
+  ...entry,
+  slug,
+  ...details(slug),
+  builtInTranslation: builtIn[slug],
+  ...(FILES[slug] || {}),
+});
+
+const live = LIST.map(([system, category, link, integrationType, summary, stage = 'live'], index) => withSlug(link.slug || slugify(system), {
   system,
-  slug: slugify(system),
   category,
   stage,
   repo: link.repo,
@@ -68,9 +77,6 @@ const live = LIST.map(([system, category, link, integrationType, summary, stage 
   order: (index + 1) * 10,
   integrationType,
   summary,
-  ...details(slugify(system)),
-  builtInTranslation: builtIn[slugify(system)],
-  ...(FILES[slugify(system)] || {}),
 }));
 
 // Systems without a plugin yet: on the roadmap or open for requests, after the existing ones.

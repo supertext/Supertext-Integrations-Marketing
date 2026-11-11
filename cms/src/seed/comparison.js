@@ -148,6 +148,8 @@ const builtIn = {
     'wagtail-localize has machine translators built in: DeepL, Google Cloud and LibreTranslate. Supertext plugs in as one more, adding Swiss variants, formal address, hosting in Switzerland and a professional translator when it matters.',
   wordpress:
     'Polylang Pro has DeepL built in, one post at a time, as a draft. Supertext sits right next to DeepL in the same menu, so you can compare both on your own content, and adds professional translation orders when a text has to be perfect.',
+  'wordpress-wpml':
+    'WPML translates with its own AI engine, PTC, and has made DeepL, Google and Microsoft “legacy”; by default its automatic translations are published without review. Supertext creates drafts linked in WPML for you to check, into Swiss variants with formal address, hosted in Switzerland, and orders professional translation when a text has to be perfect.',
   'akeneo-pim':
     'Akeneo can translate text attributes in bulk with an AI rule action based on an OpenAI model. Supertext translates products and product models from the product page, into Swiss variants with formal address, hosted in Switzerland.',
   atropim:
