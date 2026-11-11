@@ -40,6 +40,7 @@ const CARDS = new Set([
   'wagtail-supertext-translation',
   'wix-supertext-translation',
   'wordpress-polylang-supertext-translation',
+  'wordpress-wpml-supertext-translation',
 ]);
 
 /** Repos renamed on GitHub: the old name, as the CMS may still have it, → the card's name. */
