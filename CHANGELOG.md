@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- New plugin releases show on the site within the hour: the GitHub release sync runs every hour (at :17) when `GITHUB_TOKEN` is set, nightly without it, and on every start of the CMS when the last sync is more than an hour old (before: nightly only, so a release could take a day to appear).
 - WordPress pages point to each other: the Polylang page says there is also a WPML plugin, and the WPML page the other way round (below the title, all four languages; pairs in `SIBLINGS` on the integration page).
 - WordPress (WPML) 1.0.0 is released: the integration is *Live*, its translation files are marked released and it links to the renamed repository `Supertext/Wordpress-WPML-Supertext-Translation` (one-time content update, followed by a release sync so the version shows right away).
 - Search on the integration grid (start page and `/integrations`): finds integrations as you type by name, summary, type of integration, technology, category and hidden search words (new field *searchTerms*, filled for every integration, e.g. WooCommerce, Onlineshop, MCP), planned and requested systems included. The category counts follow the search, `?q=` makes a search linkable, and no result offers *Request it* with the system already filled in on the support form. Can be switched off per block (*showSearch*). All four languages.
@@ -12,7 +13,7 @@
 - Strapi 5 CMS with reusable blocks (hero, plan cards, feature cards, use case, comparison table, integration grid, logo strip, FAQ, call to action, rich text, notice) for pages and integration pages.
 - Preview of drafts next to the editor, with automatic reload on save.
 - Content in English, German, French and Italian; translation with the Supertext Strapi plugin into Swiss German, French and Italian (formal).
-- All Supertext integrations as content, with their latest GitHub release synced every night and a full-screen view of each plugin in its system (imported from its repo where one exists) on the cards and integration pages.
+- All Supertext integrations as content, with their latest GitHub release synced from GitHub and a full-screen view of each plugin in its system (imported from its repo where one exists) on the cards and integration pages.
 - Service plans with monthly and annual prices and a Stripe Checkout shop; subscriptions recorded through the Stripe webhook.
 - Next.js website in the style of supertext.com: start, integrations, pricing and one page per integration.
 - HubSpot integration added (content management systems).

@@ -137,7 +137,7 @@ export async function getRoadmapItems(locale) {
   }
 }
 
-/** Every repo's release and issue figures (GitHub, synced nightly by the CMS), by repo. */
+/** Every repo's release and issue figures (GitHub, synced hourly by the CMS), by repo. */
 export async function getRepoStats() {
   try {
     const list = (await strapi('/github-releases', { pagination: { pageSize: 200 } })) || [];

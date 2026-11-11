@@ -5,7 +5,7 @@ The website that presents all Supertext integrations (CMS, PIM, e-commerce, emai
 - **`cms/`**: Strapi 5. Editors build pages from reusable blocks, see a live preview next to the editor and translate content into German, French and Italian with the Supertext plugin. The CMS also creates Stripe Checkout sessions and records subscriptions.
 - **`web/`**: Next.js website in the style of supertext.com. It reads content from Strapi.
 
-Both run on Railway. Each integration's latest version comes from GitHub every night.
+Both run on Railway. Each integration's latest version comes from GitHub every hour.
 
 ![Start page with all integrations](docs/images/home.png)
 
