@@ -1,7 +1,13 @@
 import Link from 'next/link';
 import IntegrationCard, { integrationHref } from '../IntegrationCard';
 import SectionHead from './SectionHead';
-import GridFilter from './GridFilter';
+import GridFilter, { normalize } from './GridFilter';
+
+/** The words a card is found by: name, texts, technology, category and the hidden search words. */
+const searchText = (i, t) =>
+  normalize([i.system, i.summary, i.integrationType, i.technology, t[`category_${i.category}`], i.searchTerms].filter(Boolean).join(' '));
+
+const SDK_SEARCH = 'sdk api developer typescript javascript php python .net c# java kotlin npm build your own integration';
 
 const CATEGORIES = ['cms', 'pim', 'ecommerce', 'email', 'design', 'docs', 'support', 'pm', 'code', 'automation', 'language', 'analytics', 'ai'];
 
@@ -11,7 +17,7 @@ function RequestPills({ items, locale, t }) {
     <div className="request-pills">
       <span className="request-label">{t.requestGroupTitle}</span>
       {items.map((i) => (
-        <Link key={i.slug} href={integrationHref(i, locale)} className="chip request">
+        <Link key={i.slug} href={integrationHref(i, locale)} className="chip request" data-search={searchText(i, t)}>
           <span aria-hidden="true">+</span> {i.system}
         </Link>
       ))}
@@ -21,7 +27,7 @@ function RequestPills({ items, locale, t }) {
 
 function SdkCard({ locale, t }) {
   return (
-    <Link href={`/${locale}/sdk`} className="tile integration sdk-card">
+    <Link href={`/${locale}/sdk`} className="tile integration sdk-card" data-search={normalize(`${SDK_SEARCH} ${t.sdkCardTitle} ${t.sdkCardText}`)} data-sdk="">
       <div className="shot sdk-shot" aria-hidden="true">
         <code>
           <span>import</span> {'{ SupertextClient }'} <span>from</span> &apos;supertext-sdk&apos;{'\n\n'}
@@ -36,8 +42,9 @@ function SdkCard({ locale, t }) {
 }
 
 /**
- * The integrations, one group per category, rendered on the server. The filter buttons (GridFilter)
- * only show and hide groups; "?category=" picks the first one shown.
+ * The integrations, one group per category, rendered on the server. The search field and filter
+ * buttons (GridFilter) only show and hide cards and groups; "?category=" picks the first one shown,
+ * "?q=" fills in the search.
  */
 export default function IntegrationGrid({ block, integrations, locale, t, initialCategory }) {
   const fixed = block.category && block.category !== 'all' ? block.category : null;
@@ -45,6 +52,7 @@ export default function IntegrationGrid({ block, integrations, locale, t, initia
   for (const i of integrations) counts[i.category] = (counts[i.category] || 0) + 1;
   const category = fixed || (CATEGORIES.includes(initialCategory) && counts[initialCategory] ? initialCategory : 'all');
   const filters = !fixed && block.showFilters !== false;
+  const search = block.showSearch !== false;
   const gridId = `integration-grid-${block.id ?? 'main'}`;
 
   const groups = (fixed ? [fixed] : CATEGORIES.filter((c) => counts[c])).map((c) => {
@@ -62,14 +70,25 @@ export default function IntegrationGrid({ block, integrations, locale, t, initia
     <section className="section">
       <div className="container integration-grid" id={gridId} data-category={fixed ? 'fixed' : category}>
         <SectionHead title={block.title} subtitle={block.subtitle} />
-        {filters && <GridFilter gridId={gridId} options={options} initial={category} />}
+        {(filters || search) && (
+          <GridFilter
+            gridId={gridId}
+            options={options}
+            initial={fixed ? 'all' : category}
+            fixed={Boolean(fixed)}
+            search={search}
+            filters={filters}
+            labels={{ searchLabel: t.searchLabel, searchPlaceholder: t.searchPlaceholder, searchNone: t.searchNone, searchRequest: t.searchRequest, searchAll: t.searchAll }}
+            requestHref={`/${locale}/support?kind=request`}
+          />
+        )}
         {groups.length ? (
           groups.map(({ c, cards, requests }, index) => (
             <div key={c} className="integration-group" data-group={c} hidden={!fixed && category !== 'all' && c !== category}>
               {!fixed && <Heading className="group-title">{t[`category_${c}`]}</Heading>}
               {(cards.length > 0 || index === sdkGroup) && (
                 <div className="integrations">
-                  {cards.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
+                  {cards.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} search={searchText(item, t)} />)}
                   {index === sdkGroup && <SdkCard locale={locale} t={t} />}
                 </div>
               )}
@@ -79,7 +98,7 @@ export default function IntegrationGrid({ block, integrations, locale, t, initia
         ) : (
           <p className="empty">{t.noResults}</p>
         )}
-        {filters && (
+        {(filters || search) && (
           <div className="integrations sdk-filtered">
             <SdkCard locale={locale} t={t} />
           </div>

@@ -9,9 +9,9 @@ export function integrationHref(item, locale) {
 }
 
 // The status shows on the integration's own page, not on the card.
-export default function IntegrationCard({ item, locale, t }) {
+export default function IntegrationCard({ item, locale, t, search }) {
   return (
-    <Link href={integrationHref(item, locale)} className={`tile integration${item.stage === 'roadmap' ? ' planned' : ''}`}>
+    <Link href={integrationHref(item, locale)} className={`tile integration${item.stage === 'roadmap' ? ' planned' : ''}`} data-search={search}>
       <div className="shot" aria-hidden={!item.screenshot}>
         {item.screenshot ? (
           <Image

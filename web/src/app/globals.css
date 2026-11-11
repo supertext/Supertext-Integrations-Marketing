@@ -555,6 +555,23 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .integration-grid:not([data-category='all']):not([data-category='fixed']) .sdk-filtered { display: grid; }
 .integration-grid:not([data-category='all']):not([data-category='fixed']) .integration-group .sdk-card { display: none; }
 .integration-group[hidden] { display: none; }
+/* Search above the integration grid */
+.grid-search { position: relative; max-width: 640px; margin: 0 auto 20px; }
+.grid-search svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--grey-two); pointer-events: none; }
+.grid-search input {
+  width: 100%; font: inherit; font-size: 16px; color: var(--dark-green); background: var(--white);
+  border: 1px solid var(--green-grey); border-radius: 999px; padding: 12px 18px 12px 44px;
+}
+.grid-search input:focus { outline: none; border-color: var(--dark-green); box-shadow: 0 0 0 3px var(--mint-alpha); }
+.grid-search input::placeholder { color: var(--grey-two); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.filters .chip:disabled { opacity: .45; cursor: default; }
+.filters .chip:disabled:hover { border-color: var(--green-grey); }
+.integration-grid [data-search][hidden], .integration-grid .integrations[hidden], .integration-grid .request-pills[hidden] { display: none !important; }
+.integration-grid[data-searching='true'] .sdk-filtered { display: grid; }
+.integration-grid[data-searching='true'] .integration-group .sdk-card { display: none; }
+.integration-grid[data-searching='true'] .roadmap-link { display: none; }
+.search-empty p { text-align: center; color: var(--grey-three); padding: 24px 0 8px; }
 .integration-grid:not([data-category='all']) .integration-group { margin-top: 0; }
 
 /* Notes in articles (Markdown "> …") */

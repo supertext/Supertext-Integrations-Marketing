@@ -23,7 +23,7 @@ A page's **blocks** field holds the sections from top to bottom. *Add a componen
 | Feature cards | Two to four cards with title, text and optional image or link. Without images they're numbered steps. |
 | Use case | A short story with line items and values, like "What that looks like in practice" |
 | Comparison table | Columns (plans) and rows. In a row's *cells*, write one value per line, in the column order. |
-| Integration grid | All integrations, or one category, with filter buttons |
+| Integration grid | All integrations, or one category, with a search field (*showSearch*) and filter buttons (*showFilters*) |
 | Logo strip | A row of logos |
 | FAQ | Questions with expandable answers |
 | Call to action | A coloured band with a title and buttons (*dark*, *accent* or *light*) |
@@ -52,6 +52,8 @@ The first German, French and Italian versions of all pages and integrations were
 Not translated yet? Visitors see the English version of that page or integration. Names, categories, repositories, prices and Stripe IDs are shared by all languages and only edited in English.
 
 ## SDK page
+
+**Search words.** The search above the integration grid finds an integration by its name, summary, type of integration, technology and category, and by the words in its field **searchTerms** (comma-separated, all languages in one field, not shown on the site), e.g. *WooCommerce* for WordPress or *Onlineshop, boutique, negozio* for the shops. Add the names people might type: products built on the system, other names, generic words. A search without a result offers *Request it* with the typed system filled in.
 
 The Supertext SDKs have a permanent place on the site: the page **sdk** (`/sdk`, built from blocks like any page), the **SDK** item in the main menu, the section *Your system isn’t listed?* on the start page, a link in the footer and a *Build your own integration* card at the end of every integration grid. The card's texts are part of the website (all four languages); everything else is edited in the CMS.
 

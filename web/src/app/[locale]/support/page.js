@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
 export default async function SupportPage({ params, searchParams }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const { platform, kind } = await searchParams;
+  const { platform, kind, system } = await searchParams;
   const t = strings(locale);
   const all = (await getIntegrations(locale).catch(() => [])).map((i) => ({ slug: i.slug, system: i.system, category: i.category, stage: i.stage }));
   all.sort((a, b) => a.system.localeCompare(b.system, locale));
@@ -45,6 +45,7 @@ export default async function SupportPage({ params, searchParams }) {
             requestable={requestable}
             initialKind={kind === 'request' || requestable.some((p) => p.slug === platform) ? 'request' : ['bug', 'feature'].includes(kind) ? kind : 'question'}
             initialPlatform={all.some((p) => p.slug === platform) ? platform : ''}
+            initialSystem={typeof system === 'string' ? system.slice(0, 80) : ''}
             turnstileSiteKey={process.env.TURNSTILE_SITE_KEY || null}
           />
         </div>

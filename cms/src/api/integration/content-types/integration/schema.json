@@ -124,6 +124,14 @@
         }
       }
     },
+    "searchTerms": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
     "technology": {
       "type": "string",
       "pluginOptions": {

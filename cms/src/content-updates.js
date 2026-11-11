@@ -774,6 +774,20 @@ async function addWpml(strapi) {
   return true;
 }
 
+/** Hidden search words per integration (all languages in one field): filled where empty, in every row. */
+async function addSearchTerms(strapi) {
+  const TERMS = require('./seed/search-terms.json');
+  const rows = await strapi.db.query(INTEGRATION).findMany({ select: ['id', 'slug', 'searchTerms'], limit: 2000 });
+  let changed = 0;
+  for (const row of rows) {
+    if (row.searchTerms || !TERMS[row.slug]) continue;
+    await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { searchTerms: TERMS[row.slug] } });
+    changed++;
+  }
+  strapi.log.info(`[setup] Search words added to ${changed} integration versions`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -807,6 +821,7 @@ const UPDATES = [
   { id: '2026-11-statistics-local', run: (strapi) => statisticsIncludeLocal(strapi) },
   { id: '2026-11-wordpress-repo', run: (strapi) => renameWordPressRepo(strapi) },
   { id: '2026-11-wpml', run: (strapi) => addWpml(strapi) },
+  { id: '2026-11-search-terms', run: (strapi) => addSearchTerms(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

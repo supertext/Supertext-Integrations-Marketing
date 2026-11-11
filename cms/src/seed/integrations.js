@@ -45,6 +45,7 @@ const LIST = [
 const DETAILS = require('./integration-details.json');
 const { builtIn } = require('./comparison');
 const FILES = require('./file-exchange.json');
+const SEARCH_TERMS = require('./search-terms.json');
 
 /** Technology, versions, licence, about-the-system text, features and description per integration. */
 const details = (slug) => {
@@ -66,6 +67,7 @@ const withSlug = (slug, entry) => ({
   ...details(slug),
   builtInTranslation: builtIn[slug],
   ...(FILES[slug] || {}),
+  searchTerms: SEARCH_TERMS[slug],
 });
 
 const live = LIST.map(([system, category, link, integrationType, summary, stage = 'live'], index) => withSlug(link.slug || slugify(system), {
@@ -91,6 +93,7 @@ const planned = PLANNED.map(([system, category, stage, summary], index) => ({
   summary,
   aboutSystem: PLANNED_ABOUT[slugify(system)],
   translateToday: PLANNED_TODAY[slugify(system)],
+  searchTerms: SEARCH_TERMS[slugify(system)],
 }));
 
 module.exports = [...live, ...planned];

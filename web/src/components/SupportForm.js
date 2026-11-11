@@ -17,7 +17,7 @@ const MAX_BYTES = 5 * 1024 * 1024;
  * "Request a plugin" asks only for the system (from the list of systems without a plugin, or typed
  * in), an optional description and the email address.
  */
-export default function SupportForm({ locale, t, platforms, requestable = [], initialKind = 'question', initialPlatform, turnstileSiteKey }) {
+export default function SupportForm({ locale, t, platforms, requestable = [], initialKind = 'question', initialPlatform, initialSystem = '', turnstileSiteKey }) {
   const started = useRef(Date.now());
   const captcha = useRef(null);
   const [state, setState] = useState({ status: 'idle' });
@@ -25,7 +25,8 @@ export default function SupportForm({ locale, t, platforms, requestable = [], in
   const request = kind === 'request';
   const pluginPlatform = platforms.some((p) => p.slug === initialPlatform) ? initialPlatform : '';
   const requestPlatform = requestable.some((p) => p.slug === initialPlatform) ? initialPlatform : '';
-  const [requested, setRequested] = useState(requestPlatform || (requestable.length ? '' : OTHER));
+  // A search without results links here with the system typed in (?system=).
+  const [requested, setRequested] = useState(requestPlatform || (initialSystem || !requestable.length ? OTHER : ''));
 
   // Cloudflare Turnstile, only when a site key is configured.
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function SupportForm({ locale, t, platforms, requestable = [], in
           {requested === OTHER && (
             <label>
               <span>{t.fRequestName}</span>
-              <input name="requestedSystem" required minLength={2} maxLength={80} />
+              <input name="requestedSystem" required minLength={2} maxLength={80} defaultValue={initialSystem} />
             </label>
           )}
         </>

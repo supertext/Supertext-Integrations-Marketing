@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Search on the integration grid (start page and `/integrations`): finds integrations as you type by name, summary, type of integration, technology, category and hidden search words (new field *searchTerms*, filled for every integration, e.g. WooCommerce, Onlineshop, MCP), planned and requested systems included. The category counts follow the search, `?q=` makes a search linkable, and no result offers *Request it* with the system already filled in on the support form. Can be switched off per block (*showSearch*). All four languages.
 - WordPress (WPML) added as its own integration (*In development*, right after WordPress (Polylang)): details, translation files, comparison with WPML's own AI translation, questions, the plugin's screenshot and its Plugin Health statistics (`supertext-wordpress-wpml`); created on the live site by a one-time content update and translated into German, French and Italian. Seed entries can now set their own slug (both WordPress plugins would otherwise be `wordpress`).
 - Social previews: links to integration pages show the plugin's card (the same image as its GitHub social preview, with a screenshot of the plugin where there is one); every other page shows the site's own card. Replaces the generated default image.
 - WordPress: links and the synced release follow the renamed repository `Supertext/Wordpress-Polylang-Supertext-Translation` (seed, WordPress guide, and a one-time content update for the live site).
