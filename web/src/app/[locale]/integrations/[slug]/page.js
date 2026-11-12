@@ -18,6 +18,15 @@ import { faqJsonLd } from '@/lib/page';
 import { localizeVersions } from '@/lib/versions';
 import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n';
 
+/** The main button's label, by where it leads. */
+function linkLabel(url, t) {
+  const host = (() => { try { return new URL(url).hostname; } catch { return ''; } })();
+  if (host === 'github.com') return t.viewOnGitHub;
+  if (host.endsWith('marketplace.microsoft.com')) return t.viewOnMarketplace;
+  if (host.endsWith('drupal.org')) return t.viewOnDrupal;
+  return t.viewMore;
+}
+
 /** Systems with two plugins: each page points to the other one. */
 const SIBLINGS = {
   wordpress: { slug: 'wordpress-wpml', key: 'siblingWpml' },
@@ -243,7 +252,7 @@ export default async function IntegrationPage({ params }) {
                 )}
               </dl>
               <div style={{ display: 'grid', gap: 8, marginTop: 20 }}>
-                {item.url && <a className="btn btn-primary btn-block" href={item.url} target="_blank" rel="noopener">{t.viewOnGitHub}</a>}
+                {item.url && <a className="btn btn-primary btn-block" href={item.url} target="_blank" rel="noopener">{linkLabel(item.url, t)}</a>}
                 {docs && <a className="btn btn-secondary btn-block" href={`${docs}/INSTALLATION.md`} target="_blank" rel="noopener">{t.installationGuide}</a>}
                 {docs && <a className="btn btn-secondary btn-block" href={`${docs}/USER_GUIDE.md`} target="_blank" rel="noopener">{t.userGuide}</a>}
               </div>
