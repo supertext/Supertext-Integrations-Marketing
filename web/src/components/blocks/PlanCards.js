@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import CmsLink from '../CmsLink';
 import { Check, Cross } from '../Icons';
 import SectionHead from './SectionHead';
+import { IN_SUBSCRIPTION } from '@/lib/inSubscription';
 
 /** CHF 2’000 style, as on supertext.com. */
 const money = (value, currency) => {
@@ -101,7 +102,7 @@ export default function PlanCards({ block, integrations, locale, t }) {
   const search = useSearchParams();
   const plans = block.plans || [];
   const hasAnnual = plans.some((p) => p.priceAnnual !== null && p.priceAnnual !== undefined && Number(p.priceAnnual) !== Number(p.priceMonthly));
-  const platforms = integrations.filter((i) => !i.stage || i.stage === 'live').map(({ slug, system }) => ({ slug, system }));
+  const platforms = integrations.filter((i) => (!i.stage || i.stage === 'live') && !IN_SUBSCRIPTION.has(i.slug)).map(({ slug, system }) => ({ slug, system }));
   return (
     <section className="section">
       <div className="container">

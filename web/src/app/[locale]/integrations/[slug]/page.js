@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { IN_SUBSCRIPTION } from '@/lib/inSubscription';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Blocks from '@/components/Blocks';
@@ -258,9 +259,19 @@ export default async function IntegrationPage({ params }) {
               </div>
             </div>
             <div className="card" style={{ background: 'var(--dark-green)', color: 'var(--solid-white)', borderColor: 'var(--dark-green)', display: 'grid', gap: 12 }}>
-              <h2 style={{ fontSize: 20 }}>{format(t, 'supportForPlatform', { system: item.system })}</h2>
-              <p style={{ color: '#c9d4d3', fontSize: 14 }}>{t.supportForPlatformText}</p>
-              <Link className="btn btn-mint" href={`/${locale}/pricing?platform=${item.slug}`}>{t.seePlans}</Link>
+              {IN_SUBSCRIPTION.has(item.slug) ? (
+                <>
+                  <h2 style={{ fontSize: 20 }}>{t.inSubscriptionTitle}</h2>
+                  <p style={{ color: '#c9d4d3', fontSize: 14 }}>{format(t, 'inSubscriptionText', { system: item.system })}</p>
+                  <a className="btn btn-mint" href={`https://www.supertext.com/${locale}/subscriptions`} target="_blank" rel="noopener">{t.seeSubscriptions}</a>
+                </>
+              ) : (
+                <>
+                  <h2 style={{ fontSize: 20 }}>{format(t, 'supportForPlatform', { system: item.system })}</h2>
+                  <p style={{ color: '#c9d4d3', fontSize: 14 }}>{t.supportForPlatformText}</p>
+                  <Link className="btn btn-mint" href={`/${locale}/pricing?platform=${item.slug}`}>{t.seePlans}</Link>
+                </>
+              )}
               <Link className="btn btn-text support-link" href={`/${locale}/support?platform=${item.slug}`}>{t.supportLink} →</Link>
             </div>
           </aside>

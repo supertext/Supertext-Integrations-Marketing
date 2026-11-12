@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Microsoft 365: the add-ins come with the Supertext Advanced and Enterprise subscriptions, so its page links to supertext.com's subscriptions (*Included in Supertext Advanced*) instead of this site's plans, and the plans no longer offer it as a platform (`web/src/lib/inSubscription.js`).
 - WordPress (Polylang) moved from `/integrations/wordpress` to `/integrations/wordpress-polylang`, next to `/integrations/wordpress-wpml`. Links in articles, pages, the footer and integration texts are rewritten.
 - Microsoft 365 is a live integration, no longer a request: Supertext's add-ins for Word, Outlook and PowerPoint on Microsoft Marketplace (same page, `microsoft-365`, new texts, re-translated; search words Office 365, Word, Outlook, PowerPoint …). The roadmap article no longer lists it among the open requests.
 - New plugin releases show on the site within the hour: the GitHub release sync runs every hour (at :17) when `GITHUB_TOKEN` is set, nightly without it, and on every start of the CMS when the last sync is more than an hour old (before: nightly only, so a release could take a day to appear).
