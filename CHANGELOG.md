@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Favicon: the Supertext icon from Supertext Plugin Health (SVG, plus `favicon.ico`, an Apple touch icon and a 512 px PNG used as the organisation's logo in the structured data).
 - Microsoft 365: the add-ins come with the Supertext Advanced and Enterprise subscriptions, so its page links to supertext.com's subscriptions (*Included in Supertext Advanced*) instead of this site's plans, and the plans no longer offer it as a platform (`web/src/lib/inSubscription.js`).
 - WordPress (Polylang) moved from `/integrations/wordpress` to `/integrations/wordpress-polylang`, next to `/integrations/wordpress-wpml`. Links in articles, pages, the footer and integration texts are rewritten.
 - Microsoft 365 is a live integration, no longer a request: Supertext's add-ins for Word, Outlook and PowerPoint on Microsoft Marketplace (same page, `microsoft-365`, new texts, re-translated; search words Office 365, Word, Outlook, PowerPoint …). The roadmap article no longer lists it among the open requests.

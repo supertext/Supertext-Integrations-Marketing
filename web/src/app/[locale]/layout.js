@@ -25,6 +25,14 @@ export async function generateMetadata({ params }) {
     title: { default: seo?.metaTitle || 'Supertext integrations', template: '%s | Supertext' },
     description: seo?.metaDescription ? metaDescription([seo.metaDescription]) : undefined,
     applicationName: 'Supertext',
+    // Same icon as Supertext Plugin Health (web/public/favicon.svg; PNG and ICO rendered from it).
+    icons: {
+      icon: [
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+        { url: '/favicon.ico', sizes: '48x48' },
+      ],
+      apple: { url: '/apple-touch-icon.png', sizes: '180x180' },
+    },
     robots: indexingAllowed() ? undefined : { index: false, follow: true },
     // Search engines' ownership checks (meta tag method): GOOGLE_SITE_VERIFICATION, BING_SITE_VERIFICATION.
     verification: {

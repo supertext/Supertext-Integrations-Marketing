@@ -15,6 +15,7 @@ export const ORG = {
   name: 'Supertext',
   legalName: 'Supertext AG',
   url: 'https://www.supertext.com',
+  logo: `${SITE_URL}/icon-512.png`,
   sameAs: [
     'https://www.linkedin.com/company/supertext-ag',
     'https://www.youtube.com/@supertext',
