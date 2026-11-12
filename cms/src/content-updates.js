@@ -805,6 +805,46 @@ async function releaseWpml(strapi) {
   return true;
 }
 
+/**
+ * Microsoft 365 isn't a plan any more (November 2026): the Word, Outlook and PowerPoint add-ins on
+ * Microsoft Marketplace make it a live integration. Same page (slug microsoft-365), new texts in English;
+ * German, French and Italian are queued for the background translation.
+ */
+async function liveMicrosoft365(strapi) {
+  const seed = require('./seed/integrations').find((i) => i.slug === 'microsoft-365');
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug: 'microsoft-365' }, fields: ['id', 'order'] });
+  if (!seed) return true;
+  if (!doc) {
+    await docs.create({ locale: 'en', data: { ...seed, blocks: [integrationFaq(seed)] }, status: 'published' });
+    return true;
+  }
+  const { order, ...data } = seed;
+  await docs.update({
+    documentId: doc.documentId,
+    locale: 'en',
+    data: { ...data, translateToday: null, blocks: [integrationFaq(seed)] },
+  });
+  await docs.publish({ documentId: doc.documentId, locale: 'en' });
+  // stage, url, repo and searchTerms aren't localized: every language row gets them now.
+  const rows = await strapi.db.query(INTEGRATION).findMany({ where: { slug: 'microsoft-365' }, select: ['id'], limit: 100 });
+  for (const row of rows) {
+    await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { stage: 'live', repo: null, url: seed.url, searchTerms: seed.searchTerms } });
+  }
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+  await store.set({ key: 'autoTranslations', value: state });
+  // The roadmap article listed Microsoft 365 among the open requests (same words in every language).
+  const ARTICLE = 'api::article.article';
+  const articles = await strapi.db.query(ARTICLE).findMany({ where: { body: { $contains: 'Notion, Microsoft 365, SharePoint' } }, select: ['id', 'body'], limit: 100 });
+  for (const a of articles) {
+    await strapi.db.query(ARTICLE).update({ where: { id: a.id }, data: { body: a.body.replace('Notion, Microsoft 365, SharePoint', 'Notion, SharePoint') } });
+  }
+  strapi.log.info(`[setup] Microsoft 365 is a live integration (Word, Outlook, PowerPoint); ${articles.length} article versions updated`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -840,6 +880,7 @@ const UPDATES = [
   { id: '2026-11-wpml', run: (strapi) => addWpml(strapi) },
   { id: '2026-11-search-terms', run: (strapi) => addSearchTerms(strapi) },
   { id: '2026-11-wpml-release', run: (strapi) => releaseWpml(strapi) },
+  { id: '2026-11-microsoft-365', run: (strapi) => liveMicrosoft365(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

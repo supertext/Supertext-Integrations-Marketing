@@ -446,7 +446,7 @@ Claude, ChatGPT and Copilot aren't on the list because they already work: the [S
 
 ## The rest is up to you
 
-Jira, Notion, Microsoft 365, SharePoint, Intercom, Trados Studio, Gemini and 38 more are open for requests. Find yours on the [roadmap](/en/roadmap), or in the [integrations](/en/integrations) under its category, and request it with one click. Not on the list? [Name it](/en/support?kind=request).
+Jira, Notion, SharePoint, Intercom, Trados Studio, Gemini and 38 more are open for requests. Find yours on the [roadmap](/en/roadmap), or in the [integrations](/en/integrations) under its category, and request it with one click. Not on the list? [Name it](/en/support?kind=request).
 `,
     { title: '54 more systems on the Supertext plugin roadmap' }
   ),

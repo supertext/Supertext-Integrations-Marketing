@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Microsoft 365 is a live integration, no longer a request: Supertext's add-ins for Word, Outlook and PowerPoint on Microsoft Marketplace (same page, `microsoft-365`, new texts, re-translated; search words Office 365, Word, Outlook, PowerPoint …). The roadmap article no longer lists it among the open requests.
 - New plugin releases show on the site within the hour: the GitHub release sync runs every hour (at :17) when `GITHUB_TOKEN` is set, nightly without it, and on every start of the CMS when the last sync is more than an hour old (before: nightly only, so a release could take a day to appear).
 - WordPress pages point to each other: the Polylang page says there is also a WPML plugin, and the WPML page the other way round (below the title, all four languages; pairs in `SIBLINGS` on the integration page).
 - WordPress (WPML) 1.0.0 is released: the integration is *Live*, its translation files are marked released and it links to the renamed repository `Supertext/Wordpress-WPML-Supertext-Translation` (one-time content update, followed by a release sync so the version shows right away).

@@ -3,6 +3,8 @@
 // The Supertext plugin list (claude/plugin-conventions.md → Plugin list), as seed data.
 // [system, category, repo or URL, type of integration, what it does, status]
 // Systems without a plugin yet (roadmap, request) are in planned.js.
+/** Supertext's Office add-ins (Word, Outlook, PowerPoint) on Microsoft Marketplace. */
+const MARKETPLACE = 'https://marketplace.microsoft.com/en-us/search/products?search=supertext';
 const GH = (repo) => ({ repo: `Supertext/${repo}`, url: `https://github.com/Supertext/${repo}` });
 
 const LIST = [
@@ -39,6 +41,7 @@ const LIST = [
   ['Adobe InDesign', 'design', GH('Adobe-InDesign-Translation'), 'InDesign scripts (ExtendScript).', 'Exports all text to XLIFF 1.2 for any CAT tool and imports the translations with formatting intact'],
   ['Adobe Illustrator', 'design', GH('Adobe-Illustrator-Translation'), 'Illustrator scripts (ExtendScript).', 'Exports all text to XLIFF 1.2 for any CAT tool and imports the translations with formatting intact'],
   ['CorelDRAW', 'design', GH('CorelDRAW-Supertext-Translation'), 'CorelDRAW VBA macro.', 'Exports all text to XLIFF 1.2 for any CAT tool and imports the translations with formatting intact'],
+  ['Microsoft 365', 'docs', { repo: null, url: MARKETPLACE }, 'Microsoft Office add-ins for Word, Outlook and PowerPoint, installed from Microsoft Marketplace.', 'AI translation right inside Word, Outlook and PowerPoint, with your glossary and style guide'],
   ['Claude, ChatGPT and Copilot', 'ai', { repo: null, url: 'https://www.supertext.com/en/mcp' }, 'Supertext Translation MCP: a hosted MCP server that AI assistants connect to with OAuth or a team API key.', 'Translate with your terminology and order an expert review, right in the chat'],
 ];
 

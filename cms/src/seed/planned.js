@@ -29,7 +29,6 @@ module.exports = [
   ['Veeva Vault', 'docs', 'request', 'Translates documents in Veeva Vault'],
   ['Articulate', 'docs', 'request', 'Translates Articulate Rise and Storyline courses'],
   ['Microsoft SharePoint', 'docs', 'request', 'Translates SharePoint pages and documents'],
-  ['Microsoft 365', 'docs', 'request', 'Translates Word, Excel and PowerPoint files in Microsoft 365'],
   ['Google Docs', 'docs', 'request', 'Translates Google Docs with the formatting kept'],
   // Customer support
   ['Zendesk', 'support', 'roadmap', 'Translates Zendesk Help Center articles and macros'],

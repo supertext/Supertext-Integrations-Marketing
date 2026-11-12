@@ -473,5 +473,20 @@
       "Translations are created as drafts, linked to their original in WPML"
     ],
     "description": "For AI translation, editors open a post or page and click *Translate* next to a language in the Supertext box. Supertext translates the title, the content block by block, the excerpt, the custom fields WPML translates and untranslated categories and tags, and creates the translation as a draft linked to the original in WPML. *Translate again* replaces an existing translation after a warning. In the Posts or Pages list, the *Supertext AI Translation* bulk action translates many posts at once and never overwrites existing translations.\n\nFor professional translation, editors choose *Supertext Human Translation* in the bulk actions, pick a language and translation type, and select a delivery option with its quoted price. When Supertext delivers, the translation is written into WPML automatically and tracked on the Orders page.\n\nWPML has no interface for third-party machine translation services, so Supertext brings its own box and bulk actions instead of appearing inside WPML's translation editor. The plugin is independent of the Polylang one."
+  },
+  "microsoft-365": {
+    "technology": "Microsoft Office add-ins · Microsoft Marketplace",
+    "supportedVersions": "Word, Outlook and PowerPoint (Microsoft 365) · Supertext Advanced or Enterprise",
+    "license": "",
+    "aboutSystem": "Microsoft 365 is Microsoft's office suite, with Word, Excel, PowerPoint, Outlook and Teams, used on the desktop, on the web and on mobile devices.",
+    "features": [
+      "Word: translate a selection or the whole document, with the layout kept",
+      "Outlook: write an email and translate it before you send it, without leaving Outlook",
+      "PowerPoint: translate whole presentations or selected slides, speaker notes included, with the design kept",
+      "Your team's glossary and style guide, formality and tone applied automatically",
+      "Preview before you apply the translation",
+      "Processed on Swiss servers"
+    ],
+    "description": "Install the Supertext add-ins for Word, Outlook and PowerPoint from Microsoft Marketplace (search for *Supertext*), or ask your Microsoft 365 administrator to deploy them for your organisation. Sign in once with your Supertext account. Then select a text or open a document, choose the target language and translate: Supertext uses your team's glossary and style guide, so the terminology, formality and tone match your other translations.\n\nIn **Word**, translate a passage or the whole document; the formatting and layout stay as they are. In **Outlook**, draft an email in your language and translate it before sending. In **PowerPoint**, translate the whole presentation or selected slides, including the speaker notes, and keep the design – also for multilingual decks.\n\nThe add-ins are included from the Supertext Advanced plan. Excel isn't supported yet; for Excel files, upload them to Supertext as a document."
   }
 }
