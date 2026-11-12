@@ -847,8 +847,8 @@ async function liveMicrosoft365(strapi) {
 
 /**
  * WordPress (Polylang) moves from /integrations/wordpress to /integrations/wordpress-polylang (November
- * 2026), next to wordpress-wpml. The old address redirects (web/next.config.mjs); links in articles,
- * pages and integration texts are rewritten in every language.
+ * 2026), next to wordpress-wpml (no redirect from the old address); links in articles, pages and
+ * integration texts are rewritten in every language.
  */
 async function renameWordPressSlug(strapi) {
   const rows = await strapi.db.query(INTEGRATION).findMany({ where: { slug: 'wordpress' }, select: ['id'], limit: 100 });
