@@ -418,7 +418,7 @@
     ],
     "description": "In the site's dashboard, editors open Apps → Supertext Translation, choose a content type such as products, tick the items and the target languages, and click Translate with Supertext. The page shows the translation status per language and reports the result for each item as it goes. The integration is currently in development and not yet in the Wix App Market.\n\nTranslations are saved in Wix Multilingual, where editors review and correct them in the Translation Manager. A setting decides whether they are marked ready to publish right away or wait for review. Original texts in the main language are never changed."
   },
-  "wordpress": {
+  "wordpress-polylang": {
     "technology": "PHP 8.1+ · WordPress plugin (Polylang Pro translation service)",
     "supportedVersions": "WordPress 6.0+ with Polylang Pro (Machine Translation) · PHP 8.1+",
     "license": "GPL-2.0-or-later",

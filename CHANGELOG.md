@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- WordPress (Polylang) moved from `/integrations/wordpress` to `/integrations/wordpress-polylang`, next to `/integrations/wordpress-wpml`. The old address redirects permanently (all four languages, `web/next.config.mjs`); links in articles, pages, the footer and integration texts are rewritten.
 - Microsoft 365 is a live integration, no longer a request: Supertext's add-ins for Word, Outlook and PowerPoint on Microsoft Marketplace (same page, `microsoft-365`, new texts, re-translated; search words Office 365, Word, Outlook, PowerPoint …). The roadmap article no longer lists it among the open requests.
 - New plugin releases show on the site within the hour: the GitHub release sync runs every hour (at :17) when `GITHUB_TOKEN` is set, nightly without it, and on every start of the CMS when the last sync is more than an hour old (before: nightly only, so a release could take a day to appear).
 - WordPress pages point to each other: the Polylang page says there is also a WPML plugin, and the WPML page the other way round (below the title, all four languages; pairs in `SIBLINGS` on the integration page).

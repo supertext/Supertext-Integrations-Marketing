@@ -73,7 +73,7 @@ All three plugins are open source. You need a Supertext account and an API key; 
     'wordpress-drupal-joomla',
     '2026-10-07T09:00:00.000Z',
     'plugins',
-    ['wordpress', 'drupal', 'joomla'],
+    ['wordpress-polylang', 'drupal', 'joomla'],
     'WordPress, Drupal and Joomla: Supertext in the big three',
     'Supertext AI translation inside Polylang Pro for WordPress, as a TMGMT provider for Drupal and as a plugin for Joomla articles.',
     `
@@ -81,7 +81,7 @@ WordPress, Drupal and Joomla run millions of websites, many of them multilingual
 
 ## WordPress with Polylang Pro
 
-The [WordPress plugin](/en/integrations/wordpress) adds Supertext as a machine translation service in Polylang Pro, next to DeepL. Translate single posts from Polylang's buttons or many at once with the bulk action; Gutenberg, the classic editor, ACF fields, terms and SEO meta are covered by Polylang's pipeline. It also supports YOOtheme Pro layouts and Gravity Forms, and lets you order a professional human translation with a live price quote, right from WordPress.
+The [WordPress plugin](/en/integrations/wordpress-polylang) adds Supertext as a machine translation service in Polylang Pro, next to DeepL. Translate single posts from Polylang's buttons or many at once with the bulk action; Gutenberg, the classic editor, ACF fields, terms and SEO meta are covered by Polylang's pipeline. It also supports YOOtheme Pro layouts and Gravity Forms, and lets you order a professional human translation with a live price quote, right from WordPress.
 
 ## Drupal with TMGMT
 

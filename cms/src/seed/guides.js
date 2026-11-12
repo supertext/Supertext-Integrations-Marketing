@@ -88,7 +88,7 @@ New translations are **hidden**, as usual in TYPO3. Read through the page, adjus
   guide(
     'guide-wordpress-swiss-german',
     '2026-11-16T07:00:00.000Z',
-    ['wordpress'],
+    ['wordpress-polylang'],
     'Translate a WordPress website into Swiss German in 10 minutes',
     'Polylang Pro plus the Supertext plugin: set up Supertext as the machine translation service, map German to de-CH and translate posts one by one or in bulk.',
     `
@@ -131,7 +131,7 @@ Polylang creates the translation linked to the original. Read it through, adjust
 ## Next steps
 
 - Need a professional translation for an important page? The plugin can order one from Supertext's linguists, with a price quote, right from WordPress.
-- More on the [WordPress integration page](/en/integrations/wordpress), including the XLIFF and HTML export for your own translators.
+- More on the [WordPress integration page](/en/integrations/wordpress-polylang), including the XLIFF and HTML export for your own translators.
 `,
     {
       title: 'Translate WordPress into Swiss German in 10 minutes | Supertext',

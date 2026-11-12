@@ -845,6 +845,60 @@ async function liveMicrosoft365(strapi) {
   return true;
 }
 
+/**
+ * WordPress (Polylang) moves from /integrations/wordpress to /integrations/wordpress-polylang (November
+ * 2026), next to wordpress-wpml. The old address redirects (web/next.config.mjs); links in articles,
+ * pages and integration texts are rewritten in every language.
+ */
+async function renameWordPressSlug(strapi) {
+  const rows = await strapi.db.query(INTEGRATION).findMany({ where: { slug: 'wordpress' }, select: ['id'], limit: 100 });
+  for (const row of rows) await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { slug: 'wordpress-polylang' } });
+  const LINK = /(\/(?:en|de|fr|it)\/integrations\/wordpress)(?![-\w])/g;
+  const rewrite = (value) => (typeof value === 'string' ? value.replace(LINK, '$1-polylang') : value);
+  const targets = [
+    ['api::article.article', ['body', 'excerpt']],
+    [INTEGRATION, ['description', 'translateToday', 'aboutSystem']],
+  ];
+  let changed = 0;
+  for (const [uid, fields] of targets) {
+    const items = await strapi.db.query(uid).findMany({ select: ['id', ...fields], limit: 5000 });
+    for (const item of items) {
+      const data = {};
+      for (const f of fields) {
+        const next = rewrite(item[f]);
+        if (next !== item[f]) data[f] = next;
+      }
+      if (Object.keys(data).length) {
+        await strapi.db.query(uid).update({ where: { id: item.id }, data });
+        changed++;
+      }
+    }
+  }
+  // Texts in blocks (rich text, questions, cards …) are components: every text field of every component.
+  for (const [uid, component] of Object.entries(strapi.components)) {
+    const fields = Object.entries(component.attributes)
+      .filter(([, a]) => ['string', 'text', 'richtext'].includes(a.type))
+      .map(([name]) => name);
+    if (!fields.length) continue;
+    const items = await strapi.db.query(uid).findMany({ select: ['id', ...fields], limit: 10000 });
+    for (const item of items) {
+      const data = {};
+      for (const f of fields) {
+        if (typeof item[f] === 'string' && item[f].includes('/integrations/wordpress')) {
+          const next = rewrite(item[f]);
+          if (next !== item[f]) data[f] = next;
+        }
+      }
+      if (Object.keys(data).length) {
+        await strapi.db.query(uid).update({ where: { id: item.id }, data });
+        changed++;
+      }
+    }
+  }
+  strapi.log.info(`[setup] WordPress (Polylang) is now wordpress-polylang (${rows.length} versions, ${changed} texts with links updated)`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -881,6 +935,7 @@ const UPDATES = [
   { id: '2026-11-search-terms', run: (strapi) => addSearchTerms(strapi) },
   { id: '2026-11-wpml-release', run: (strapi) => releaseWpml(strapi) },
   { id: '2026-11-microsoft-365', run: (strapi) => liveMicrosoft365(strapi) },
+  { id: '2026-11-wordpress-polylang-slug', run: (strapi) => renameWordPressSlug(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

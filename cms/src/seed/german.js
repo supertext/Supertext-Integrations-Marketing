@@ -77,7 +77,7 @@ const swissGermanEn = {
         '',
         'The Supertext plugins translate where your content lives. Set the target language to **de-CH** once, and every translation is written in Swiss Standard German:',
         '',
-        '- **CMS:** [TYPO3](/en/integrations/typo3), [WordPress](/en/integrations/wordpress), [Drupal](/en/integrations/drupal), [Contao](/en/integrations/contao), [Joomla](/en/integrations/joomla), [Neos](/en/integrations/neos), [Craft CMS](/en/integrations/craft-cms), [Strapi](/en/integrations/strapi) and [more](/en/integrations?category=cms)',
+        '- **CMS:** [TYPO3](/en/integrations/typo3), [WordPress](/en/integrations/wordpress-polylang), [Drupal](/en/integrations/drupal), [Contao](/en/integrations/contao), [Joomla](/en/integrations/joomla), [Neos](/en/integrations/neos), [Craft CMS](/en/integrations/craft-cms), [Strapi](/en/integrations/strapi) and [more](/en/integrations?category=cms)',
         '- **Shops:** [Shopify](/en/integrations/shopify), [Magento](/en/integrations/magento), [PrestaShop](/en/integrations/prestashop)',
         '- **Product data:** [Akeneo](/en/integrations/akeneo-pim), [Pimcore](/en/integrations/pimcore), [AtroPIM](/en/integrations/atropim)',
         '- **AI assistants:** [Claude, ChatGPT and Copilot](/en/integrations/claude-chatgpt-and-copilot) with the Supertext Translation MCP',
@@ -180,7 +180,7 @@ const swissGermanDe = {
         '',
         'Die Supertext-Plugins übersetzen dort, wo Ihre Inhalte sind. Stellen Sie die Zielsprache einmal auf **de-CH**, und jede Übersetzung ist in Schweizer Hochdeutsch:',
         '',
-        '- **CMS:** [TYPO3](/de/integrations/typo3), [WordPress](/de/integrations/wordpress), [Drupal](/de/integrations/drupal), [Contao](/de/integrations/contao), [Joomla](/de/integrations/joomla), [Neos](/de/integrations/neos), [Craft CMS](/de/integrations/craft-cms), [Strapi](/de/integrations/strapi) und [weitere](/de/integrations?category=cms)',
+        '- **CMS:** [TYPO3](/de/integrations/typo3), [WordPress](/de/integrations/wordpress-polylang), [Drupal](/de/integrations/drupal), [Contao](/de/integrations/contao), [Joomla](/de/integrations/joomla), [Neos](/de/integrations/neos), [Craft CMS](/de/integrations/craft-cms), [Strapi](/de/integrations/strapi) und [weitere](/de/integrations?category=cms)',
         '- **Shops:** [Shopify](/de/integrations/shopify), [Magento](/de/integrations/magento), [PrestaShop](/de/integrations/prestashop)',
         '- **Produktdaten:** [Akeneo](/de/integrations/akeneo-pim), [Pimcore](/de/integrations/pimcore), [AtroPIM](/de/integrations/atropim)',
         '- **KI-Assistenten:** [Claude, ChatGPT und Copilot](/de/integrations/claude-chatgpt-and-copilot) mit dem Supertext Translation MCP',
@@ -415,7 +415,7 @@ ${swissNote}
   article(
     'wordpress-mehrsprachig',
     '2026-11-26T07:00:00.000Z',
-    ['wordpress'],
+    ['wordpress-polylang'],
     'WordPress mehrsprachig: Polylang, WPML oder Weglot, und wie die Übersetzung hineinkommt',
     'Welches Mehrsprachigkeits-Plugin passt zu Ihrer WordPress-Website, und wie übersetzen Sie Beiträge und Seiten automatisch? Ein Überblick mit Anleitung für Polylang Pro und Supertext.',
     `
@@ -445,7 +445,7 @@ Das Supertext-Plugin fügt sich in Polylang Pro als Übersetzungsdienst ein. Sie
 **Sie brauchen:** WordPress 6.0 oder neuer, PHP 8.1 oder neuer, Polylang Pro mit maschineller Übersetzung und ein Supertext-Konto.
 
 1. **API-Key holen.** ${apiKey}
-2. **Plugin installieren** und den Key eintragen. Details auf der [Seite des WordPress-Plugins](/de/integrations/wordpress).
+2. **Plugin installieren** und den Key eintragen. Details auf der [Seite des WordPress-Plugins](/de/integrations/wordpress-polylang).
 3. **Sprachen anlegen** in Polylang unter **Sprachen**, zum Beispiel *Deutsch (Schweiz)* mit der Locale \`de_CH\`.
 4. **Übersetzen** über die Polylang-Schaltflächen oder die Massenaktion.
 5. **Prüfen und veröffentlichen.**
@@ -517,7 +517,7 @@ const germanDrafts = [
   article(
     'weglot-alternative',
     '2026-12-10T07:00:00.000Z',
-    ['wordpress', 'shopify', 'typo3'],
+    ['wordpress-polylang', 'shopify', 'typo3'],
     'Weglot-Alternative für Schweizer Websites: Übersetzungen in Ihrem eigenen CMS',
     'Weglot übersetzt Websites als Cloud-Dienst. Wer die Übersetzungen im eigenen CMS behalten und für die Schweiz schreiben will, hat Alternativen.',
     `
@@ -536,14 +536,14 @@ Weglot erkennt die Texte Ihrer Website, übersetzt sie maschinell und speichert 
 
 ## Supertext in Ihrem System
 
-Supertext-Plugins gibt es für über 30 Systeme, darunter [TYPO3](/de/integrations/typo3), [WordPress mit Polylang](/de/integrations/wordpress), [Drupal](/de/integrations/drupal), [Contao](/de/integrations/contao) und [Shopify](/de/integrations/shopify). [Alle Integrationen ansehen](/de/integrations).
+Supertext-Plugins gibt es für über 30 Systeme, darunter [TYPO3](/de/integrations/typo3), [WordPress mit Polylang](/de/integrations/wordpress-polylang), [Drupal](/de/integrations/drupal), [Contao](/de/integrations/contao) und [Shopify](/de/integrations/shopify). [Alle Integrationen ansehen](/de/integrations).
 `,
     { title: 'Weglot-Alternative für Schweizer Websites' }
   ),
   article(
     'wpml-alternative',
     '2026-12-17T07:00:00.000Z',
-    ['wordpress'],
+    ['wordpress-polylang'],
     'WPML-Alternative: WordPress mehrsprachig mit Polylang Pro und Supertext',
     'WPML ist das bekannteste Mehrsprachigkeits-Plugin für WordPress. Polylang Pro mit Supertext ist eine schlanke Alternative, mit Übersetzungen für die Schweiz.',
     `
@@ -564,7 +564,7 @@ Das Supertext-Plugin erscheint in Polylang Pro als Übersetzungsdienst:
 - Für wichtige Seiten eine Humanübersetzung bestellen, mit Preis direkt in WordPress.
 - Schweizer Hochdeutsch, Westschweizer Französisch und Schweizer Italienisch. [Mehr zu Schweizer Hochdeutsch](/de/swiss-german).
 
-Die Anleitung: [WordPress mehrsprachig mit Polylang Pro und Supertext](/de/news/wordpress-mehrsprachig). Das Plugin: [Supertext für WordPress](/de/integrations/wordpress).
+Die Anleitung: [WordPress mehrsprachig mit Polylang Pro und Supertext](/de/news/wordpress-mehrsprachig). Das Plugin: [Supertext für WordPress](/de/integrations/wordpress-polylang).
 `,
     { title: 'WPML-Alternative: Polylang Pro mit Supertext' }
   ),
@@ -575,7 +575,7 @@ const germanSeo = {
   typo3: ['TYPO3 automatisch übersetzen: Extension für Supertext', 'TYPO3 automatisch übersetzen, direkt im Übersetzungsassistenten: ganze Seiten mit SEO-Texten, auch in Schweizer Hochdeutsch. Für TYPO3 13.4 und 14.3 LTS.'],
   contao: ['Contao übersetzen: Bundle für Supertext AI', 'Contao-Seiten, Artikel und Inhaltselemente mit einem Klick übersetzen, auch ganze Websites und in Schweizer Hochdeutsch. Für Contao 5.7 und 6.0.'],
   shopify: ['Shopify-Shop übersetzen: App für Supertext AI', 'Shopify-Shop übersetzen: Produkte, Kollektionen, Seiten und Blogs in alle Sprachen auf einmal, gespeichert für Translate & Adapt. Für jeden Shopify-Plan.'],
-  wordpress: ['WordPress übersetzen mit Polylang Pro', 'WordPress mehrsprachig: Beiträge und Seiten mit Polylang Pro und Supertext automatisch übersetzen, mit ACF und SEO-Angaben, auch in Schweizer Hochdeutsch.'],
+  'wordpress-polylang': ['WordPress übersetzen mit Polylang Pro', 'WordPress mehrsprachig: Beiträge und Seiten mit Polylang Pro und Supertext automatisch übersetzen, mit ACF und SEO-Angaben, auch in Schweizer Hochdeutsch.'],
   joomla: ['Joomla automatisch übersetzen: Plugin', 'Joomla-Beiträge aus der Liste oder dem Editor übersetzen, mit Metadaten und eigenen Feldern, verknüpft und unveröffentlicht. Für Joomla 5.4 und 6.1.'],
   drupal: ['Drupal übersetzen mit TMGMT und Supertext', 'Drupal-Inhalte mit TMGMT und Supertext AI übersetzen, auch in Schweizer Hochdeutsch. Für Drupal 9, 10, 11 und 12. Kostenloses Open-Source-Modul.'],
   magento: ['Magento 2 übersetzen: Modul für Supertext', 'Magento-Produkte, Kategorien und CMS-Seiten in die Sprachen Ihrer Store Views übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Modul.'],

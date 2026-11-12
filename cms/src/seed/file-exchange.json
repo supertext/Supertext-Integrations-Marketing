@@ -289,7 +289,7 @@
   "fileKeeps": "Bold, links and other formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
   "fileLimits": "- One item per export.\n- A rich text is only saved when all its paragraphs are translated, and texts longer than Wix allows aren't saved.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
  },
- "wordpress": {
+ "wordpress-polylang": {
   "fileFormats": "XLIFF 1.2 and HTML",
   "fileReleased": false,
   "fileDocs": "docs/README.md#translation-files-xliff-or-html",

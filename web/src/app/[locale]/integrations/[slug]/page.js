@@ -29,8 +29,8 @@ function linkLabel(url, t) {
 
 /** Systems with two plugins: each page points to the other one. */
 const SIBLINGS = {
-  wordpress: { slug: 'wordpress-wpml', key: 'siblingWpml' },
-  'wordpress-wpml': { slug: 'wordpress', key: 'siblingPolylang' },
+  'wordpress-polylang': { slug: 'wordpress-wpml', key: 'siblingWpml' },
+  'wordpress-wpml': { slug: 'wordpress-polylang', key: 'siblingPolylang' },
 };
 
 export async function generateMetadata({ params }) {
