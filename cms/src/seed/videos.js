@@ -20,4 +20,9 @@ module.exports = {
   grav: ['EGwhpF0xokE', 'qc-KpGdH3og'],
   hubspot: ['zeLr0ysK5BQ', 'gQkQziL1mUc'],
   magento: ['xb0Kvxhn1Ec', 'Z0TIIh94WkQ'],
+  magnolia: ['_r-KPQhZISg', 'WDK6ATQ5-i4'],
+  mailchimp: ['eeZyZ30STV4', 'FAA4KD78b3I'],
+  neos: ['-68a1t90KLw', 'aamHVY3p1Tk'],
+  'orchard-core': ['rcKv33Dw_zs', 'AUVNvqxWKwA'],
+  'payload-cms': ['gFBQjwhhxVc', 'WXXEUL3yjhM'],
 };
