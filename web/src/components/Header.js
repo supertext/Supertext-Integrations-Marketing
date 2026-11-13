@@ -19,7 +19,7 @@ export default function Header({ global, locale, t }) {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
     const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(null); };
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(null); };
+    const onKey = (e) => { if (e.key === 'Escape') { setOpen(null); setMobile(false); } };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('click', onClick);
@@ -73,30 +73,42 @@ export default function Header({ global, locale, t }) {
         </nav>
 
         <div className="header-actions">
-          <span className="hide-mobile">
-            <Suspense><LanguageSwitcher locale={locale} label={t.language} /></Suspense>
-          </span>
-          {global?.loginLink && <span className="hide-mobile"><CmsLink link={global.loginLink} locale={locale} style="text" /></span>}
           {global?.headerCta && <span className="hide-mobile"><CmsLink link={global.headerCta} locale={locale} /></span>}
-          <button type="button" className="menu-toggle" aria-label={t.menu} aria-expanded={mobile} onClick={() => setMobile(!mobile)}>
+          {global?.loginLink && <span className="hide-mobile"><CmsLink link={global.loginLink} locale={locale} style="text" /></span>}
+          <button type="button" className="menu-toggle" aria-label={t.menu} aria-expanded={mobile} aria-controls="site-menu" onClick={() => setMobile(!mobile)}>
             <MenuIcon open={mobile} />
           </button>
         </div>
       </div>
 
-      <div className={`container mobile-menu${mobile ? ' open' : ''}`}>
-        {nav.map((group, i) => (
-          <div key={group.id ?? i} style={{ display: 'grid' }}>
-            {group.links?.length ? <div className="group">{group.label}</div> : null}
-            {group.url && !group.links?.length && <CmsLink link={{ url: group.url }} locale={locale} className="">{group.label}</CmsLink>}
-            {(group.links || []).map((link) => (
+      {/* The menu behind the hamburger (as on supertext.com): promo card, main pages, all sub-pages and the language. */}
+      <div id="site-menu" className={`site-menu${mobile ? ' open' : ''}`} hidden={!mobile}>
+        <div className="site-menu-main">
+          <div className="menu-promo">
+            <p>{t.menuPromo}</p>
+            {global?.headerCta && <CmsLink link={global.headerCta} locale={locale} style="mint" className="btn btn-mint btn-block" />}
+          </div>
+          <nav className="menu-big" aria-label={t.menu}>
+            {nav.filter((group) => group.url).map((group, i) => (
+              <CmsLink key={group.id ?? i} link={{ url: group.url, label: group.label }} locale={locale} className="">
+                <span>{group.label}</span><span className="menu-arrow" aria-hidden="true">→</span>
+              </CmsLink>
+            ))}
+          </nav>
+        </div>
+        <div className="site-menu-side">
+          <nav className="menu-small" aria-label={t.menu}>
+            {nav.flatMap((group) => group.links || []).map((link) => (
               <CmsLink key={link.id ?? link.url} link={link} locale={locale} className="" />
             ))}
+          </nav>
+          <div className="menu-extra">
+            {global?.loginLink && <CmsLink link={global.loginLink} locale={locale} className="menu-login" />}
+            <label className="menu-lang">
+              <span>{t.language}</span>
+              <Suspense><LanguageSwitcher locale={locale} label={t.language} /></Suspense>
+            </label>
           </div>
-        ))}
-        <div className="btn-row" style={{ marginTop: 12 }}>
-          <Suspense><LanguageSwitcher locale={locale} label={t.language} /></Suspense>
-          {global?.headerCta && <CmsLink link={global.headerCta} locale={locale} />}
         </div>
       </div>
     </header>
