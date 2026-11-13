@@ -7,6 +7,7 @@ import CmsLink from './CmsLink';
 import LanguageSwitcher from './LanguageSwitcher';
 import { Chevron, MenuIcon } from './Icons';
 import { localizeHref } from '@/lib/i18n';
+import { supertextMenu } from '@/lib/supertextMenu';
 
 export default function Header({ global, locale, t }) {
   const [open, setOpen] = useState(null); // index of the open dropdown
@@ -32,6 +33,7 @@ export default function Header({ global, locale, t }) {
   }, []);
 
   const nav = global?.navigation || [];
+  const menu = supertextMenu(locale);
   return (
     <header className={`header${scrolled ? ' scrolled' : ''}`} ref={ref}>
       <div className="container header-inner">
@@ -81,26 +83,32 @@ export default function Header({ global, locale, t }) {
         </div>
       </div>
 
-      {/* The menu behind the hamburger (as on supertext.com): promo card, main pages, all sub-pages and the language. */}
+      {/* The menu behind the hamburger: the same as supertext.com's (lib/supertextMenu.js), plus this site's own pages on
+          small screens, where they aren't in the bar, then the login and the language. */}
       <div id="site-menu" className={`site-menu${mobile ? ' open' : ''}`} hidden={!mobile}>
         <div className="site-menu-main">
           <div className="menu-promo">
-            <p>{t.menuPromo}</p>
-            {global?.headerCta && <CmsLink link={global.headerCta} locale={locale} style="mint" className="btn btn-mint btn-block" />}
+            <p>{menu.promo}</p>
+            <a className="btn btn-mint btn-block" href={menu.promoLink.url}>{menu.promoLink.label}</a>
           </div>
-          <nav className="menu-big" aria-label={t.menu}>
-            {nav.filter((group) => group.url).map((group, i) => (
-              <CmsLink key={group.id ?? i} link={{ url: group.url, label: group.label }} locale={locale} className="">
-                <span>{group.label}</span><span className="menu-arrow" aria-hidden="true">→</span>
-              </CmsLink>
-            ))}
-          </nav>
+          <div className="menu-big-wrap">
+            <nav className="menu-big menu-site" aria-label={t.menu}>
+              {nav.filter((group) => group.url).map((group, i) => (
+                <CmsLink key={group.id ?? i} link={{ url: group.url, label: group.label }} locale={locale} className="">
+                  <span>{group.label}</span><span className="menu-arrow" aria-hidden="true">→</span>
+                </CmsLink>
+              ))}
+            </nav>
+            <nav className="menu-big" aria-label="Supertext">
+              {menu.main.map((item) => (
+                <a key={item.url} href={item.url}><span>{item.label}</span><span className="menu-arrow" aria-hidden="true">→</span></a>
+              ))}
+            </nav>
+          </div>
         </div>
         <div className="site-menu-side">
-          <nav className="menu-small" aria-label={t.menu}>
-            {nav.flatMap((group) => group.links || []).map((link) => (
-              <CmsLink key={link.id ?? link.url} link={link} locale={locale} className="" />
-            ))}
+          <nav className="menu-small" aria-label="Supertext">
+            {menu.side.map((item) => <a key={item.url} href={item.url}>{item.label}</a>)}
           </nav>
           <div className="menu-extra">
             {global?.loginLink && <CmsLink link={global.loginLink} locale={locale} className="menu-login" />}
