@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Fixed: on integration, translation-file, news and support pages the content started flush with the end of the warm page header; it now starts on white with space above.
 - Header as on supertext.com: *Get your API key* before *Login*, and a hamburger menu on every screen size with the same content as supertext.com's (promo card, Translator, Subscriptions, Enterprise, Contact, the company pages; `web/src/lib/supertextMenu.js`, four languages), this site's own pages on small screens, the login and the language switcher (no longer in the header bar). The announcement bar is light mint so it stands out from the page.
 - New Supertext look, as on the neo site: ABC Ginto Nord headings, the Supertext wordmark in a dark green header bar, warm off-white cards without borders and 10 px corners, a light announcement bar, the *Most popular* plan with its blue-green label, highlighted words in the dark call-to-action, and a muted green footer card.
 - Favicon: the Supertext icon from Supertext Plugin Health (SVG, plus `favicon.ico`, an Apple touch icon and a 512 px PNG used as the organisation's logo in the structured data).

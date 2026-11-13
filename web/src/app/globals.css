@@ -205,6 +205,8 @@ button { font: inherit; }
 
 /* Hero */
 .hero { padding: clamp(56px, 8vw, 104px) 0 calc(var(--section) / 2); background: var(--solid-white); margin-top: -70px; padding-top: calc(70px + clamp(56px, 8vw, 96px)); }
+/* The warm hero ends with its own spacing; what follows starts on white with room above, never flush with the edge. */
+.hero + .section { padding-top: clamp(40px, 5vw, 64px) !important; }
 .hero-centered { text-align: center; }
 .hero-centered .hero-text { max-width: 860px; margin: 0 auto; display: grid; gap: 20px; justify-items: center; }
 .hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
