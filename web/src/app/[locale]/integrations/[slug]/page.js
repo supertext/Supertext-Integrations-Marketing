@@ -225,7 +225,7 @@ export default async function IntegrationPage({ params }) {
             )}
             <div className="notice highlight" style={{ margin: 0, maxWidth: 'none' }}>
               <h2 style={{ fontSize: 20, marginBottom: 8 }}>{t.gettingStarted}</h2>
-              <Markdown locale={locale}>{format(t, 'gettingStartedText', { account: ACCOUNT_URL, apiKey: API_KEY_URL })}</Markdown>
+              <Markdown locale={locale}>{format(t, IN_SUBSCRIPTION.has(item.slug) ? 'gettingStartedSignIn' : 'gettingStartedText', { account: ACCOUNT_URL, apiKey: API_KEY_URL })}</Markdown>
             </div>
           </div>
           <aside className="facts">

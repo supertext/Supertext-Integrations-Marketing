@@ -223,6 +223,9 @@ async function seoPages(strapi) {
   return true;
 }
 
+/** Integrations used with a Supertext login instead of an API key (the Office add-ins). */
+const SIGN_IN_ONLY = new Set(['microsoft-365']);
+
 /** Questions for an integration's page, built from its own fields. */
 function integrationFaq(item) {
   const s = item.system;
@@ -234,6 +237,8 @@ function integrationFaq(item) {
     item.integrationType && `Type of integration: ${item.integrationType.replace(/\.?$/, '.')}`,
     design
       ? 'No Supertext account is needed for the XLIFF export and import itself; send the file to Supertext or any translator or CAT tool.'
+      : SIGN_IN_ONLY.has(item.slug)
+      ? 'Sign in to the add-ins with your Supertext account; no API key is needed.'
       : 'You also need a Supertext account and an API key: generate it at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).',
   ].filter(Boolean);
   items.push({ question: `What do I need to use Supertext with ${s}?`, answer: needs.join(' ') });
@@ -899,6 +904,22 @@ async function renameWordPressSlug(strapi) {
   return true;
 }
 
+/** Microsoft 365's questions said an API key was needed; the add-ins only need a Supertext login. */
+async function microsoft365NoApiKey(strapi) {
+  const seed = require('./seed/integrations').find((i) => i.slug === 'microsoft-365');
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug: 'microsoft-365' }, fields: ['id'] });
+  if (!doc || !seed) return true;
+  await docs.update({ documentId: doc.documentId, locale: 'en', data: { blocks: [integrationFaq(seed)] } });
+  await docs.publish({ documentId: doc.documentId, locale: 'en' });
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+  await store.set({ key: 'autoTranslations', value: state });
+  strapi.log.info('[setup] Microsoft 365 questions: no API key needed');
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -936,6 +957,7 @@ const UPDATES = [
   { id: '2026-11-wpml-release', run: (strapi) => releaseWpml(strapi) },
   { id: '2026-11-microsoft-365', run: (strapi) => liveMicrosoft365(strapi) },
   { id: '2026-11-wordpress-polylang-slug', run: (strapi) => renameWordPressSlug(strapi) },
+  { id: '2026-11-microsoft-365-no-api-key', run: (strapi) => microsoft365NoApiKey(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
