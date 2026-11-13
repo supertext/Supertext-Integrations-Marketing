@@ -36,8 +36,9 @@ export default function Header({ global, locale, t }) {
     <header className={`header${scrolled ? ' scrolled' : ''}`} ref={ref}>
       <div className="container header-inner">
         <Link href={`/${locale}`} className="logo">
-          <span className="logo-dot" aria-hidden="true" />
-          {global?.siteName || 'Supertext'} <small>Integrations</small>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/supertext-logo.svg" alt={global?.siteName || 'Supertext'} width={150} height={27} />
+          <small>Integrations</small>
         </Link>
 
         <nav className="nav" aria-label="Main">

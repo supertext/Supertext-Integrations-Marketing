@@ -9,7 +9,8 @@ export default function Footer({ global, locale, t }) {
       <div className="container footer-inner">
         <div className="footer-cols">
           <div className="footer-brand" style={{ display: 'grid', gap: 16, alignContent: 'start' }}>
-            <span className="logo"><span className="logo-dot" aria-hidden="true" />{global?.siteName || 'Supertext'}</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <span className="logo"><img src="/supertext-logo.svg" alt={global?.siteName || 'Supertext'} width={180} height={32} /></span>
             <Suspense><LanguageSwitcher locale={locale} label={t.language} /></Suspense>
           </div>
           {(global?.footerColumns || []).map((col) => (

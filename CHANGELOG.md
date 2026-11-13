@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- New Supertext look, as on the neo site: ABC Ginto Nord headings, the Supertext wordmark in a dark green header bar, warm off-white cards without borders and 10 px corners, a light announcement bar, the *Most popular* plan with its blue-green label, highlighted words in the dark call-to-action, and a muted green footer card.
 - Favicon: the Supertext icon from Supertext Plugin Health (SVG, plus `favicon.ico`, an Apple touch icon and a 512 px PNG used as the organisation's logo in the structured data).
 - Microsoft 365: the add-ins come with the Supertext Advanced and Enterprise subscriptions, so its page links to supertext.com's subscriptions (*Included in Supertext Advanced*) instead of this site's plans, and the plans no longer offer it as a platform (`web/src/lib/inSubscription.js`).
 - WordPress (Polylang) moved from `/integrations/wordpress` to `/integrations/wordpress-polylang`, next to `/integrations/wordpress-wpml`. Links in articles, pages, the footer and integration texts are rewritten.

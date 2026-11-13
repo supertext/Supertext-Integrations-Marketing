@@ -109,7 +109,7 @@ Railway builds `cms/Dockerfile` and `web/Dockerfile` with the repo root as conte
 ## Known limitations and next steps
 
 - Service plans and prices are placeholders until the offer is final.
-- The heading font is Archivo (wide) standing in for ABC Ginto Nord; switch to the official neo design tokens and font files when they're available (`web/src/app/globals.css`).
+- The look follows the neo Supertext site (home.staging.neo.supertext.com, November 2026): ABC Ginto Nord for headings (`web/public/fonts/ABCGintoNord-Regular.woff2`, the file the neo site serves; Supertext's webfont licence must cover integrations.supertext.com), Inter for text, a dark green header bar hanging from the top edge with the Supertext wordmark (`web/public/supertext-logo.svg`), warm off-white cards (`--solid-white`) on white sections without borders, 10 px corners, mint and dark green pill buttons and a muted green footer card. Tokens are in `web/src/app/globals.css`; Archivo stays as the fallback while the font loads.
 - Integration logos aren't uploaded yet; the site shows initials.
 - The plugin's peer dependency ranges should be relaxed in the plugin repo, so `legacy-peer-deps` can go.
 - Preview across two unrelated domains depends on third-party cookies; run both services under one domain.
