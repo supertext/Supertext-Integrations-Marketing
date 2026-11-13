@@ -25,4 +25,9 @@ module.exports = {
   neos: ['-68a1t90KLw', 'aamHVY3p1Tk'],
   'orchard-core': ['rcKv33Dw_zs', 'AUVNvqxWKwA'],
   'payload-cms': ['gFBQjwhhxVc', 'WXXEUL3yjhM'],
+  prestashop: ['BcTZBzgwYNk', 't6dllmjQeUA'],
+  shopify: ['om2P-mIyajo', 'F3wZXWVsNNs'],
+  silverstripe: ['E4oX_bKpvAg', 'FC8XT57h5Zw'],
+  umbraco: ['qb1VQMNFVmw', 'X3wiNP3XZkc'],
+  wagtail: ['TGILaBW6Jdc', 'YASU2mW4SfM'],
 };
