@@ -450,4 +450,83 @@ Jira, Notion, SharePoint, Intercom, Trados Studio, Gemini and 38 more are open f
 `,
     { title: '54 more systems on the Supertext plugin roadmap' }
   ),
+  article(
+    'wordpress-wpml',
+    '2026-11-14T08:00:00.000Z',
+    'plugins',
+    ['wordpress-wpml'],
+    'Supertext for WordPress with WPML, now with ACF blocks',
+    'The second WordPress plugin: AI translation into your WPML languages from a box in the editor or for many posts at once, professional translation orders and XLIFF files. Version 1.1 also translates ACF blocks.',
+    `
+Most multilingual WordPress sites run on one of two plugins: Polylang or WPML. Supertext has worked with [Polylang](/en/integrations/wordpress-polylang) since October. Now [Supertext for WPML](/en/integrations/wordpress-wpml) is here too, free and open source.
+
+## One click per language
+
+Open a post or page: the **Supertext** box lists your other WPML languages. Click *Translate* next to a language, and a few seconds later the translation is there, as a **draft linked to the original in WPML**. Review it and publish it as usual. *Translate again* replaces a translation, after a warning.
+
+For many posts at once, select them in the Posts or Pages list and choose the bulk action **Supertext AI Translation**. It never overwrites a translation that already exists.
+
+## What is translated
+
+- The title, the content block by block, and the excerpt
+- The custom fields WPML is set to translate, such as the SEO title
+- Categories and tags that have no translation yet
+- YOOtheme Pro layouts
+- **New in 1.1: ACF blocks**, with the text fields in repeaters and groups. With ACF Multilingual, each field's translation preference decides; without it, every text field is translated and switches, numbers, links and images stay as they are.
+
+## Professional translation and your own translators
+
+Some texts need a person. The bulk action **Supertext Human Translation** shows a live price quote for each delivery option; when Supertext delivers, the translation goes into WPML automatically. And if you work with your own agency or CAT tool, export posts as **XLIFF or HTML** and import the translated file.
+
+## Why its own box
+
+WPML has no interface for other machine translation services, so the plugin brings its own box and bulk actions instead of appearing in WPML's translation editor. It is independent of the Polylang plugin: install the one that matches your site.
+
+## Getting started
+
+You need WordPress 6.4 or later with WPML Multilingual CMS and PHP 8.2+. Download the zip from the [latest release on GitHub](https://github.com/Supertext/Wordpress-WPML-Supertext-Translation/releases/latest) and upload it under Plugins → Add New Plugin. No Supertext account yet? [Create one at supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).
+`,
+    { title: 'Translate WordPress with WPML and Supertext, ACF blocks included', description: 'Supertext for WPML: AI translation into your WPML languages, professional translation orders and XLIFF files. Version 1.1 translates ACF blocks too.' }
+  ),
+
+  article(
+    'kotlin-sdk',
+    '2026-11-14T10:00:00.000Z',
+    'plugins',
+    [],
+    'The Supertext SDK for Kotlin',
+    'A sixth language for the Supertext SDKs: Kotlin, with named arguments, data classes and kotlin.time durations, and the same features as the other five.',
+    `
+The [Supertext SDKs](/en/sdk) so far covered TypeScript, PHP, Python, .NET and Java. Kotlin developers could use the Java SDK, but it reads like Java. Now Kotlin has its own SDK.
+
+## Written for Kotlin
+
+- **Named and default arguments** instead of a builder: \`SupertextClient(apiKey, userAgent = "MyApp/1.0")\`
+- **\`kotlin.time.Duration\`** for timings, such as the poll interval
+- **Properties and data classes:** \`e.code\`, \`check.status\`, \`Segment\`, \`TargetLanguage\`
+- **Nullable types** where a value can be missing
+
+## A quick look
+
+\`\`\`kotlin
+val client = SupertextClient(System.getenv("SUPERTEXT_API_KEY"))
+val german = client.translateTexts(
+    mapOf("title" to Segment.text("Hello & welcome"), "body" to Segment.html("<p>Our <b>new</b> shop opens on Monday.</p>")),
+    targetLang = "de-CH",
+    sourceLang = "en",
+)
+\`\`\`
+
+The calls block; from coroutines, run them on an IO dispatcher.
+
+## Same features as the others
+
+Like all Supertext SDKs, it handles the upload format, language codes, rate limits, polling and cleaning up, and it reads and writes XLIFF and HTML translation files. It passes the same test vectors as the other five. The only dependency is the Kotlin standard library; it runs on Java 11 or later and is tested on Java 11, 17, 21 and 25.
+
+## Getting it
+
+The Maven package is \`com.supertext:supertext-sdk-kotlin\`. It isn't on Maven Central yet: build it from the [repository](https://github.com/Supertext/Supertext-API-SDK-Guide/tree/main/sdk/kotlin), or take the jar from the next release. You need a Supertext account and an [API key](https://www.supertext.com/en/integrations/api).
+`,
+    { title: 'Supertext SDK for Kotlin | Supertext' }
+  ),
 ];

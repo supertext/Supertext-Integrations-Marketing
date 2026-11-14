@@ -36,7 +36,7 @@ export async function GET() {
   const lines = [
     '# Supertext integrations',
     '',
-    '> Supertext is a Swiss translation company offering AI translation with optional professional review. Its open source plugins bring Supertext translation into content management systems, PIM systems, online shops, marketing platforms and design tools; SDKs for TypeScript, PHP, Python, .NET and Java cover everything else. All plugins are free; support and localization services are available as subscriptions.',
+    '> Supertext is a Swiss translation company offering AI translation with optional professional review. Its open source plugins bring Supertext translation into content management systems, PIM systems, online shops, marketing platforms and design tools; SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin cover everything else. All plugins are free; support and localization services are available as subscriptions.',
     '',
     'Key facts:',
     '- Translations run on Swiss servers; editors review the results in their own system before publishing.',

@@ -1002,6 +1002,112 @@ async function linkLanguageList(strapi) {
   return true;
 }
 
+/**
+ * The sixth SDK (November 2026): Kotlin next to TypeScript, PHP, Python, .NET and Java on the SDK
+ * page (a card, the title and texts), the start page's SDK section, the announcement and the menu,
+ * in every language. Only the language list changes; editors' other wording stays.
+ */
+async function addKotlinSdk(strapi) {
+  const { populateAll } = require('./translate-site');
+  const RULES = {
+    en: [[/\.NET and Java\b/g, '.NET, Java and Kotlin'], [/\.NET, Java$/, '.NET, Java, Kotlin'], ['Five languages, one API', 'Six languages, one API']],
+    de: [[/\.NET und Java\b/g, '.NET, Java und Kotlin'], [/\.NET, Java$/, '.NET, Java, Kotlin'], ['Fünf Sprachen, eine API', 'Sechs Sprachen, eine API']],
+    fr: [[/\.NET et Java\b/g, '.NET, Java et Kotlin'], [/\.NET, Java$/, '.NET, Java, Kotlin'], ['Cinq langages, une seule API', 'Six langages, une seule API']],
+    it: [[/\.NET e Java\b/g, '.NET, Java e Kotlin'], [/\.NET, Java$/, '.NET, Java, Kotlin'], ['Cinque linguaggi, un’unica API', 'Sei linguaggi, un’unica API']],
+  };
+  const card = sdkPage.blocks.find((b) => b.__component === 'blocks.feature-cards').cards.find((c) => c.title === 'Kotlin');
+  const swap = (value, rules) =>
+    typeof value === 'string'
+      ? rules.reduce((t, [a, b]) => t.replace(a, b), value)
+      : Array.isArray(value)
+        ? value.map((v) => swap(v, rules))
+        : value && typeof value === 'object'
+          ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, swap(v, rules)]))
+          : value;
+  const targets = [
+    [PAGE, { slug: 'sdk' }],
+    [PAGE, { slug: 'home' }],
+    [GLOBAL, null],
+  ];
+  let changed = 0;
+  for (const [uid, filters] of targets) {
+    const attributes = strapi.contentType(uid).attributes;
+    const populate = populateAll(strapi, attributes);
+    const fields = Object.keys(attributes).filter((name) => ['component', 'dynamiczone'].includes(attributes[name].type) || ['string', 'text', 'richtext'].includes(attributes[name].type));
+    for (const locale of Object.keys(RULES)) {
+      const docs = strapi.documents(uid);
+      const draft = await docs.findFirst({ locale, status: 'draft', ...(filters && { filters }), populate });
+      if (!draft) continue;
+      const data = {};
+      for (const name of fields) {
+        if (draft[name] === undefined || draft[name] === null || name === 'slug') continue;
+        const before = stripIds(mediaToIds(draft[name]));
+        let after = swap(before, RULES[locale]);
+        if (name === 'blocks' && Array.isArray(after)) {
+          after = after.map((b) => {
+            const cards = b.__component === 'blocks.feature-cards' ? b.cards || [] : null;
+            if (!cards || !cards.some((c) => /\/sdk\/java$/.test(c.link?.url || '')) || cards.some((c) => /\/sdk\/kotlin$/.test(c.link?.url || ''))) return b;
+            const dict = locale === 'en' ? {} : require(`./seed/translations/${locale}.json`);
+            const java = cards.find((c) => /\/sdk\/java$/.test(c.link.url));
+            return { ...b, cards: [...cards, { ...card, text: dict[card.text] ?? card.text, link: { ...card.link, label: java.link?.label || card.link.label } }] };
+          });
+        }
+        if (JSON.stringify(after) !== JSON.stringify(before)) data[name] = after;
+      }
+      if (!Object.keys(data).length) continue;
+      const live = await docs.findOne({ documentId: draft.documentId, locale, status: 'published', fields: ['updatedAt'] });
+      const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+      await docs.update({ documentId: draft.documentId, locale, data });
+      if (!edited) await docs.publish({ documentId: draft.documentId, locale });
+      changed++;
+    }
+  }
+  strapi.log.info(`[setup] Kotlin SDK added to ${changed} page and site versions`);
+  return true;
+}
+
+/**
+ * WPML 1.1.0 (13 November 2026) translates ACF blocks: a feature line, a mention in the description and
+ * search words; German, French and Italian are queued for the background translation.
+ */
+async function wpmlAcf(strapi) {
+  const seed = require('./seed/integrations').find((i) => i.slug === 'wordpress-wpml');
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug: 'wordpress-wpml' }, populate: ['features'] });
+  if (!doc || !seed) return true;
+  const ACF = 'Translates ACF blocks, repeaters and groups included, following ACF Multilingual\'s field settings';
+  const features = stripIds(doc.features || []);
+  if (!features.some((f) => /ACF/.test(f.text || ''))) {
+    const at = features.findIndex((f) => /custom field settings/.test(f.text || ''));
+    features.splice(at >= 0 ? at : features.length, 0, { text: ACF, included: true });
+  }
+  const description = (doc.description || '').replace('the content block by block, the excerpt,', 'the content block by block (ACF blocks included), the excerpt,');
+  const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+  const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+  await docs.update({ documentId: doc.documentId, locale: 'en', data: { features, description } });
+  if (edited) return true;
+  await docs.publish({ documentId: doc.documentId, locale: 'en' });
+  // searchTerms isn't localized: every language row gets it.
+  const rows = await strapi.db.query(INTEGRATION).findMany({ where: { slug: 'wordpress-wpml' }, select: ['id'], limit: 100 });
+  for (const row of rows) await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { searchTerms: seed.searchTerms } });
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+  await store.set({ key: 'autoTranslations', value: state });
+  strapi.log.info('[setup] WPML: ACF blocks added');
+  return true;
+}
+
+/** News (14 November 2026): WPML with ACF blocks, and the Kotlin SDK. Only these two, so deleted articles stay deleted. */
+async function addNovemberNews(strapi) {
+  const ARTICLE = 'api::article.article';
+  for (const data of require('./seed/news').filter((a) => ['wordpress-wpml', 'kotlin-sdk'].includes(a.slug))) {
+    if (await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: data.slug }, fields: ['id'] })) continue;
+    await strapi.documents(ARTICLE).create({ locale: 'en', data, status: 'published' });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -1043,6 +1149,9 @@ const UPDATES = [
   { id: '2026-11-faq-no-repeats', run: (strapi) => removeRepeatedQuestions(strapi) },
   { id: '2026-11-microsoft-365-questions', run: (strapi) => microsoft365Questions(strapi) },
   { id: '2026-11-language-list-link', run: (strapi) => linkLanguageList(strapi) },
+  { id: '2026-11-kotlin-sdk', run: (strapi) => addKotlinSdk(strapi) },
+  { id: '2026-11-wpml-acf', run: (strapi) => wpmlAcf(strapi) },
+  { id: '2026-11-news-wpml-kotlin', run: (strapi) => addNovemberNews(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

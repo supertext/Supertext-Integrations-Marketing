@@ -20,7 +20,7 @@
   "umbraco": ".NET, C#, NuGet, block list, block grid, backoffice",
   "wagtail": "Django, Python, pip, wagtail-localize, snippets",
   "wordpress-polylang": "WP, Polylang, Polylang Pro, WooCommerce, Gutenberg, blocks, ACF, YOOtheme, Gravity Forms, blog, DeepL alternative",
-  "wordpress-wpml": "WP, WPML, Multilingual CMS, WooCommerce, Gutenberg, blocks, YOOtheme, blog, PTC",
+  "wordpress-wpml": "WP, WPML, Multilingual CMS, WooCommerce, Gutenberg, blocks, ACF, Advanced Custom Fields, ACF Multilingual, YOOtheme, blog, PTC",
   "akeneo-pim": "Akeneo, PIM, product information, products, product models, catalogue, catalog, Katalog, catalogo",
   "atropim": "AtroCore, PIM, product information, products, catalogue, catalog, Katalog",
   "pimcore": "PIM, DAM, data objects, documents, Pimcore Studio, PHP, Symfony",

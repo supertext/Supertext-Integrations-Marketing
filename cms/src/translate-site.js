@@ -237,4 +237,4 @@ async function translateSite(strapi) {
   await reviewTranslations(strapi, state, save);
 }
 
-module.exports = { translateSite, restore, restoreText, reviewedData, applyReviewed, dictionary };
+module.exports = { populateAll, translateSite, restore, restoreText, reviewedData, applyReviewed, dictionary };

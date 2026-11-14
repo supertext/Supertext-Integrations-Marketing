@@ -1123,5 +1123,13 @@
  "Command is Cohere's family of language models for business applications such as agents and search.": "Command est la famille de modèles de langage de Cohere destinée aux applications métier telles que les agents et la recherche.",
  "Aya is Cohere's family of multilingual language models, built to cover many languages.": "Aya est la famille de modèles de langage multilingues de Cohere, conçue pour couvrir de nombreuses langues.",
  "Grok is the AI assistant by xAI, available on the web, in apps and in X.": "Grok est l’assistant IA de xAI, disponible sur le web, dans des applications et dans X.",
- "Snowflake CoWork is Snowflake's personal work agent for knowledge workers, answering questions and taking actions grounded in the company's governed data.": "Snowflake CoWork est l’agent de travail personnel de Snowflake pour les travailleurs du savoir, qui répond aux questions et exécute des actions en s’appuyant sur les données gouvernées de l’entreprise."
+ "Snowflake CoWork is Snowflake's personal work agent for knowledge workers, answering questions and taking actions grounded in the company's governed data.": "Snowflake CoWork est l’agent de travail personnel de Snowflake pour les travailleurs du savoir, qui répond aux questions et exécute des actions en s’appuyant sur les données gouvernées de l’entreprise.",
+ "Build the integration yourself with the Supertext SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin.": "Créez l’intégration vous-même grâce aux SDK Supertext pour TypeScript, PHP, Python, .NET, Java et Kotlin.",
+ "Build your own Supertext integration: SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin, and a guide built from 30+ plugins.": "Créez votre propre intégration Supertext : SDK pour TypeScript, PHP, Python, .NET, Java et Kotlin, et un guide tiré de plus de 30 plugins.",
+ "Build your own integration: TypeScript, PHP, Python, .NET, Java, Kotlin": "Créez votre propre intégration : TypeScript, PHP, Python, .NET, Java, Kotlin",
+ "Six languages, one API": "Six langages, une seule API",
+ "No plugin for your system yet? The Supertext SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin handle the tricky parts of the API, with an integration guide built from more than 30 plugins.": "Pas encore de plugin pour votre système ? Les SDK Supertext pour TypeScript, PHP, Python, .NET, Java et Kotlin prennent en charge les aspects délicats de l’API, avec un guide d’intégration tiré de plus de 30 plugins.",
+ "Supertext SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin, with an integration guide built from 30+ plugins": "SDK Supertext pour TypeScript, PHP, Python, .NET, Java et Kotlin, avec un guide d’intégration tiré de plus de 30 plugins",
+ "Kotlin": "Kotlin",
+ "`com.supertext:supertext-sdk-kotlin (Maven)`\n\nKotlin/JVM on Java 11+; Kotlin standard library only.": "`com.supertext:supertext-sdk-kotlin (Maven)`\n\nKotlin/JVM sur Java 11+ ; uniquement la bibliothèque standard Kotlin."
 }

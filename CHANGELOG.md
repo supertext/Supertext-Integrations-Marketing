@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- News: *Supertext for WordPress with WPML, now with ACF blocks* and *The Supertext SDK for Kotlin* (German, French and Italian through the background translation).
+- The Kotlin SDK joins the list: a card on the SDK page (*Six languages, one API*), and Kotlin in the SDK texts of the start page, the announcement bar, the menu and llms.txt, in all four languages.
+- WordPress (WPML): ACF blocks are listed among the features and in the description (plugin 1.1.0), and ACF, Advanced Custom Fields and ACF Multilingual find it in the integration search.
 - *Which languages are supported?* on every integration page links to Supertext's list of languages (supertext.com FAQ, in the reader's language).
 - Integration pages repeat themselves less: the questions *What do I need to use Supertext with …?* and *What does Supertext translate in …?* are gone (the facts box, *Getting started* and *What Supertext does* already say it), in all four languages. Pages of systems without a plugin no longer ask *How can I translate … today?* when they have a *How to translate … today* section. Microsoft 365's *Is it free?* answer now explains that the add-ins are included in the Advanced and Enterprise subscriptions.
 - Microsoft 365 no longer says an API key is needed: the add-ins only need a Supertext login (*Getting started* and the questions, all four languages).

@@ -15,6 +15,7 @@ const LANGUAGES = [
   ['Python', 'pip install supertext-sdk', 'Python 3.10+; standard library only.', 'python'],
   ['.NET', 'dotnet add package Supertext.Sdk', '.NET 8+.', 'dotnet'],
   ['Java', 'com.supertext:supertext-sdk (Maven)', 'Java 11+; no dependencies.', 'java'],
+  ['Kotlin', 'com.supertext:supertext-sdk-kotlin (Maven)', 'Kotlin/JVM on Java 11+; Kotlin standard library only.', 'kotlin'],
 ];
 
 const sdkPage = {
@@ -22,7 +23,7 @@ const sdkPage = {
   slug: 'sdk',
   seo: {
     metaTitle: 'Translation API SDKs and integration guide | Supertext',
-    metaDescription: 'Build your own Supertext integration: SDKs for TypeScript, PHP, Python, .NET and Java, and a guide built from 30+ plugins.',
+    metaDescription: 'Build your own Supertext integration: SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin, and a guide built from 30+ plugins.',
   },
   blocks: [
     {
@@ -30,13 +31,13 @@ const sdkPage = {
       layout: 'centered',
       eyebrow: 'For developers',
       title: 'Build your own Supertext integration',
-      subtitle: 'No plugin for your system yet? The Supertext SDKs for TypeScript, PHP, Python, .NET and Java handle the tricky parts of the API, with an integration guide built from more than 30 plugins.',
+      subtitle: 'No plugin for your system yet? The Supertext SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin handle the tricky parts of the API, with an integration guide built from more than 30 plugins.',
       primaryCta: link('SDKs on GitHub', SDK_REPO, 'primary', true),
       secondaryCta: link('Read the integration guide', GUIDE, 'secondary', true),
     },
     {
       __component: 'blocks.feature-cards',
-      title: 'Five languages, one API',
+      title: 'Six languages, one API',
       subtitle: 'All SDKs offer the same features, named the way each language expects.',
       columns: 'three',
       cards: LANGUAGES.map(([title, install, requirements, dir]) => ({
@@ -92,7 +93,7 @@ const homeSdkBlock = {
   __component: 'blocks.cta-band',
   tone: 'light',
   title: 'Your system isn’t listed?',
-  text: 'Build the integration yourself with the Supertext SDKs for TypeScript, PHP, Python, .NET and Java.',
+  text: 'Build the integration yourself with the Supertext SDKs for TypeScript, PHP, Python, .NET, Java and Kotlin.',
   primaryCta: link('See the SDKs', '/en/sdk'),
   secondaryCta: link('SDKs on GitHub', SDK_REPO, 'secondary', true),
 };
