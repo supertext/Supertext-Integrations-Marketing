@@ -30,4 +30,5 @@ module.exports = {
   silverstripe: ['E4oX_bKpvAg', 'FC8XT57h5Zw'],
   umbraco: ['qb1VQMNFVmw', 'X3wiNP3XZkc'],
   wagtail: ['TGILaBW6Jdc', 'YASU2mW4SfM'],
+  wix: ['JN6_eBphirU', 'Wc6ilpXicVo'],
 };
