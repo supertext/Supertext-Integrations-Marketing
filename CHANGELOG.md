@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Integration pages repeat themselves less: the questions *What do I need to use Supertext with …?* and *What does Supertext translate in …?* are gone (the facts box, *Getting started* and *What Supertext does* already say it), in all four languages. Microsoft 365's *Is it free?* answer now explains that the add-ins are included in the Advanced and Enterprise subscriptions.
 - Microsoft 365 no longer says an API key is needed: the add-ins only need a Supertext login (*Getting started* and the questions, all four languages).
 - Fixed: on integration, translation-file, news and support pages the content started flush with the end of the warm page header; it now starts on white with space above.
 - Header as on supertext.com: *Get your API key* before *Login*, and a hamburger menu on every screen size with the same content as supertext.com's (promo card, Translator, Subscriptions, Enterprise, Contact, the company pages; `web/src/lib/supertextMenu.js`, four languages), this site's own pages on small screens, the login and the language switcher (no longer in the header bar). The announcement bar is light mint so it stands out from the page.

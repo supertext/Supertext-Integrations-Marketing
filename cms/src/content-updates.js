@@ -223,28 +223,16 @@ async function seoPages(strapi) {
   return true;
 }
 
-/** Integrations used with a Supertext login instead of an API key (the Office add-ins). */
-const SIGN_IN_ONLY = new Set(['microsoft-365']);
+/** Integrations that come with a Supertext subscription and a login, not an open-source plugin and an API key. */
+const IN_SUBSCRIPTION = new Set(['microsoft-365']);
 
 /** Questions for an integration's page, built from its own fields. */
 function integrationFaq(item) {
   const s = item.system;
   const design = item.category === 'design';
-  const list = (item.features || []).map((f) => f.text.replace(/\.$/, '')).filter(Boolean);
   const items = [];
-  const needs = [
-    item.supportedVersions && `${item.supportedVersions}.`,
-    item.integrationType && `Type of integration: ${item.integrationType.replace(/\.?$/, '.')}`,
-    design
-      ? 'No Supertext account is needed for the XLIFF export and import itself; send the file to Supertext or any translator or CAT tool.'
-      : SIGN_IN_ONLY.has(item.slug)
-      ? 'Sign in to the add-ins with your Supertext account; no API key is needed.'
-      : 'You also need a Supertext account and an API key: generate it at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).',
-  ].filter(Boolean);
-  items.push({ question: `What do I need to use Supertext with ${s}?`, answer: needs.join(' ') });
-  if (list.length) {
-    items.push({ question: `What does Supertext translate in ${s}?`, answer: list.map((f) => `- ${f}`).join('\n') });
-  }
+  // "What do I need to use Supertext with X?" and "What does Supertext translate in X?" repeated the facts
+  // box, Getting started and "What Supertext does" on the same page, so they aren't asked (removeRepeatedQuestions).
   items.push(
     design
       ? { question: 'Which languages are supported?', answer: 'Any language: the XLIFF 1.2 files work with every CAT tool and translator, and the import puts the translated text back with its formatting.' }
@@ -253,6 +241,13 @@ function integrationFaq(item) {
           answer: `All Supertext languages, with regional variants such as Swiss German (de-CH), French (fr-CH) and Italian (it-CH) and, where the language has one, formal or informal address. Editors review the result in ${s} before publishing.`,
         }
   );
+  if (IN_SUBSCRIPTION.has(item.slug)) {
+    items.push({
+      question: `Is the ${s} integration free?`,
+      answer: 'The add-ins are free to install from Microsoft Marketplace. Translating with them is included in the Supertext Advanced and Enterprise [subscriptions](https://www.supertext.com/en/subscriptions); you sign in with your Supertext account, no API key needed.',
+    });
+    return { __component: 'blocks.faq', title: `Questions about Supertext for ${s}`, items };
+  }
   items.push({
     question: `Is the ${s} plugin free?`,
     answer: [
@@ -920,6 +915,49 @@ async function microsoft365NoApiKey(strapi) {
   return true;
 }
 
+/** Microsoft 365's questions without the repeats, and "free" answered for an integration in a subscription. */
+const microsoft365Questions = (strapi) => microsoft365NoApiKey(strapi);
+
+/**
+ * The generated questions repeated the page (November 2026): "What do I need to use Supertext with X?" (the
+ * facts box and Getting started) and "What does Supertext translate in X?" (What Supertext does). Removed
+ * from every integration in every language; the other questions stay. Languages other than English are
+ * matched by position, and only where their questions line up with the English ones.
+ */
+async function removeRepeatedQuestions(strapi) {
+  const zone = strapi.contentType(INTEGRATION).attributes.blocks.components;
+  const populate = { blocks: { on: Object.fromEntries(zone.map((uid) => [uid, { populate: '*' }])) } };
+  const docs = strapi.documents(INTEGRATION);
+  const REPEATED = [/^What do I need to use Supertext with /, /^What does Supertext translate in /];
+  const english = await docs.findMany({ locale: 'en', status: 'draft', populate, limit: 500 });
+  let changed = 0;
+  for (const en of english) {
+    if (IN_SUBSCRIPTION.has(en.slug)) continue; // rebuilt by microsoft365Questions
+    const faqIndex = (en.blocks || []).findIndex((b) => b.__component === 'blocks.faq' && /^Questions about Supertext for /.test(b.title || ''));
+    if (faqIndex < 0) continue;
+    const enItems = en.blocks[faqIndex].items || [];
+    const drop = enItems.map((item, i) => (REPEATED.some((r) => r.test(item.question || '')) ? i : -1)).filter((i) => i >= 0);
+    if (!drop.length) continue;
+    for (const locale of ['en', 'de', 'fr', 'it']) {
+      const draft = locale === 'en' ? en : await docs.findOne({ documentId: en.documentId, locale, status: 'draft', populate });
+      if (!draft) continue;
+      const faq = (draft.blocks || [])[faqIndex];
+      if (!faq || faq.__component !== 'blocks.faq' || (faq.items || []).length !== enItems.length) {
+        strapi.log.warn(`[setup] ${en.slug} (${locale}): questions don't line up with English, left as they are`);
+        continue;
+      }
+      const published = await docs.findOne({ documentId: en.documentId, locale, status: 'published', fields: ['updatedAt'] });
+      const edited = !published || new Date(draft.updatedAt) - new Date(published.updatedAt) > 1000;
+      const blocks = stripIds(mediaToIds(draft.blocks)).map((b, i) => (i === faqIndex ? { ...b, items: b.items.filter((_, j) => !drop.includes(j)) } : b));
+      await docs.update({ documentId: en.documentId, locale, data: { blocks } });
+      if (!edited) await docs.publish({ documentId: en.documentId, locale });
+      changed++;
+    }
+  }
+  strapi.log.info(`[setup] Removed the repeated questions from ${changed} integration versions`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -958,6 +996,8 @@ const UPDATES = [
   { id: '2026-11-microsoft-365', run: (strapi) => liveMicrosoft365(strapi) },
   { id: '2026-11-wordpress-polylang-slug', run: (strapi) => renameWordPressSlug(strapi) },
   { id: '2026-11-microsoft-365-no-api-key', run: (strapi) => microsoft365NoApiKey(strapi) },
+  { id: '2026-11-faq-no-repeats', run: (strapi) => removeRepeatedQuestions(strapi) },
+  { id: '2026-11-microsoft-365-questions', run: (strapi) => microsoft365Questions(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
