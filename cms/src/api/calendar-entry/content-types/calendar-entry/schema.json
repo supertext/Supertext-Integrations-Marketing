@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "calendar_entries",
+  "info": {
+    "singularName": "calendar-entry",
+    "pluralName": "calendar-entries",
+    "displayName": "Calendar entry",
+    "description": "Editorial calendar (admin only, never on the site): a news post or an improvement to the site, as an idea, in progress or done. Draft news articles count as in progress by themselves. Shown on the Editorial calendar page. (\"status\" is reserved by Strapi, hence \"stage\".)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "news",
+        "improvement"
+      ],
+      "default": "news",
+      "required": true
+    },
+    "stage": {
+      "type": "enumeration",
+      "enum": [
+        "idea",
+        "in_progress",
+        "done"
+      ],
+      "default": "idea",
+      "required": true
+    },
+    "date": {
+      "type": "date"
+    },
+    "notes": {
+      "type": "text"
+    }
+  }
+}

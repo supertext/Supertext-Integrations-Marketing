@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Editorial calendar in the CMS admin (editors only, never on the site): ideas and work in progress for news posts and improvements, draft and scheduled articles with their languages, and what is done. Starts with the open points of November 2026.
 - Systems show their own icon instead of initials wherever one is available (47 systems: WordPress, TYPO3, Shopify, Mailchimp, Figma …) on integration cards and pages, the roadmap, news and statistics; the others keep their initials.
 - News: *Supertext for WordPress with WPML, now with ACF blocks* and *The Supertext SDK for Kotlin* (German, French and Italian through the background translation).
 - The Kotlin SDK joins the list: a card on the SDK page (*Six languages, one API*), and Kotlin in the SDK texts of the start page, the announcement bar, the menu and llms.txt, in all four languages.

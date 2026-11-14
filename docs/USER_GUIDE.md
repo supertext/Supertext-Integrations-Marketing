@@ -80,6 +80,17 @@ Visitors ask questions, report problems or suggest ideas on the **Support** page
 
 **News article** entries make up `/news` (menu "News", footer, RSS feed per language at `/<lang>/news/feed.xml`). Fields: *title*, *excerpt* (the teaser on the card and the lead of the article), *body* (Markdown), *date* (sorts the list; shown on the article; **a date in the future schedules the article**: published in Strapi, it stays off the website, the feed and the sitemap until that minute, and the preview shows it before), *category* (`plugins`, `guides`, `website`, `roadmap`: the filter on the list), *systems* (integration slugs, comma-separated, e.g. `typo3,contao`: their logos or screenshot on the card and their cards below the article) and an optional *cover* image (otherwise the first system's screenshot, else the logos). Links to `/en/...` are adapted to the reader's language. New articles are translated like other content after the next start; publish the language versions you have checked.
 
+## Editorial calendar
+
+*Editorial calendar* in the admin's main menu (calendar icon) is the plan for news posts and improvements to the site. Only signed-in editors see it; nothing on it is public.
+
+- **Ideas** and **In progress** side by side. *New idea* creates a calendar entry: a title, the type (*news* or *improvement*), the stage (*idea*, *in progress* or *done*), a date if there is one, and notes. Move it along by changing its stage; *done* moves it to the list at the bottom.
+- Draft news articles show up under *In progress* by themselves, with the languages they have so far (green: published, orange: published with unpublished changes, grey: draft).
+- **Scheduled articles**: published with a date still to come. The site shows them from that date.
+- **Done and published**: finished entries and published articles, newest first.
+
+Click a title to open it.
+
 ## Roadmap page
 
 The page **roadmap** (`/roadmap`, linked in the footer and below every integration grid) is built by its *Roadmap* block from the integrations' *stage*: **In development** (`in_development`), **On the roadmap** (`roadmap`, with a "Request the plugin" link and the request count) and **Request a plugin** (`request`, grouped by category, most-requested first), plus plugins released in the last four months. *Roadmap items* (their own content type) add things that aren't integrations, in the column of their *phase* (`now`, `next`, `later`); three are prepared as drafts: publish the ones you want to show. To move a system along, change its *stage* and publish.

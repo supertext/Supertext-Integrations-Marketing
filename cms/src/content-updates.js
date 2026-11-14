@@ -1136,6 +1136,28 @@ async function addKotlinCard(strapi) {
   return true;
 }
 
+/** Editorial calendar (November 2026): the open points of the time as its first entries (only into an empty calendar). */
+async function seedCalendar(strapi) {
+  const ENTRY = 'api::calendar-entry.calendar-entry';
+  if (await strapi.documents(ENTRY).count()) return true;
+  const entries = [
+    ['improvement', 'in_progress', 'Kotlin SDK: first release', 'Built and on the site (SDK page, news article), but still under Unreleased in the SDK changelog. Release the next SDK version so the jar is attached.'],
+    ['improvement', 'idea', 'SDK page: new minimum versions after the next SDK release', 'Next release needs Node 22+, PHP 8.2+, Python 3.11+, .NET 10; the cards still show 0.5.0 (Node 18, PHP 8.1, Python 3.10, .NET 8). The Getting started box links the old repo name (redirects).'],
+    ['news', 'idea', 'News: SDK 0.6 – corrections from reviewers', 'pendingCorrections/acknowledgeCorrections in all six SDKs, for Supertext Localization Review. When the release is out.'],
+    ['improvement', 'idea', 'German comparison "wpml-alternative": rewrite or drop', 'The draft compares Supertext with WPML as an alternative; now there is a Supertext plugin for WPML.'],
+    ['improvement', 'idea', 'Logos for systems without an icon', 'AEM, Magento, Akeneo, Neos, Silverstripe, Magnolia, Microsoft 365, Adobe tools … show initials. Upload official logos in the integration (field Logo).'],
+    ['improvement', 'idea', 'Confirm the Ginto Nord webfont licence', 'The site uses ABC Ginto Nord like the new supertext.com; the licence must cover integrations.supertext.com.'],
+    ['improvement', 'idea', 'Support: email sending and AI triage', 'Set the SendGrid/SMTP variables on the cms service, GITHUB_WEBHOOK_SECRET and the webhook, and the ANTHROPIC_API_KEY org secret.'],
+    ['improvement', 'idea', 'Statistics: stop counting local test installs', 'Turn off "includeLocal" on the statistics block once enough real installations report.'],
+    ['improvement', 'idea', 'WPML repo README: status still says 1.0.0', 'Version 1.1.0 is released.'],
+  ];
+  for (const [type, stage, title, notes] of entries) {
+    await strapi.documents(ENTRY).create({ data: { type, stage, title, notes } });
+  }
+  strapi.log.info(`[setup] Editorial calendar: ${entries.length} first entries`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -1181,6 +1203,7 @@ const UPDATES = [
   { id: '2026-11-wpml-acf', run: (strapi) => wpmlAcf(strapi) },
   { id: '2026-11-news-wpml-kotlin', run: (strapi) => addNovemberNews(strapi) },
   { id: '2026-11-kotlin-card', run: (strapi) => addKotlinCard(strapi) },
+  { id: '2026-11-editorial-calendar', run: (strapi) => seedCalendar(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
