@@ -1108,6 +1108,34 @@ async function addNovemberNews(strapi) {
   return true;
 }
 
+/** The Kotlin card on the SDK page (follow-up: the live cards have no links, so the card is found by its title). */
+async function addKotlinCard(strapi) {
+  const { populateAll } = require('./translate-site');
+  const seedCard = sdkPage.blocks.find((b) => b.__component === 'blocks.feature-cards').cards.find((c) => c.title === 'Kotlin');
+  const docs = strapi.documents(PAGE);
+  const populate = populateAll(strapi, strapi.contentType(PAGE).attributes);
+  for (const locale of ['en', 'de', 'fr', 'it']) {
+    const draft = await docs.findFirst({ locale, status: 'draft', filters: { slug: 'sdk' }, populate });
+    if (!draft) continue;
+    const dict = locale === 'en' ? {} : require(`./seed/translations/${locale}.json`);
+    let touched = false;
+    const blocks = stripIds(mediaToIds(draft.blocks || [])).map((b) => {
+      const cards = b.__component === 'blocks.feature-cards' ? b.cards || [] : null;
+      if (!cards || !cards.some((c) => c.title === 'Java') || cards.some((c) => c.title === 'Kotlin')) return b;
+      const java = cards.find((c) => c.title === 'Java');
+      const card = { ...java, title: 'Kotlin', text: dict[seedCard.text] ?? seedCard.text };
+      touched = true;
+      return { ...b, cards: [...cards, card] };
+    });
+    if (!touched) continue;
+    const live = await docs.findOne({ documentId: draft.documentId, locale, status: 'published', fields: ['updatedAt'] });
+    const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+    await docs.update({ documentId: draft.documentId, locale, data: { blocks } });
+    if (!edited) await docs.publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -1152,6 +1180,7 @@ const UPDATES = [
   { id: '2026-11-kotlin-sdk', run: (strapi) => addKotlinSdk(strapi) },
   { id: '2026-11-wpml-acf', run: (strapi) => wpmlAcf(strapi) },
   { id: '2026-11-news-wpml-kotlin', run: (strapi) => addNovemberNews(strapi) },
+  { id: '2026-11-kotlin-card', run: (strapi) => addKotlinCard(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
