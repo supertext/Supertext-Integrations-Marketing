@@ -29,9 +29,11 @@ export default function PlannedIntegration({ item, locale, t, all, requests = 0 
   const today = item.translateToday || '';
   const lead = today.split(/\n\s*\n/)[0];
   const steps = today.split('\n').filter((line) => /^\d+\.\s/.test(line)).map((line) => plainText(line.replace(/^\d+\.\s+/, '')));
+  // "How can I translate it today?" is only asked when the page has no "How to translate … today" section,
+  // which would say the same thing.
   const faq = [
     [format(t, 'plannedFaqExists', system), roadmap ? t.plannedFaqExistsRoadmap : t.plannedFaqExistsRequest],
-    [format(t, 'plannedFaqToday', system), today ? plainText(lead) : format(t, 'plannedFaqTodayAnswer', system)],
+    ...(today ? [] : [[format(t, 'plannedFaqToday', system), format(t, 'plannedFaqTodayAnswer', system)]]),
   ];
   const jsonLd = {
     '@context': 'https://schema.org',
