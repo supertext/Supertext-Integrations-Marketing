@@ -38,6 +38,7 @@ Generate each secret with `openssl rand -base64 32`. Never commit values; they l
 | `CLIENT_URL` | Public URL of the website. The preview pane and CORS allow only this origin. |
 | `PREVIEW_SECRET` | Shared with `web`; turns on the preview pane |
 | `STRAPI_API_TOKEN` | Shared with `web`. On every start it becomes the key of the read-only API token "web". |
+| `EDITORIAL_CALENDAR_TOKEN` | Optional. Reads the editorial calendar (`GET /api/editorial-calendar`) and nothing else, for planning with Claude. 24+ characters, e.g. `openssl rand -hex 24`. |
 | `DEMO_ADMIN_EMAIL`, `DEMO_ADMIN_PASSWORD` | Super Admin, created on start if it doesn't exist |
 | `DEMO_EDITOR_EMAIL`, `DEMO_EDITOR_PASSWORD` | Editor with access to all four languages, created on start if it doesn't exist |
 | `SUPERTEXT_API_KEY` | Supertext API key for the Translate panel (see below) |
