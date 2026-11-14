@@ -73,7 +73,7 @@ export default function PlannedIntegration({ item, locale, t, all, requests = 0 
             <Link href={`/${locale}/integrations`} className="btn btn-text">← {t.allIntegrations}</Link>
           </p>
           <div className="integration-hero">
-            <Mark name={item.system} logo={item.logoUrl} large />
+            <Mark slug={item.slug} name={item.system} logo={item.logoUrl} large />
             <div style={{ display: 'grid', gap: 16 }}>
               <h1 className="display">
                 <span className="h1-kicker">{t.integrationHeading}</span> {item.system}

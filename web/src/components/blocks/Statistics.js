@@ -149,7 +149,7 @@ function Adoption({ health, integrations, locale, t, min, nf, showSmall }) {
                   <th scope="row" data-label={t.statsColPlugin}>
                     {p.integration ? (
                       <Link href={`/${locale}/integrations/${p.integration.slug}`} className="stats-system">
-                        <Mark name={name} logo={p.integration.logoUrl} />
+                        <Mark slug={p.integration.slug} name={name} logo={p.integration.logoUrl} />
                         {name}
                       </Link>
                     ) : (
@@ -232,7 +232,7 @@ function Pace({ integrations, repos, locale, t, nf }) {
                   <tr key={i.slug}>
                     <th scope="row">
                       <Link href={`/${locale}/integrations/${i.slug}`} className="stats-system">
-                        <Mark name={i.system} logo={i.logoUrl} />
+                        <Mark slug={i.slug} name={i.system} logo={i.logoUrl} />
                         {i.system}
                       </Link>
                     </th>

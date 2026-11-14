@@ -76,7 +76,7 @@ export default async function FilesPage({ params }) {
             <Link href={`/${locale}/integrations/${slug}`} className="btn btn-text">← {format(t, 'filesBack', { system: item.system })}</Link>
           </p>
           <div className="integration-hero">
-            <Mark name={item.system} logo={mediaUrl(item.logo)} large />
+            <Mark slug={item.slug} name={item.system} logo={mediaUrl(item.logo)} large />
             <div style={{ display: 'grid', gap: 16 }}>
               <h1 className="display">
                 <span className="h1-kicker">{kicker}</span> {item.system}

@@ -27,13 +27,13 @@ export default function NewsCard({ article, locale, t, systems = [], featured = 
             <Image src={cover.src} alt="" width={cover.width} height={cover.height} sizes="(max-width: 720px) 100vw, 600px" />
             {marks.length > 1 && (
               <span className="news-marks overlay">
-                {marks.slice(0, 6).map((m) => <Mark key={m.slug} name={m.system} logo={m.logoUrl} />)}
+                {marks.slice(0, 6).map((m) => <Mark key={m.slug} slug={m.slug} name={m.system} logo={m.logoUrl} />)}
               </span>
             )}
           </>
         ) : marks.length ? (
           <span className="news-marks">
-            {marks.slice(0, 6).map((m) => <Mark key={m.slug} name={m.system} logo={m.logoUrl} large={marks.length <= 3} />)}
+            {marks.slice(0, 6).map((m) => <Mark key={m.slug} slug={m.slug} name={m.system} logo={m.logoUrl} large={marks.length <= 3} />)}
           </span>
         ) : (
           <span className="news-word">{t[`newsCat_${article.category}`]}</span>

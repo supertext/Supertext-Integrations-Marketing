@@ -139,7 +139,7 @@ export default async function IntegrationPage({ params }) {
             <Link href={`/${locale}/integrations`} className="btn btn-text">← {t.allIntegrations}</Link>
           </p>
           <div className="integration-hero">
-            <Mark name={item.system} logo={mediaUrl(item.logo)} large />
+            <Mark slug={item.slug} name={item.system} logo={mediaUrl(item.logo)} large />
             <div style={{ display: 'grid', gap: 16 }}>
               <h1 className="display">
                 <span className="h1-kicker">{t.integrationHeading}</span> {item.system}

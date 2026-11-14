@@ -15,7 +15,7 @@ function SystemCard({ item, count, locale, t }) {
   return (
     <li id={item.slug} className="tile roadmap-card">
       <div className="integration-top">
-        <Mark name={item.system} logo={item.logoUrl} />
+        <Mark slug={item.slug} name={item.system} logo={item.logoUrl} />
         <div>
           <h3><Link href={`/${locale}/integrations/${item.slug}`}>{item.system}</Link></h3>
           <span className="roadmap-category">{t[`category_${item.category}`]}</span>
@@ -99,7 +99,7 @@ export default async function Roadmap({ block, integrations, locale, t }) {
               {released.map((i) => (
                 <li key={i.slug}>
                   <Link href={`/${locale}/integrations/${i.slug}`} className="released">
-                    <Mark name={i.system} logo={i.logoUrl} />
+                    <Mark slug={i.slug} name={i.system} logo={i.logoUrl} />
                     <span>
                       <strong>{i.system}</strong> <span className="tag version">v{i.release.version}</span>
                       <small>{format(t, 'releasedOn', { date: date(i.release.releasedAt) })}</small>

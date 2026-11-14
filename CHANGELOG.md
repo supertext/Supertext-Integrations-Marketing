@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Systems show their own icon instead of initials wherever one is available (47 systems: WordPress, TYPO3, Shopify, Mailchimp, Figma …) on integration cards and pages, the roadmap, news and statistics; the others keep their initials.
 - News: *Supertext for WordPress with WPML, now with ACF blocks* and *The Supertext SDK for Kotlin* (German, French and Italian through the background translation).
 - The Kotlin SDK joins the list: a card on the SDK page (*Six languages, one API*), and Kotlin in the SDK texts of the start page, the announcement bar, the menu and llms.txt, in all four languages.
 - WordPress (WPML): ACF blocks are listed among the features and in the description (plugin 1.1.0), and ACF, Advanced Custom Fields and ACF Multilingual find it in the integration search.

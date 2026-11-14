@@ -23,12 +23,12 @@ export default function IntegrationCard({ item, locale, t, search }) {
           />
         ) : (
           <span className="shot-placeholder">
-            <Mark name={item.system} logo={item.logoUrl} large />
+            <Mark slug={item.slug} name={item.system} logo={item.logoUrl} large />
           </span>
         )}
       </div>
       <div className="integration-top">
-        <Mark name={item.system} logo={item.logoUrl} />
+        <Mark slug={item.slug} name={item.system} logo={item.logoUrl} />
         <h3>{item.system}</h3>
       </div>
       <div className="integration-text">
