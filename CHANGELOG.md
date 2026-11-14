@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- *Which languages are supported?* on every integration page links to Supertext's list of languages (supertext.com FAQ, in the reader's language).
 - Integration pages repeat themselves less: the questions *What do I need to use Supertext with …?* and *What does Supertext translate in …?* are gone (the facts box, *Getting started* and *What Supertext does* already say it), in all four languages. Pages of systems without a plugin no longer ask *How can I translate … today?* when they have a *How to translate … today* section. Microsoft 365's *Is it free?* answer now explains that the add-ins are included in the Advanced and Enterprise subscriptions.
 - Microsoft 365 no longer says an API key is needed: the add-ins only need a Supertext login (*Getting started* and the questions, all four languages).
 - Fixed: on integration, translation-file, news and support pages the content started flush with the end of the warm page header; it now starts on white with space above.

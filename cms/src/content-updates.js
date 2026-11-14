@@ -223,6 +223,14 @@ async function seoPages(strapi) {
   return true;
 }
 
+/** Supertext's list of languages (its FAQ, "Which languages does Supertext translate into?"), one link per language. */
+const LANGUAGE_LIST = {
+  en: '[See all languages on supertext.com](https://www.supertext.com/en/faq).',
+  de: '[Alle Sprachen auf supertext.com](https://www.supertext.com/de-CH/faq).',
+  fr: '[Toutes les langues sur supertext.com](https://www.supertext.com/fr/foire-aux-questions).',
+  it: '[Tutte le lingue su supertext.com](https://www.supertext.com/it/domande-frequenti).',
+};
+
 /** Integrations that come with a Supertext subscription and a login, not an open-source plugin and an API key. */
 const IN_SUBSCRIPTION = new Set(['microsoft-365']);
 
@@ -238,7 +246,7 @@ function integrationFaq(item) {
       ? { question: 'Which languages are supported?', answer: 'Any language: the XLIFF 1.2 files work with every CAT tool and translator, and the import puts the translated text back with its formatting.' }
       : {
           question: 'Which languages are supported?',
-          answer: `All Supertext languages, with regional variants such as Swiss German (de-CH), French (fr-CH) and Italian (it-CH) and, where the language has one, formal or informal address. Editors review the result in ${s} before publishing.`,
+          answer: `All Supertext languages, with regional variants such as Swiss German (de-CH), French (fr-CH) and Italian (it-CH) and, where the language has one, formal or informal address. Editors review the result in ${s} before publishing. ${LANGUAGE_LIST.en}`,
         }
   );
   if (IN_SUBSCRIPTION.has(item.slug)) {
@@ -958,6 +966,42 @@ async function removeRepeatedQuestions(strapi) {
   return true;
 }
 
+/**
+ * "Which languages are supported?" links to Supertext's list of languages (November 2026), in every
+ * integration and every language. The question is found by its answer, which names de-CH in every language.
+ */
+async function linkLanguageList(strapi) {
+  const zone = strapi.contentType(INTEGRATION).attributes.blocks.components;
+  const populate = { blocks: { on: Object.fromEntries(zone.map((uid) => [uid, { populate: '*' }])) } };
+  const docs = strapi.documents(INTEGRATION);
+  let changed = 0;
+  for (const locale of ['en', 'de', 'fr', 'it']) {
+    const drafts = await docs.findMany({ locale, status: 'draft', populate, limit: 500 });
+    for (const draft of drafts) {
+      let touched = false;
+      const blocks = stripIds(mediaToIds(draft.blocks || [])).map((b) => {
+        if (b.__component !== 'blocks.faq') return b;
+        return {
+          ...b,
+          items: (b.items || []).map((item) => {
+            if (!/de-CH/.test(item.answer || '') || /supertext\.com\/(en|de-CH|fr|it)\/(faq|foire|domande)/.test(item.answer)) return item;
+            touched = true;
+            return { ...item, answer: `${item.answer.trim()} ${LANGUAGE_LIST[locale]}` };
+          }),
+        };
+      });
+      if (!touched) continue;
+      const published = await docs.findOne({ documentId: draft.documentId, locale, status: 'published', fields: ['updatedAt'] });
+      const edited = !published || new Date(draft.updatedAt) - new Date(published.updatedAt) > 1000;
+      await docs.update({ documentId: draft.documentId, locale, data: { blocks } });
+      if (!edited) await docs.publish({ documentId: draft.documentId, locale });
+      changed++;
+    }
+  }
+  strapi.log.info(`[setup] Linked the language list in ${changed} integration versions`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -998,6 +1042,7 @@ const UPDATES = [
   { id: '2026-11-microsoft-365-no-api-key', run: (strapi) => microsoft365NoApiKey(strapi) },
   { id: '2026-11-faq-no-repeats', run: (strapi) => removeRepeatedQuestions(strapi) },
   { id: '2026-11-microsoft-365-questions', run: (strapi) => microsoft365Questions(strapi) },
+  { id: '2026-11-language-list-link', run: (strapi) => linkLanguageList(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
