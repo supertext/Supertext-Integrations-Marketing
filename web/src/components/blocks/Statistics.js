@@ -54,7 +54,7 @@ function Stat({ value, label, note }) {
 /** Running total per month as columns; the last month is the current one. */
 function GrowthChart({ points, locale, title }) {
   const max = Math.max(...points.map((p) => p.total), 1);
-  const month = (m) => new Intl.DateTimeFormat(`${locale}-CH`, { month: 'short', year: '2-digit', timeZone: 'UTC' }).format(new Date(`${m}-01T00:00:00Z`));
+  const month = (m) => new Intl.DateTimeFormat(`${locale}-CH`, { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${m}-01T00:00:00Z`));
   const shown = points.slice(-18);
   return (
     <figure className="tile stats-growth">
