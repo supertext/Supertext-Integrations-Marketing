@@ -16,12 +16,12 @@ const link = (label, url, style = 'primary', newTab = false) => ({ label, url, s
 // ——— The Swiss German page ———
 
 const swissGermanEn = {
-  title: 'German (Switzerland) and Swiss German',
+  title: 'Swiss Standard German and Swiss German',
   slug: 'swiss-german',
   seo: {
-    metaTitle: 'Translate into German (Switzerland) and Swiss German',
+    metaTitle: 'Translate into Swiss Standard German and Swiss German',
     metaDescription:
-      'German (Switzerland) is not German from Germany: no ß, Swiss words, CHF and 1’000. How Supertext translates websites, shops and products for Switzerland.',
+      'Swiss Standard German is not German from Germany: no ß, Swiss words, CHF and 1’000. How Supertext translates websites, shops and products for Switzerland.',
   },
   blocks: [
     {
@@ -30,7 +30,7 @@ const swissGermanEn = {
       eyebrow: 'Made in Switzerland',
       title: 'Translations that sound Swiss',
       subtitle:
-        'German (Switzerland), Swiss French and Swiss Italian, even Swiss German dialect (Zurich and Bernese German): Supertext AI writes the way Switzerland reads, right inside your CMS, shop or PIM.',
+        'Swiss Standard German, Swiss French and Swiss Italian, even Swiss German dialect (Zurich and Bernese German): Supertext AI writes the way Switzerland reads, right inside your CMS, shop or PIM.',
       primaryCta: link('Browse integrations', '/en/integrations'),
       secondaryCta: link('Get your API key', API_KEY_URL, 'secondary', true),
     },
@@ -38,9 +38,9 @@ const swissGermanEn = {
       __component: 'blocks.rich-text',
       width: 'narrow',
       body: [
-        '## German (Switzerland) is not German from Germany',
+        '## Swiss Standard German is not German from Germany',
         '',
-        'Websites in German-speaking Switzerland are written in **German (Switzerland)** (*Deutsch (Schweiz)*, language code **de-CH**). It is standard German, but readers notice straight away when a text was written for Germany:',
+        'Websites in German-speaking Switzerland are written in **Swiss Standard German** (*Schweizer Hochdeutsch*, language code **de-CH**). It is standard German, but readers notice straight away when a text was written for Germany:',
         '',
         '- **No ß:** Switzerland writes *Strasse*, *gross* and *Grüsse*, never *Straße*, *groß* or *Grüße*.',
         '- **Swiss words:** *Velo* instead of *Fahrrad*, *parkieren* instead of *parken*, *Spital* instead of *Krankenhaus*, *Rahm* instead of *Sahne*, *Billett* instead of *Fahrkarte*.',
@@ -75,14 +75,14 @@ const swissGermanEn = {
       body: [
         '## In your system, in de-CH',
         '',
-        'The Supertext plugins translate where your content lives. Set the target language to **de-CH** once, and every translation is written in German (Switzerland):',
+        'The Supertext plugins translate where your content lives. Set the target language to **de-CH** once, and every translation is written in Swiss Standard German:',
         '',
         '- **CMS:** [TYPO3](/en/integrations/typo3), [WordPress](/en/integrations/wordpress-polylang), [Drupal](/en/integrations/drupal), [Contao](/en/integrations/contao), [Joomla](/en/integrations/joomla), [Neos](/en/integrations/neos), [Craft CMS](/en/integrations/craft-cms), [Strapi](/en/integrations/strapi) and [more](/en/integrations?category=cms)',
         '- **Shops:** [Shopify](/en/integrations/shopify), [Magento](/en/integrations/magento), [PrestaShop](/en/integrations/prestashop)',
         '- **Product data:** [Akeneo](/en/integrations/akeneo-pim), [Pimcore](/en/integrations/pimcore), [AtroPIM](/en/integrations/atropim)',
         '- **AI assistants:** [Claude, ChatGPT and Copilot](/en/integrations/claude-chatgpt-and-copilot) with the Supertext Translation MCP',
         '',
-        'Step by step: [a TYPO3 site in German (Switzerland) in 10 minutes](/en/news/guide-typo3-swiss-german).',
+        'Step by step: [a TYPO3 site in Swiss Standard German in 10 minutes](/en/news/guide-typo3-swiss-german).',
       ].join('\n'),
     },
     {
@@ -90,16 +90,16 @@ const swissGermanEn = {
       title: 'Questions',
       items: [
         {
-          question: 'What is the language code for German (Switzerland)?',
-          answer: '**de-CH**. Most systems call it *German (Switzerland)*, often with the locale `de_CH`. Supertext calls it German (Switzerland) too. Swiss German is the dialect: Zurich German is `gsw-u-sd-chzh`, Bernese German `gsw-u-sd-chbe`.',
+          question: 'What is the language code for Swiss Standard German?',
+          answer: '**de-CH**. Most systems call it *German (Switzerland)*, often with the locale `de_CH`. Supertext's language list calls it *German (Switzerland)* too. Swiss German is the dialect: Zurich German is `gsw-u-sd-chzh`, Bernese German `gsw-u-sd-chbe`.',
         },
         {
-          question: 'Is German (Switzerland) the same as Swiss German?',
-          answer: 'No. German (Switzerland) is written standard German with Swiss spelling and words, used on websites, in documents and in the media. Swiss German (Schweizerdeutsch) is the spoken dialects, written mainly in informal and local communication.',
+          question: 'Is Swiss Standard German the same as Swiss German?',
+          answer: 'No. Swiss Standard German is written standard German with Swiss spelling and words, used on websites, in documents and in the media. Swiss German (Schweizerdeutsch) is the spoken dialects, written mainly in informal and local communication.',
         },
         {
-          question: 'Does DeepL write German (Switzerland)?',
-          answer: 'Since August 2026, DeepL offers German (Switzerland) as well. It does not write Swiss German dialect, Swiss French, Swiss Italian or Romansh, and processes texts outside Switzerland. [See the comparison](/en/compare).',
+          question: 'Does DeepL write Swiss Standard German?',
+          answer: 'Since August 2026, DeepL offers Swiss Standard German as well. It does not write Swiss German dialect, Swiss French, Swiss Italian or Romansh, and processes texts outside Switzerland. [See the comparison](/en/compare).',
         },
         {
           question: 'Can I keep one German version for Germany and one for Switzerland?',
@@ -119,12 +119,12 @@ const swissGermanEn = {
 };
 
 const swissGermanDe = {
-  title: 'Deutsch (Schweiz) und Schweizerdeutsch übersetzen',
+  title: 'Schweizer Hochdeutsch und Schweizerdeutsch übersetzen',
   slug: 'swiss-german',
   seo: {
-    metaTitle: 'Deutsch (Schweiz) und Schweizerdeutsch übersetzen',
+    metaTitle: 'Schweizer Hochdeutsch und Schweizerdeutsch übersetzen',
     metaDescription:
-      'Deutsch (Schweiz) ist kein Deutsch aus Deutschland: kein ß, Schweizer Wörter, CHF 1’000. So übersetzt Supertext Websites, Shops und Produkte für die Schweiz.',
+      'Schweizer Hochdeutsch ist kein Deutsch aus Deutschland: kein ß, Schweizer Wörter, CHF 1’000. So übersetzt Supertext Websites, Shops und Produkte für die Schweiz.',
   },
   blocks: [
     {
@@ -133,7 +133,7 @@ const swissGermanDe = {
       eyebrow: 'Made in Switzerland',
       title: 'Übersetzungen, die schweizerisch klingen',
       subtitle:
-        'Deutsch (Schweiz), Westschweizer Französisch und Schweizer Italienisch, sogar Schweizerdeutsch (Züri- und Bärndütsch): Supertext AI schreibt, wie die Schweiz liest, direkt in Ihrem CMS, Shop oder PIM.',
+        'Schweizer Hochdeutsch, Westschweizer Französisch und Schweizer Italienisch, sogar Schweizerdeutsch (Züri- und Bärndütsch): Supertext AI schreibt, wie die Schweiz liest, direkt in Ihrem CMS, Shop oder PIM.',
       primaryCta: link('Integrationen ansehen', '/de/integrations'),
       secondaryCta: link('API-Key holen', API_KEY_URL, 'secondary', true),
     },
@@ -141,9 +141,9 @@ const swissGermanDe = {
       __component: 'blocks.rich-text',
       width: 'narrow',
       body: [
-        '## Deutsch (Schweiz) ist nicht Deutsch aus Deutschland',
+        '## Schweizer Hochdeutsch ist nicht Deutsch aus Deutschland',
         '',
-        'Websites in der Deutschschweiz sind in **Deutsch (Schweiz)** geschrieben (Sprachcode **de-CH**). Das ist Standarddeutsch, aber Leserinnen und Leser merken sofort, wenn ein Text für Deutschland geschrieben wurde:',
+        'Websites in der Deutschschweiz sind in **Schweizer Hochdeutsch** geschrieben (Sprachcode **de-CH**). Das ist Standarddeutsch, aber Leserinnen und Leser merken sofort, wenn ein Text für Deutschland geschrieben wurde:',
         '',
         '- **Kein ß:** In der Schweiz schreibt man *Strasse*, *gross* und *Grüsse*, nie *Straße*, *groß* oder *Grüße*.',
         '- **Schweizer Wörter:** *Velo* statt *Fahrrad*, *parkieren* statt *parken*, *Spital* statt *Krankenhaus*, *Rahm* statt *Sahne*, *Billett* statt *Fahrkarte*.',
@@ -178,7 +178,7 @@ const swissGermanDe = {
       body: [
         '## In Ihrem System, in de-CH',
         '',
-        'Die Supertext-Plugins übersetzen dort, wo Ihre Inhalte sind. Stellen Sie die Zielsprache einmal auf **de-CH**, und jede Übersetzung ist in Deutsch (Schweiz):',
+        'Die Supertext-Plugins übersetzen dort, wo Ihre Inhalte sind. Stellen Sie die Zielsprache einmal auf **de-CH**, und jede Übersetzung ist in Schweizer Hochdeutsch:',
         '',
         '- **CMS:** [TYPO3](/de/integrations/typo3), [WordPress](/de/integrations/wordpress-polylang), [Drupal](/de/integrations/drupal), [Contao](/de/integrations/contao), [Joomla](/de/integrations/joomla), [Neos](/de/integrations/neos), [Craft CMS](/de/integrations/craft-cms), [Strapi](/de/integrations/strapi) und [weitere](/de/integrations?category=cms)',
         '- **Shops:** [Shopify](/de/integrations/shopify), [Magento](/de/integrations/magento), [PrestaShop](/de/integrations/prestashop)',
@@ -193,16 +193,16 @@ const swissGermanDe = {
       title: 'Fragen',
       items: [
         {
-          question: 'Wie lautet der Sprachcode für Deutsch (Schweiz)?',
-          answer: '**de-CH**. Die meisten Systeme nennen es *Deutsch (Schweiz)*, oft mit der Locale `de_CH`. Auch Supertext nennt es Deutsch (Schweiz). Schweizerdeutsch ist die Mundart: Zürichdeutsch ist `gsw-u-sd-chzh`, Berndeutsch `gsw-u-sd-chbe`.',
+          question: 'Wie lautet der Sprachcode für Schweizer Hochdeutsch?',
+          answer: '**de-CH**. Die meisten Systeme nennen es *Deutsch (Schweiz)*, oft mit der Locale `de_CH`. Auch die Sprachliste von Supertext nennt es *Deutsch (Schweiz)*. Schweizerdeutsch ist die Mundart: Zürichdeutsch ist `gsw-u-sd-chzh`, Berndeutsch `gsw-u-sd-chbe`.',
         },
         {
-          question: 'Ist Deutsch (Schweiz) dasselbe wie Schweizerdeutsch?',
-          answer: 'Nein. Deutsch (Schweiz) ist geschriebenes Standarddeutsch mit Schweizer Schreibweise und Wortschatz, wie auf Websites, in Dokumenten und in den Medien. Schweizerdeutsch sind die gesprochenen Mundarten, geschrieben vor allem in der informellen und lokalen Kommunikation.',
+          question: 'Ist Schweizer Hochdeutsch dasselbe wie Schweizerdeutsch?',
+          answer: 'Nein. Schweizer Hochdeutsch ist geschriebenes Standarddeutsch mit Schweizer Schreibweise und Wortschatz, wie auf Websites, in Dokumenten und in den Medien. Schweizerdeutsch sind die gesprochenen Mundarten, geschrieben vor allem in der informellen und lokalen Kommunikation.',
         },
         {
-          question: 'Schreibt DeepL Deutsch (Schweiz)?',
-          answer: 'Seit August 2026 bietet auch DeepL Deutsch (Schweiz) an. Mundart, Westschweizer Französisch, Schweizer Italienisch oder Rätoromanisch schreibt DeepL nicht, und die Texte werden ausserhalb der Schweiz verarbeitet. [Zum Vergleich](/de/compare).',
+          question: 'Schreibt DeepL Schweizer Hochdeutsch?',
+          answer: 'Seit August 2026 bietet auch DeepL Schweizer Hochdeutsch an. Mundart, Westschweizer Französisch, Schweizer Italienisch oder Rätoromanisch schreibt DeepL nicht, und die Texte werden ausserhalb der Schweiz verarbeitet. [Zum Vergleich](/de/compare).',
         },
         {
           question: 'Kann ich eine deutsche Version für Deutschland und eine für die Schweiz führen?',
@@ -223,7 +223,7 @@ const swissGermanDe = {
 
 const footerSwiss = {
   url: '/en/swiss-german',
-  label: { en: 'German (Switzerland) and Swiss German', de: 'Deutsch (Schweiz) und Schweizerdeutsch übersetzen', fr: 'Traduire en allemand (Suisse) et en suisse allemand', it: 'Tradurre in tedesco (Svizzera) e svizzero tedesco' },
+  label: { en: 'Swiss Standard German and Swiss German', de: 'Schweizer Hochdeutsch und Schweizerdeutsch übersetzen', fr: 'Traduire en allemand standard suisse et en suisse allemand', it: 'Tradurre in tedesco standard svizzero e svizzero tedesco' },
 };
 
 // ——— German-first articles ———
@@ -241,7 +241,7 @@ const article = (slug, date, systems, title, excerpt, body, seo) => ({
 
 const apiKey = `[Melden Sie sich bei Supertext an oder erstellen Sie ein Konto](${ACCOUNT_URL}) und erzeugen Sie unter [Integrations → API](${API_KEY_URL}) einen API-Key. Dafür brauchen Sie die Admin-Rolle in Ihrem Supertext-Konto; sonst fragen Sie die Person, die Ihr Konto verwaltet.`;
 
-const swissNote = `> **Deutsch (Schweiz):** Wählen Sie als Zielsprache **de-CH**, dann schreibt Supertext «Strasse» statt «Straße», «Velo» statt «Fahrrad» und Preise als «CHF 1’250.50». Mehr dazu: [Deutsch (Schweiz) und Schweizerdeutsch übersetzen](/de/swiss-german).`;
+const swissNote = `> **Schweizer Hochdeutsch:** Wählen Sie als Zielsprache **de-CH**, dann schreibt Supertext «Strasse» statt «Straße», «Velo» statt «Fahrrad» und Preise als «CHF 1’250.50». Mehr dazu: [Schweizer Hochdeutsch und Schweizerdeutsch übersetzen](/de/swiss-german).`;
 
 const germanArticles = [
   article(
@@ -249,13 +249,13 @@ const germanArticles = [
     '2026-11-09T07:00:00.000Z',
     ['typo3'],
     'TYPO3 automatisch übersetzen: die Möglichkeiten im Überblick',
-    'Von Hand, mit einer DeepL-Extension oder mit Supertext: So übersetzen Sie TYPO3-Seiten automatisch, und worauf es bei Deutsch (Schweiz) ankommt.',
+    'Von Hand, mit einer DeepL-Extension oder mit Supertext: So übersetzen Sie TYPO3-Seiten automatisch, und worauf es bei Schweizer Hochdeutsch ankommt.',
     `
 Mehrsprachige Websites gehören zu den Stärken von TYPO3. Das Übersetzen selbst bleibt aber Handarbeit, solange keine Extension hilft: TYPO3 legt im Übersetzungsassistenten Kopien der Inhalte an, die Redaktion übersetzt sie Feld für Feld. Dieser Artikel zeigt, welche Möglichkeiten es gibt, TYPO3 automatisch zu übersetzen, und wie Sie mit Supertext in wenigen Minuten startklar sind.
 
 ## So funktioniert Mehrsprachigkeit in TYPO3
 
-Jede Sprache ist in TYPO3 eine **Site-Sprache** (unter **Sites → Setup**, Reiter *Languages*) mit eigener Locale, zum Beispiel \`de_CH.UTF-8\` für Deutsch (Schweiz). Übersetzt wird im Seitenmodul: **Neue Übersetzung erstellen**, Inhaltselemente auswählen, dann im **Übersetzungsassistenten** zwischen zwei Modi wählen:
+Jede Sprache ist in TYPO3 eine **Site-Sprache** (unter **Sites → Setup**, Reiter *Languages*) mit eigener Locale, zum Beispiel \`de_CH.UTF-8\` für Schweizer Hochdeutsch. Übersetzt wird im Seitenmodul: **Neue Übersetzung erstellen**, Inhaltselemente auswählen, dann im **Übersetzungsassistenten** zwischen zwei Modi wählen:
 
 - **Übersetzen (verbundener Modus):** Die Übersetzung bleibt mit dem Original verbunden, Struktur und Reihenfolge kommen aus der Standardsprache. Das ist die übliche Wahl.
 - **Kopieren (freier Modus):** Die Inhalte werden unabhängig vom Original kopiert, etwa wenn eine Sprachversion eigene Elemente braucht.
@@ -270,7 +270,7 @@ Neue Übersetzungen sind in TYPO3 zuerst verborgen. So können Sie sie prüfen, 
 
 **3. Mit der Supertext-Extension.** Supertext hängt sich ebenfalls in den gewohnten Übersetzungsassistenten ein, ohne neue Oberfläche. Der Unterschied liegt in der Übersetzung selbst:
 
-- **Für die Schweiz geschrieben:** Deutsch (Schweiz), de-CH, Westschweizer Französisch und Schweizer Italienisch, auf Wunsch sogar Züri- oder Bärndütsch.
+- **Für die Schweiz geschrieben:** Schweizer Hochdeutsch (de-CH), Westschweizer Französisch und Schweizer Italienisch, auf Wunsch sogar Züri- oder Bärndütsch.
 - **In der Schweiz verarbeitet:** Die Texte werden in der Schweiz übersetzt und danach gelöscht (kostenpflichtige Abos).
 - **Ganze Seiten auf einmal:** Supertext übersetzt eine Seite mit allen Elementen als ein Dokument pro Sprache, mit Seitentitel, SEO-Texten, Überschriften, Rich Text, Bildunterschriften und Tabellen. Die Slugs werden aus dem übersetzten Titel neu gebildet.
 - **Ein Profi, wenn es darauf ankommt:** Wichtige Seiten lassen Sie zusätzlich von einer Fachperson prüfen.
@@ -295,7 +295,7 @@ vendor/bin/typo3 extension:setup -e supertext_translation
 
 ${swissNote}
 
-Die ausführliche Anleitung mit allen Einstellungen finden Sie in [TYPO3 in 10 Minuten in Deutsch (Schweiz)](/de/news/guide-typo3-swiss-german) und auf der [Seite der TYPO3-Extension](/de/integrations/typo3).
+Die ausführliche Anleitung mit allen Einstellungen finden Sie in [TYPO3 in 10 Minuten in Schweizer Hochdeutsch](/de/news/guide-typo3-swiss-german) und auf der [Seite der TYPO3-Extension](/de/integrations/typo3).
 
 ## Häufige Fragen
 
@@ -307,7 +307,7 @@ Die ausführliche Anleitung mit allen Einstellungen finden Sie in [TYPO3 in 10 M
 `,
     {
       title: 'TYPO3 automatisch übersetzen: die Möglichkeiten',
-      description: 'TYPO3 automatisch übersetzen: Übersetzungsassistent, DeepL-Extensions oder Supertext mit Deutsch (Schweiz). Überblick und Anleitung in 6 Schritten.',
+      description: 'TYPO3 automatisch übersetzen: Übersetzungsassistent, DeepL-Extensions oder Supertext mit Schweizer Hochdeutsch. Überblick und Anleitung in 6 Schritten.',
     }
   ),
 
@@ -359,7 +359,7 @@ ${swissNote}
 `,
     {
       title: 'Contao übersetzen: Seiten automatisch übersetzen',
-      description: 'Contao mehrsprachig machen: Seiten, Artikel und Inhaltselemente mit einem Klick übersetzen, auch in Deutsch (Schweiz). Anleitung in 6 Schritten.',
+      description: 'Contao mehrsprachig machen: Seiten, Artikel und Inhaltselemente mit einem Klick übersetzen, auch in Schweizer Hochdeutsch. Anleitung in 6 Schritten.',
     }
   ),
 
@@ -506,7 +506,7 @@ ${swissNote}
 `,
     {
       title: 'Joomla automatisch übersetzen: Anleitung',
-      description: 'Joomla mehrsprachig: Sprachen, Sprachfilter und Zuordnungen erklärt, und wie Sie Beiträge mit Supertext automatisch übersetzen, auch in Deutsch (Schweiz).',
+      description: 'Joomla mehrsprachig: Sprachen, Sprachfilter und Zuordnungen erklärt, und wie Sie Beiträge mit Supertext automatisch übersetzen, auch in Schweizer Hochdeutsch.',
     }
   ),
 ];
@@ -530,7 +530,7 @@ Weglot erkennt die Texte Ihrer Website, übersetzt sie maschinell und speichert 
 ## Wann eine Alternative sinnvoll ist
 
 - **Ihre Übersetzungen sollen Ihnen gehören.** Mit einem Supertext-Plugin liegen die Übersetzungen als normale Sprachversionen in Ihrem CMS, ob TYPO3, WordPress, Drupal oder Shopify. Wechseln Sie den Dienst, bleiben sie da.
-- **Sie schreiben für die Schweiz.** Supertext schreibt Deutsch (Schweiz), Westschweizer Französisch und Schweizer Italienisch, auf Wunsch Mundart. [Mehr zu Deutsch (Schweiz)](/de/swiss-german).
+- **Sie schreiben für die Schweiz.** Supertext schreibt Schweizer Hochdeutsch, Westschweizer Französisch und Schweizer Italienisch, auf Wunsch Mundart. [Mehr zu Schweizer Hochdeutsch](/de/swiss-german).
 - **Ihre Texte sollen in der Schweiz bleiben.** Supertext übersetzt in der Schweiz und löscht die Texte danach (kostenpflichtige Abos).
 - **Ihre Redaktion arbeitet im CMS.** Übersetzungen werden im gewohnten Editor geprüft und veröffentlicht, mit dem Workflow Ihres Systems.
 
@@ -562,7 +562,7 @@ Das Supertext-Plugin erscheint in Polylang Pro als Übersetzungsdienst:
 - Einzelne Beiträge über die Polylang-Schaltflächen übersetzen, viele über die Massenaktion **Supertext AI Translation**.
 - Gutenberg, klassischer Editor, ACF, Kategorien und SEO-Angaben werden mitübersetzt.
 - Für wichtige Seiten eine Humanübersetzung bestellen, mit Preis direkt in WordPress.
-- Deutsch (Schweiz), Westschweizer Französisch und Schweizer Italienisch. [Mehr zu Deutsch (Schweiz)](/de/swiss-german).
+- Schweizer Hochdeutsch, Westschweizer Französisch und Schweizer Italienisch. [Mehr zu Schweizer Hochdeutsch](/de/swiss-german).
 
 Die Anleitung: [WordPress mehrsprachig mit Polylang Pro und Supertext](/de/news/wordpress-mehrsprachig). Das Plugin: [Supertext für WordPress](/de/integrations/wordpress-polylang).
 `,
@@ -572,20 +572,20 @@ Die Anleitung: [WordPress mehrsprachig mit Polylang Pro und Supertext](/de/news/
 
 // German titles and descriptions for the integration pages people search for in German.
 const germanSeo = {
-  typo3: ['TYPO3 automatisch übersetzen: Extension für Supertext', 'TYPO3 automatisch übersetzen, direkt im Übersetzungsassistenten: ganze Seiten mit SEO-Texten, auch in Deutsch (Schweiz). Für TYPO3 13.4 und 14.3 LTS.'],
-  contao: ['Contao übersetzen: Bundle für Supertext AI', 'Contao-Seiten, Artikel und Inhaltselemente mit einem Klick übersetzen, auch ganze Websites und in Deutsch (Schweiz). Für Contao 5.7 und 6.0.'],
+  typo3: ['TYPO3 automatisch übersetzen: Extension für Supertext', 'TYPO3 automatisch übersetzen, direkt im Übersetzungsassistenten: ganze Seiten mit SEO-Texten, auch in Schweizer Hochdeutsch. Für TYPO3 13.4 und 14.3 LTS.'],
+  contao: ['Contao übersetzen: Bundle für Supertext AI', 'Contao-Seiten, Artikel und Inhaltselemente mit einem Klick übersetzen, auch ganze Websites und in Schweizer Hochdeutsch. Für Contao 5.7 und 6.0.'],
   shopify: ['Shopify-Shop übersetzen: App für Supertext AI', 'Shopify-Shop übersetzen: Produkte, Kollektionen, Seiten und Blogs in alle Sprachen auf einmal, gespeichert für Translate & Adapt. Für jeden Shopify-Plan.'],
-  'wordpress-polylang': ['WordPress übersetzen mit Polylang Pro', 'WordPress mehrsprachig: Beiträge und Seiten mit Polylang Pro und Supertext automatisch übersetzen, mit ACF und SEO-Angaben, auch in Deutsch (Schweiz).'],
+  'wordpress-polylang': ['WordPress übersetzen mit Polylang Pro', 'WordPress mehrsprachig: Beiträge und Seiten mit Polylang Pro und Supertext automatisch übersetzen, mit ACF und SEO-Angaben, auch in Schweizer Hochdeutsch.'],
   joomla: ['Joomla automatisch übersetzen: Plugin', 'Joomla-Beiträge aus der Liste oder dem Editor übersetzen, mit Metadaten und eigenen Feldern, verknüpft und unveröffentlicht. Für Joomla 5.4 und 6.1.'],
-  drupal: ['Drupal übersetzen mit TMGMT und Supertext', 'Drupal-Inhalte mit TMGMT und Supertext AI übersetzen, auch in Deutsch (Schweiz). Für Drupal 9, 10, 11 und 12. Kostenloses Open-Source-Modul.'],
-  magento: ['Magento 2 übersetzen: Modul für Supertext', 'Magento-Produkte, Kategorien und CMS-Seiten in die Sprachen Ihrer Store Views übersetzen, auch in Deutsch (Schweiz). Kostenloses Open-Source-Modul.'],
-  prestashop: ['PrestaShop übersetzen: Modul für Supertext', 'PrestaShop-Produkte, Kategorien und CMS-Seiten automatisch übersetzen, auch in Deutsch (Schweiz). Kostenloses Open-Source-Modul von Supertext.'],
-  'akeneo-pim': ['Akeneo übersetzen: Produktdaten mit Supertext', 'Produktattribute in Akeneo PIM automatisch in alle Sprachen übersetzen, mit Ihrer Terminologie und in Deutsch (Schweiz). Kostenlos und Open Source.'],
-  pimcore: ['Pimcore übersetzen: Bundle für Supertext', 'Pimcore-Objekte und Dokumente automatisch übersetzen, auch in Deutsch (Schweiz). Kostenloses Open-Source-Bundle von Supertext.'],
-  neos: ['Neos CMS übersetzen mit Supertext', 'Neos-Seiten und Inhalte automatisch in andere Sprachen übersetzen, auch in Deutsch (Schweiz). Kostenloses Open-Source-Paket von Supertext.'],
-  umbraco: ['Umbraco übersetzen mit Supertext', 'Umbraco-Inhalte automatisch in andere Sprachen übersetzen, auch in Deutsch (Schweiz). Kostenloses Open-Source-Paket von Supertext.'],
-  'craft-cms': ['Craft CMS übersetzen: Plugin für Supertext', 'Einträge in Craft CMS automatisch für alle Sites und Sprachen übersetzen, auch in Deutsch (Schweiz). Kostenloses Open-Source-Plugin.'],
-  strapi: ['Strapi übersetzen: Plugin für Supertext', 'Strapi-Inhalte mit i18n automatisch in alle Sprachen übersetzen, auch in Deutsch (Schweiz). Kostenloses Open-Source-Plugin von Supertext.'],
+  drupal: ['Drupal übersetzen mit TMGMT und Supertext', 'Drupal-Inhalte mit TMGMT und Supertext AI übersetzen, auch in Schweizer Hochdeutsch. Für Drupal 9, 10, 11 und 12. Kostenloses Open-Source-Modul.'],
+  magento: ['Magento 2 übersetzen: Modul für Supertext', 'Magento-Produkte, Kategorien und CMS-Seiten in die Sprachen Ihrer Store Views übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Modul.'],
+  prestashop: ['PrestaShop übersetzen: Modul für Supertext', 'PrestaShop-Produkte, Kategorien und CMS-Seiten automatisch übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Modul von Supertext.'],
+  'akeneo-pim': ['Akeneo übersetzen: Produktdaten mit Supertext', 'Produktattribute in Akeneo PIM automatisch in alle Sprachen übersetzen, mit Ihrer Terminologie und in Schweizer Hochdeutsch. Kostenlos und Open Source.'],
+  pimcore: ['Pimcore übersetzen: Bundle für Supertext', 'Pimcore-Objekte und Dokumente automatisch übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Bundle von Supertext.'],
+  neos: ['Neos CMS übersetzen mit Supertext', 'Neos-Seiten und Inhalte automatisch in andere Sprachen übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Paket von Supertext.'],
+  umbraco: ['Umbraco übersetzen mit Supertext', 'Umbraco-Inhalte automatisch in andere Sprachen übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Paket von Supertext.'],
+  'craft-cms': ['Craft CMS übersetzen: Plugin für Supertext', 'Einträge in Craft CMS automatisch für alle Sites und Sprachen übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Plugin.'],
+  strapi: ['Strapi übersetzen: Plugin für Supertext', 'Strapi-Inhalte mit i18n automatisch in alle Sprachen übersetzen, auch in Schweizer Hochdeutsch. Kostenloses Open-Source-Plugin von Supertext.'],
 };
 
 module.exports = { swissGermanEn, swissGermanDe, footerSwiss, germanArticles, germanDrafts, germanSeo };

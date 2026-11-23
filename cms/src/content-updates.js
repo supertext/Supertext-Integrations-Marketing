@@ -1247,6 +1247,7 @@ const UPDATES = [
   { id: '2026-11-editorial-calendar', run: (strapi) => seedCalendar(strapi) },
   { id: '2026-11-swiss-terms', run: (strapi) => swissTermsLive(strapi) },
   { id: '2026-11-guide-titles', run: (strapi) => swissTermsLive(strapi, 'GUIDE_TITLES', 'Guide titles') },
+  { id: '2026-11-swiss-text', run: (strapi) => swissTermsLive(strapi, 'TEXT', 'Swiss Standard German in text') },
 ];
 
 async function runContentUpdates(strapi) {

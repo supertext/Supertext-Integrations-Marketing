@@ -1,11 +1,19 @@
 'use strict';
 
 /**
- * Supertext's names for German in Switzerland (November 2026), as in its language list (GET features):
- * de-CH is "German (Switzerland)", the written standard; "Swiss German" (gsw) is the spoken dialect,
- * as Zurich and Bernese German. RULES per language, applied in order to the starter content, the
- * reviewed translations and (once, content update 2026-11-swiss-terms) the live content.
- * UI labels quoted from other systems stay as they are (Polylang's "Deutsch (Schweiz) (de-CH)").
+ * Names for German in Switzerland (November 2026). The rule (Remy): in running text de-CH is
+ * "Swiss Standard German" (Schweizer Hochdeutsch, allemand standard suisse, tedesco standard
+ * svizzero); in lists (language pickers, tables, plugin settings) it is "German (Switzerland)"
+ * (Deutsch (Schweiz), allemand (Suisse), tedesco (Svizzera)), as in Supertext's language list
+ * (GET features). "Swiss German" (Schweizerdeutsch, suisse allemand, svizzero tedesco) is the
+ * spoken dialect, as Zurich and Bernese German.
+ *
+ * Three steps, each a content update applied once to the live content and also run over the
+ * starter content and the reviewed translations: RULES (2026-11-swiss-terms) named de-CH
+ * "German (Switzerland)" everywhere; GUIDE_TITLES (2026-11-guide-titles) retitled the four
+ * guides; TEXT (2026-11-swiss-text) puts "Swiss Standard German" back into running text and
+ * keeps the list name where a list is meant. A rule ['keep', pattern] protects matching text
+ * from the rules after it. UI labels quoted from other systems stay as they are.
  */
 
 const SECTION = {
@@ -106,10 +114,57 @@ const GUIDE_TITLES = {
   it: [[/Tradurre ([^'"\n]+?) in tedesco \(Svizzera\) e svizzero tedesco/g, 'Localizzare $1 per la Svizzera tedesca']],
 };
 
+/**
+ * Running text: Swiss Standard German. Kept: table rows ("German (Switzerland), de-CH"), names
+ * quoted from a language list or screen (*Deutsch (Schweiz)*, Polylang's "Deutsch (Schweiz)
+ * (de-CH)", TYPO3's language menu, Shopify's regional language) and sentences about that name.
+ */
+const TEXT = {
+  en: [
+    ['keep', /(?<!\*)\*German \(Switzerland\)\*(?!\*)/], // italic: a name quoted from a list, not bold text
+    ['keep', /^German \(Switzerland\), de-CH$/],
+    ['keep', "{ label: 'German (Switzerland), de-CH'"],
+    ['Supertext calls it German (Switzerland) too.', "Supertext's language list calls it *German (Switzerland)* too."],
+    ['keep', "Supertext's language list calls it *German (Switzerland)* too."],
+    ['(*Deutsch (Schweiz)*, language code **de-CH**)', '(*Schweizer Hochdeutsch*, language code **de-CH**)'],
+    ['German (Switzerland)', 'Swiss Standard German'],
+  ],
+  de: [
+    ['keep', /(?<!\*)\*Deutsch \(Schweiz\)\*(?!\*)/],
+    ['keep', '**Deutsch (Schweiz) (de-CH)**'],
+    ['keep', 'Deutsch (Schweiz) (de-CH)'],
+    ['keep', 'den Eintrag **Deutsch (Schweiz)**'],
+    ['keep', 'etwa Deutsch (Schweiz) für den Markt Schweiz'],
+    ['keep', /^Deutsch \(Schweiz\), de-CH$/],
+    ['Auch Supertext nennt es Deutsch (Schweiz).', 'Auch die Sprachliste von Supertext nennt es *Deutsch (Schweiz)*.'],
+    ['keep', 'Auch die Sprachliste von Supertext nennt es *Deutsch (Schweiz)*.'],
+    ['Deutsch (Schweiz), de-CH, Westschweizer', 'Schweizer Hochdeutsch (de-CH), Westschweizer'],
+    ['Deutsch (Schweiz)', 'Schweizer Hochdeutsch'],
+  ],
+  fr: [
+    ['keep', /^Allemand \(Suisse\), de-CH$/],
+    ['Allemand (Suisse) ou', 'Allemand standard suisse ou'],
+    ['l’allemand (Suisse, de-CH)', 'l’allemand standard suisse (de-CH)'],
+    ['allemand (Suisse)', 'allemand standard suisse'],
+  ],
+  it: [
+    ['keep', /^Tedesco \(Svizzera\), de-CH$/],
+    ['Tedesco (Svizzera) o', 'Tedesco standard svizzero o'],
+    ['il tedesco (Svizzera, de-CH)', 'il tedesco standard svizzero (de-CH)'],
+    ['tedesco (Svizzera)', 'tedesco standard svizzero'],
+  ],
+};
+
 /** The text with the language's rules applied (unchanged when none match); RULES unless others are given. */
 function swissTerms(text, locale, rules = RULES) {
   if (typeof text !== 'string') return text;
-  return (rules[locale] || []).reduce((t, [from, to]) => (typeof from === 'string' ? t.split(from).join(to) : t.replace(from, to)), text);
+  const kept = [];
+  const keep = (t, pattern) => t.replace(typeof pattern === 'string' ? new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g') : new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g'), (m) => `\u0000${kept.push(m) - 1}\u0000`);
+  const out = (rules[locale] || []).reduce((t, [from, to]) => {
+    if (from === 'keep') return keep(t, to);
+    return typeof from === 'string' ? t.split(from).join(to) : t.replace(from, to);
+  }, text);
+  return out.replace(/\u0000(\d+)\u0000/g, (_, i) => kept[Number(i)]);
 }
 
 /** Every string in a value (objects, arrays), with the rules applied. */
@@ -120,4 +175,4 @@ function swissTermsDeep(value, locale, rules = RULES) {
   return value;
 }
 
-module.exports = { RULES, GUIDE_TITLES, swissTerms, swissTermsDeep };
+module.exports = { RULES, GUIDE_TITLES, TEXT, swissTerms, swissTermsDeep };

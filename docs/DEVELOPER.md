@@ -98,7 +98,7 @@ The plugin isn't on npm. `cms/scripts/fetch-plugin.sh` clones [Strapi-Supertext-
 
 ## Language names for Switzerland
 
-The site names German in Switzerland as Supertext's language list does: de-CH is *German (Switzerland)*, gsw is *Swiss German* (the dialect). `cms/src/swiss-terms.js` holds the wording per language; the content update `2026-11-swiss-terms` applied it to the live content, and the starter content and reviewed translations (`cms/src/seed/`) were rewritten with the same rules. New texts follow it directly (see the user guide → *Translating*).
+Running text calls de-CH *Swiss Standard German* (*Schweizer Hochdeutsch*, *allemand standard suisse*, *tedesco standard svizzero*) and gsw *Swiss German* (the dialect); lists of languages (tables, pickers) use Supertext's language list names, *German (Switzerland)* and so on. `cms/src/swiss-terms.js` holds the wording per language: `RULES` (the dialect paragraphs, applied by the content update `2026-11-swiss-terms`), `GUIDE_TITLES` (`2026-11-guide-titles`) and `TEXT` (`2026-11-swiss-text`: list names in running text become Swiss Standard German; `['keep', …]` entries protect list entries, italic names quoted from a list and the UI labels in the guides). The starter content and reviewed translations (`cms/src/seed/`) were rewritten with the same rules. New texts follow it directly (see the user guide → *Translating*).
 
 ## Dependency updates
 
