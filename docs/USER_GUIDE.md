@@ -49,6 +49,8 @@ The site is in English, German, French and Italian. English is the source.
 
 The first German, French and Italian versions of all pages and integrations were made with Supertext and then rewritten by translators (Swiss spelling, formal address), and published. Review them and correct what needs it; your changes are never overwritten. When you change the English text later, translate again with the panel.
 
+**German in Switzerland**: write it the way Supertext names it in its language list. **German (Switzerland)** (*Deutsch (Schweiz)*, *allemand (Suisse)*, *tedesco (Svizzera)*) is the written standard, code de-CH. **Swiss German** (*Schweizerdeutsch*, *suisse allemand*, *svizzero tedesco*) is the spoken dialect, as Zurich or Bernese German. Not "Swiss Standard German" or "Schweizer Hochdeutsch". Labels quoted from another system's screens stay as that system shows them.
+
 Not translated yet? Visitors see the English version of that page or integration. Names, categories, repositories, prices and Stripe IDs are shared by all languages and only edited in English.
 
 ## SDK page

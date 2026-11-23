@@ -16,9 +16,11 @@ const guide = (slug, date, systems, title, excerpt, body, seo) => ({
 });
 
 const swissGerman = `
-## Swiss Standard German or dialect?
+## German (Switzerland) or Swiss German?
 
-Websites in German-speaking Switzerland are written in **Swiss Standard German**: standard German with "ss" instead of "ß" and Swiss words and spellings. In Supertext that is **de-CH**, and it is what this guide uses. For a deliberately local tone, Supertext also writes **Swiss German dialect**, Zurich or Bernese (gsw-u-sd-chzh, gsw-u-sd-chbe), something most machine translation can't do.
+Websites in German-speaking Switzerland are written in **German (Switzerland)**: standard German with "ss" instead of "ß" and Swiss words and spellings. In Supertext that is **de-CH**, and it is what this guide uses.
+
+**Swiss German** is the spoken dialect. For a deliberately local tone, Supertext writes it too, as Zurich or Bernese German, something most machine translation can't do. To translate into dialect, choose **Swiss German (Zurich)** (\`gsw-u-sd-chzh\`) or **Swiss German (Bern)** (\`gsw-u-sd-chbe\`) where this guide chooses de-CH.
 `;
 
 module.exports = [
@@ -26,10 +28,10 @@ module.exports = [
     'guide-typo3-swiss-german',
     '2026-11-09T07:00:00.000Z',
     ['typo3'],
-    'Translate a TYPO3 website into Swiss German in 10 minutes',
+    'Translate a TYPO3 website into German (Switzerland) and Swiss German in 10 minutes',
     'Install the Supertext extension, set de-CH for your German site language and translate a page with TYPO3’s own Localize wizard: a step-by-step guide.',
     `
-With the Supertext extension, TYPO3 translates pages in the step you already know: the **Localize** wizard. This guide takes you from installation to a translated page in Swiss Standard German.
+With the Supertext extension, TYPO3 translates pages in the step you already know: the **Localize** wizard. This guide takes you from installation to a translated page in German (Switzerland).
 
 **You need:** TYPO3 13.4 or 14.3 LTS installed with Composer, a Supertext account and about ten minutes.
 ${swissGerman}
@@ -52,7 +54,7 @@ vendor/bin/typo3 cache:flush
 
 In the backend, open **System → Settings → Extension Configuration → supertext_translation** (TYPO3 13: Admin Tools → Settings) and paste the key into *Supertext API key*. On a server you can set the environment variable \`SUPERTEXT_API_KEY\` instead, which keeps the key out of the database. The **Status** block at the top confirms that the connection works.
 
-## 4. Add Swiss German as a site language
+## 4. Add German (Switzerland) as a site language
 
 Open **Sites → Setup**, edit your site and, on the **Languages** tab, add a language with the locale \`de_CH.UTF-8\` (for example *Deutsch (Schweiz)*). In its **Supertext** palette:
 
@@ -80,7 +82,7 @@ New translations are **hidden**, as usual in TYPO3. Read through the page, adjus
 - French and Italian for Switzerland work the same way, with fr-CH and it-CH.
 `,
     {
-      title: 'Translate TYPO3 into Swiss German in 10 minutes | Supertext',
+      title: 'Translate TYPO3 into German (Switzerland) and Swiss German in 10 minutes | Supertext',
       description: 'Step by step: install the Supertext TYPO3 extension, add de-CH as a site language and translate a page with the Localize wizard. Formal address, SEO texts and URLs included.',
     }
   ),
@@ -89,10 +91,10 @@ New translations are **hidden**, as usual in TYPO3. Read through the page, adjus
     'guide-wordpress-swiss-german',
     '2026-11-16T07:00:00.000Z',
     ['wordpress-polylang'],
-    'Translate a WordPress website into Swiss German in 10 minutes',
+    'Translate a WordPress website into German (Switzerland) and Swiss German in 10 minutes',
     'Polylang Pro plus the Supertext plugin: set up Supertext as the machine translation service, map German to de-CH and translate posts one by one or in bulk.',
     `
-If your WordPress site is multilingual with **Polylang Pro**, Supertext plugs into Polylang's own machine translation, next to DeepL. This guide gets you from installation to a translated page in Swiss Standard German.
+If your WordPress site is multilingual with **Polylang Pro**, Supertext plugs into Polylang's own machine translation, next to DeepL. This guide gets you from installation to a translated page in German (Switzerland).
 
 **You need:** WordPress 6.0 or newer with PHP 8.1, Polylang Pro with its Machine Translation module, a Supertext account and about ten minutes.
 ${swissGerman}
@@ -115,7 +117,7 @@ Polylang Pro has no official way for other services to register, so the plugin a
 3. Under **Language mapping**, set your German language to **Deutsch (Schweiz) (de-CH)**; a Polylang language with the locale \`de_CH\` is suggested as de-CH already. Set **Formality** to *Formal* for "Sie".
 4. Save. The plugin checks the key straight away (free of charge) and confirms *API key checked: the connection to Supertext works.*
 
-No Swiss German language in Polylang yet? Add it under **Languages** first, for example *Deutsch (Schweiz)* with the locale \`de_CH\`.
+No German (Switzerland) language in Polylang yet? Add it under **Languages** first, for example *Deutsch (Schweiz)* with the locale \`de_CH\`.
 
 ## 5. Translate
 
@@ -134,7 +136,7 @@ Polylang creates the translation linked to the original. Read it through, adjust
 - More on the [WordPress integration page](/en/integrations/wordpress-polylang), including the XLIFF and HTML export for your own translators.
 `,
     {
-      title: 'Translate WordPress into Swiss German in 10 minutes | Supertext',
+      title: 'Translate WordPress into German (Switzerland) and Swiss German in 10 minutes | Supertext',
       description: 'Step by step: Supertext as the machine translation service in Polylang Pro, German mapped to de-CH, posts translated one by one or in bulk. Formal address and SEO meta included.',
     }
   ),
@@ -143,10 +145,10 @@ Polylang creates the translation linked to the original. Read it through, adjust
     'guide-shopify-swiss-german',
     '2026-11-23T07:00:00.000Z',
     ['shopify'],
-    'Translate a Shopify store into Swiss German in 10 minutes',
+    'Translate a Shopify store into German (Switzerland) and Swiss German in 10 minutes',
     'Add German to your store, choose de-CH in the Supertext app and translate products, collections, pages and blog posts in one run, in the background.',
     `
-Swiss shoppers notice when a shop writes "Straße" instead of "Strasse". The Supertext app translates your Shopify store's texts into all its languages and saves them where Shopify keeps translations. Here is how to get a Swiss German store in about ten minutes.
+Swiss shoppers notice when a shop writes "Straße" instead of "Strasse". The Supertext app translates your Shopify store's texts into all its languages and saves them where Shopify keeps translations. Here is how to get a store in German (Switzerland) in about ten minutes.
 
 **You need:** a Shopify store on any plan, a Supertext account, and the app installed. The app is not in the Shopify App Store yet: [ask Supertext](https://www.supertext.com/en/contact) for the install link.
 ${swissGerman}
@@ -162,10 +164,10 @@ Open the install link while logged in to your store's admin and click **Install*
 
 Open **Apps → Supertext Translation → Settings**, paste the key into **API key** and click **Save**. The app checks it right away, free of charge: *API key checked: the connection to Supertext works.*
 
-## 4. Add German and choose Swiss German
+## 4. Add German and choose German (Switzerland)
 
 1. In the Shopify admin, open **Settings → Languages**, click **Add language** and add **German**. You don't have to publish it yet.
-2. Back in the app's **Settings → Languages**, choose **Schweizer Hochdeutsch (de-CH)** in German's list. Shopify calls the language simply \`de\`, so this is where you decide which German it gets.
+2. Back in the app's **Settings → Languages**, choose **de-CH** in German's list. Shopify calls the language simply \`de\`, so this is where you decide which German it gets.
 3. Set **Form of address** to *Formal* for "Sie", and save.
 
 ## 5. Translate
@@ -188,7 +190,7 @@ The translations are saved in Shopify's own translation store. Check and edit th
 - More on the [Shopify integration page](/en/integrations/shopify).
 `,
     {
-      title: 'Translate a Shopify store into Swiss German | Supertext',
+      title: 'Translate a Shopify store into German (Switzerland) and Swiss German | Supertext',
       description: 'Step by step: add German to your Shopify store, choose de-CH in the Supertext app and translate products, collections, pages and blog posts in the background.',
     }
   ),
@@ -197,10 +199,10 @@ The translations are saved in Shopify's own translation store. Check and edit th
     'guide-drupal-swiss-german',
     '2026-11-30T07:00:00.000Z',
     ['drupal'],
-    'Translate a Drupal website into Swiss German with TMGMT',
+    'Translate a Drupal website into German (Switzerland) and Swiss German with TMGMT',
     'Install the Supertext AI provider for TMGMT, map German to de-CH and translate content from TMGMT’s sources page, with its usual review step.',
     `
-Drupal sites that translate a lot usually do it with the **Translation Management Tool** (TMGMT). The Supertext AI module adds Supertext as a translation provider, so your content goes to Supertext and comes back into TMGMT's review. This guide covers the setup and a first translation into Swiss Standard German.
+Drupal sites that translate a lot usually do it with the **Translation Management Tool** (TMGMT). The Supertext AI module adds Supertext as a translation provider, so your content goes to Supertext and comes back into TMGMT's review. This guide covers the setup and a first translation into German (Switzerland).
 
 **You need:** Drupal 9, 10, 11 or 12 with Composer, a multilingual site, a Supertext account and about fifteen minutes.
 ${swissGerman}
@@ -245,7 +247,7 @@ Open the job items, check the translations side by side with the original, edit 
 - French and Italian for Switzerland work the same way, with fr-CH and it-CH.
 `,
     {
-      title: 'Translate Drupal into Swiss German with TMGMT | Supertext',
+      title: 'Translate Drupal into German (Switzerland) and Swiss German with TMGMT | Supertext',
       description: 'Step by step: install the Supertext AI provider for TMGMT, map German to de-CH and translate pages from the sources page, with TMGMT’s review step before publishing.',
     }
   ),

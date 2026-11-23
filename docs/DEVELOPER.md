@@ -96,6 +96,10 @@ The plugin isn't on npm. `cms/scripts/fetch-plugin.sh` clones [Strapi-Supertext-
 - All actions are pinned to commit SHAs; checkouts use `persist-credentials: false`; workflows default to `permissions: contents: read`.
 - GitHub settings (About box, ruleset "Protect main", Dependabot alerts, private vulnerability reporting, secret scanning, CodeQL) are applied with Remy's `set-github-about` script.
 
+## Language names for Switzerland
+
+The site names German in Switzerland as Supertext's language list does: de-CH is *German (Switzerland)*, gsw is *Swiss German* (the dialect). `cms/src/swiss-terms.js` holds the wording per language; the content update `2026-11-swiss-terms` applied it to the live content, and the starter content and reviewed translations (`cms/src/seed/`) were rewritten with the same rules. New texts follow it directly (see the user guide → *Translating*).
+
 ## Dependency updates
 
 Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held back with an `ignore` rule:

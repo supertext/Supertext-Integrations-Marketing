@@ -1158,6 +1158,46 @@ async function seedCalendar(strapi) {
   return true;
 }
 
+/**
+ * German in Switzerland named as Supertext names it (November 2026, cms/src/swiss-terms.js): de-CH is
+ * "German (Switzerland)", "Swiss German" the dialect. Every text of articles, pages, integrations and
+ * the global settings, in each language; published again where nobody is editing the draft.
+ */
+async function swissTermsLive(strapi) {
+  const { populateAll } = require('./translate-site');
+  const { swissTermsDeep } = require('./swiss-terms');
+  let changed = 0;
+  for (const uid of ['api::article.article', PAGE, INTEGRATION, GLOBAL]) {
+    const ct = strapi.contentType(uid);
+    const populate = populateAll(strapi, ct.attributes);
+    const fields = Object.keys(ct.attributes).filter((name) => name !== 'slug' && ['string', 'text', 'richtext', 'component', 'dynamiczone'].includes(ct.attributes[name].type));
+    const draftAndPublish = ct.options?.draftAndPublish !== false;
+    for (const locale of ['en', 'de', 'fr', 'it']) {
+      const docs = strapi.documents(uid);
+      const drafts = ct.kind === 'singleType'
+        ? [await docs.findFirst({ locale, status: 'draft', populate })].filter(Boolean)
+        : await docs.findMany({ locale, status: 'draft', populate, limit: 1000 });
+      for (const draft of drafts) {
+        const data = {};
+        for (const name of fields) {
+          if (draft[name] === undefined || draft[name] === null) continue;
+          const before = stripIds(mediaToIds(draft[name]));
+          const after = swissTermsDeep(before, locale);
+          if (JSON.stringify(after) !== JSON.stringify(before)) data[name] = after;
+        }
+        if (!Object.keys(data).length) continue;
+        const live = draftAndPublish ? await docs.findOne({ documentId: draft.documentId, locale, status: 'published', fields: ['updatedAt'] }) : null;
+        const edited = draftAndPublish && (!live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000);
+        await docs.update({ documentId: draft.documentId, locale, data });
+        if (draftAndPublish && !edited) await docs.publish({ documentId: draft.documentId, locale });
+        changed++;
+      }
+    }
+  }
+  strapi.log.info(`[setup] German (Switzerland) / Swiss German: ${changed} documents updated`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -1204,6 +1244,7 @@ const UPDATES = [
   { id: '2026-11-news-wpml-kotlin', run: (strapi) => addNovemberNews(strapi) },
   { id: '2026-11-kotlin-card', run: (strapi) => addKotlinCard(strapi) },
   { id: '2026-11-editorial-calendar', run: (strapi) => seedCalendar(strapi) },
+  { id: '2026-11-swiss-terms', run: (strapi) => swissTermsLive(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

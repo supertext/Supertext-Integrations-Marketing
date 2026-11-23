@@ -36,7 +36,7 @@ const comparePage = {
       cards: [
         {
           title: 'Writes Swiss German',
-          text: 'Supertext writes Swiss German (Bernese and Zurich German), Swiss Standard German, Swiss French and Swiss Italian, and Romansh. DeepL understands Swiss German but doesn’t write it, and has no Swiss French, Swiss Italian or Romansh. Google Translate supports none of them except Swiss French.',
+          text: 'Supertext writes Swiss German (Bernese and Zurich German), German (Switzerland), Swiss French and Swiss Italian, and Romansh. DeepL understands Swiss German but doesn’t write it, and has no Swiss French, Swiss Italian or Romansh. Google Translate supports none of them except Swiss French.',
         },
         {
           title: 'Hosted in Switzerland',
@@ -58,7 +58,7 @@ const comparePage = {
       columns: [{ heading: 'Supertext', highlight: true }, { heading: 'DeepL' }, { heading: 'Google Translate' }],
       rows: [
         { label: 'Swiss German (Bernese, Zurich German)', cells: 'Writes it\nUnderstands it, doesn’t write it\n–' },
-        { label: 'Swiss Standard German (de-CH)', cells: 'Yes\nYes\n–' },
+        { label: 'German (Switzerland), de-CH', cells: 'Yes\nYes\n–' },
         { label: 'Swiss French and Swiss Italian', cells: 'Both\n–\nSwiss French (LLM model only)' },
         { label: 'Romansh', cells: 'Yes\n–\n–' },
         { label: 'Formal or informal address', cells: 'Yes\nYes\n–' },
@@ -81,7 +81,7 @@ const comparePage = {
         },
         {
           question: 'Which languages does Supertext translate?',
-          answer: '28 languages with AI, including Swiss German (Bernese and Zurich German), Swiss Standard German, Swiss French, Swiss Italian and Romansh. Professional translators cover more than 100 languages.',
+          answer: '28 languages with AI, including Swiss German (Bernese and Zurich German), German (Switzerland), Swiss French, Swiss Italian and Romansh. Professional translators cover more than 100 languages.',
         },
         {
           question: 'Are my texts used to train AI models?',
@@ -125,7 +125,7 @@ const builtIn = {
   grav:
     'Grav’s own AI translation plugin is a paid premium add-on. The Supertext plugin is free and open source, keeps your Markdown intact and translates into Swiss variants with formal address.',
   hubspot:
-    'HubSpot’s built-in translation (powered by DeepL) needs Content Hub or Marketing Hub Professional, skips custom modules and has no Swiss German or formal address. Supertext translates pages, blog posts, marketing emails and knowledge base articles into Swiss German, French and Italian with formal address, as drafts to review.',
+    'HubSpot’s built-in translation (powered by DeepL) needs Content Hub or Marketing Hub Professional, skips custom modules and has no German (Switzerland) or formal address. Supertext translates pages, blog posts, marketing emails and knowledge base articles into German, French and Italian for Switzerland with formal address, as drafts to review.',
   joomla:
     'Joomla’s multilingual associations let you translate side by side, by hand; extensions add Google, DeepL or ChatGPT. Supertext creates linked, unpublished language versions of your articles, ready to review, in Swiss variants with formal address.',
   magnolia:
