@@ -94,18 +94,30 @@ const RULES = {
   ],
 };
 
-/** The text with the language's rules applied (unchanged when none match). */
-function swissTerms(text, locale) {
+/**
+ * Titles of the four Swiss German guides (and their SEO titles), as Remy worded them: "Localise a
+ * Shopify store for German-speaking Switzerland in 10 minutes". The guides explain German
+ * (Switzerland) and Swiss German themselves. Content update 2026-11-guide-titles.
+ */
+const GUIDE_TITLES = {
+  en: [[/Translate ([^'"\n]+?) into German \(Switzerland\) and Swiss German/g, 'Localise $1 for German-speaking Switzerland']],
+  de: [[/ in Deutsch \(Schweiz\) und Schweizerdeutsch übersetzen/g, ' für die Deutschschweiz lokalisieren']],
+  fr: [[/Traduire ([^'"\n]+?) en allemand \(Suisse\) et en suisse allemand/g, 'Localiser $1 pour la Suisse alémanique']],
+  it: [[/Tradurre ([^'"\n]+?) in tedesco \(Svizzera\) e svizzero tedesco/g, 'Localizzare $1 per la Svizzera tedesca']],
+};
+
+/** The text with the language's rules applied (unchanged when none match); RULES unless others are given. */
+function swissTerms(text, locale, rules = RULES) {
   if (typeof text !== 'string') return text;
-  return (RULES[locale] || []).reduce((t, [from, to]) => (typeof from === 'string' ? t.split(from).join(to) : t.replace(from, to)), text);
+  return (rules[locale] || []).reduce((t, [from, to]) => (typeof from === 'string' ? t.split(from).join(to) : t.replace(from, to)), text);
 }
 
 /** Every string in a value (objects, arrays), with the rules applied. */
-function swissTermsDeep(value, locale) {
-  if (typeof value === 'string') return swissTerms(value, locale);
-  if (Array.isArray(value)) return value.map((v) => swissTermsDeep(v, locale));
-  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, swissTermsDeep(v, locale)]));
+function swissTermsDeep(value, locale, rules = RULES) {
+  if (typeof value === 'string') return swissTerms(value, locale, rules);
+  if (Array.isArray(value)) return value.map((v) => swissTermsDeep(v, locale, rules));
+  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, swissTermsDeep(v, locale, rules)]));
   return value;
 }
 
-module.exports = { RULES, swissTerms, swissTermsDeep };
+module.exports = { RULES, GUIDE_TITLES, swissTerms, swissTermsDeep };

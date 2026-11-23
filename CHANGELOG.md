@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- The four Swiss German guides are titled "Localise … for German-speaking Switzerland" (in German "… für die Deutschschweiz lokalisieren", French "Localiser … pour la Suisse alémanique", Italian "Localizzare … per la Svizzera tedesca").
 - German in Switzerland is named as in Supertext's language list, in all four languages: *German (Switzerland)* for the written standard (de-CH), *Swiss German* for the dialect, instead of "Swiss Standard German" / "Schweizer Hochdeutsch". The four Swiss German guides name both in their titles and explain how to translate into Zurich or Bernese German instead of de-CH.
 - Statistics: the months under *Installations over time* show the full year ("Oct 2026"), so they don't read like a day of the month.
 - Editorial calendar in the CMS admin (editors only, never on the site): ideas and work in progress for news posts and improvements, draft and scheduled articles with their languages, and what is done. Starts with the open points of November 2026. `EDITORIAL_CALENDAR_TOKEN` (optional) reads it as data and nothing else.

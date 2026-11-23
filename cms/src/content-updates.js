@@ -1163,9 +1163,10 @@ async function seedCalendar(strapi) {
  * "German (Switzerland)", "Swiss German" the dialect. Every text of articles, pages, integrations and
  * the global settings, in each language; published again where nobody is editing the draft.
  */
-async function swissTermsLive(strapi) {
+async function swissTermsLive(strapi, which = 'RULES', label = 'German (Switzerland) / Swiss German') {
   const { populateAll } = require('./translate-site');
-  const { swissTermsDeep } = require('./swiss-terms');
+  const terms = require('./swiss-terms');
+  const rules = terms[which];
   let changed = 0;
   for (const uid of ['api::article.article', PAGE, INTEGRATION, GLOBAL]) {
     const ct = strapi.contentType(uid);
@@ -1182,7 +1183,7 @@ async function swissTermsLive(strapi) {
         for (const name of fields) {
           if (draft[name] === undefined || draft[name] === null) continue;
           const before = stripIds(mediaToIds(draft[name]));
-          const after = swissTermsDeep(before, locale);
+          const after = terms.swissTermsDeep(before, locale, rules);
           if (JSON.stringify(after) !== JSON.stringify(before)) data[name] = after;
         }
         if (!Object.keys(data).length) continue;
@@ -1194,7 +1195,7 @@ async function swissTermsLive(strapi) {
       }
     }
   }
-  strapi.log.info(`[setup] German (Switzerland) / Swiss German: ${changed} documents updated`);
+  strapi.log.info(`[setup] ${label}: ${changed} documents updated`);
   return true;
 }
 
@@ -1245,6 +1246,7 @@ const UPDATES = [
   { id: '2026-11-kotlin-card', run: (strapi) => addKotlinCard(strapi) },
   { id: '2026-11-editorial-calendar', run: (strapi) => seedCalendar(strapi) },
   { id: '2026-11-swiss-terms', run: (strapi) => swissTermsLive(strapi) },
+  { id: '2026-11-guide-titles', run: (strapi) => swissTermsLive(strapi, 'GUIDE_TITLES', 'Guide titles') },
 ];
 
 async function runContentUpdates(strapi) {
