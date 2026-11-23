@@ -19,4 +19,7 @@ WORKDIR /app
 COPY --from=build /app ./
 RUN mkdir -p public/uploads && echo ok > public/health
 EXPOSE 1337
-CMD ["npm", "run", "start"]
+# Strapi directly (exec), not through npm: on a redeploy Railway stops the old container with
+# SIGTERM; Strapi shuts down cleanly (exit 0), while npm reports the signal as a failed command,
+# which Railway counts as a crash ("Deploy Crashed!" emails).
+CMD ["sh", "-c", "node scripts/ensure-db.js && exec ./node_modules/.bin/strapi start"]
