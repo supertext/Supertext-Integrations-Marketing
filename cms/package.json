@@ -34,5 +34,10 @@
   },
   "strapi": {
     "uuid": "d2b7e0f4-5a7c-4c1e-9b0a-3f6e8c1d2a47"
+  },
+  "overrides": {
+    "@modelcontextprotocol/node": "2.1.2",
+    "@modelcontextprotocol/server": "2.4.0",
+    "@hono/node-server": "^2.1.3"
   }
 }

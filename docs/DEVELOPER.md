@@ -103,6 +103,10 @@ Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held b
 - `react`, `react-dom`, `react-router-dom` in `cms/`: Strapi 5's admin ships React 18 and React Router 6.
 - `typescript` and `@types/node` in both: TypeScript 7 is the native compiler; the Node types follow the Node version we run (22).
 
+`overrides` in `cms/package.json` lift packages Strapi pins below a security fix. Remove each one once a Strapi release ships the same or a newer version (`npm ls <package>` shows *overridden* while it still applies):
+
+- `@hono/node-server` `^2.1.3` (GHSA-rmxm-3fg6-px4f, `serveStatic`), with `@modelcontextprotocol/node` `2.1.2` and `@modelcontextprotocol/server` `2.4.0`, the first versions that accept it. Strapi 5.63 pins `@modelcontextprotocol/node` 2.1.1. Only Strapi's MCP server uses them (`getRequestListener`, not `serveStatic`), and it's off here (`mcp.enabled` isn't set).
+
 ## Deployment
 
 Railway builds `cms/Dockerfile` and `web/Dockerfile` with the repo root as context (see [INSTALLATION.md](INSTALLATION.md)). There are no releases or version tags: `main` is what runs. Both services deploy every push to `main` of `supertext/Supertext-Integrations-Marketing`; Railway's GitHub app needs access to that organisation (if a push doesn't start a build, check its access under the organisation's *Installed GitHub Apps*).
