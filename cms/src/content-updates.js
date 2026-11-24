@@ -1175,6 +1175,49 @@ const WPML_STRINGS_LABELS = {
   ],
 };
 
+/**
+ * News covers: images from cms/src/seed/covers/<article slug>.png for articles without a cover
+ * (cover isn't localized: one image for every language). Runs on every start, so an article
+ * written later (e.g. a scheduled guide) gets its cover too; each slug only once (store key
+ * coversDone), so a cover an editor removed doesn't come back, and an editor's own cover is
+ * never replaced. Made by cms/scripts/make-covers.py, own-covers.mjs and swiss-guide-covers.mjs.
+ */
+async function articleCovers(strapi) {
+  const fs = require('fs');
+  const path = require('path');
+  const ARTICLE = 'api::article.article';
+  const dir = path.join(__dirname, 'seed', 'covers');
+  if (!fs.existsSync(dir)) return true;
+  const docs = strapi.documents(ARTICLE);
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const done = new Set((await store.get({ key: 'coversDone' })) || []);
+  for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.png'))) {
+    const slug = name.slice(0, -4);
+    if (done.has(slug)) continue;
+    const draft = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate: ['cover'] });
+    if (!draft) continue;
+    done.add(slug);
+    await store.set({ key: 'coversDone', value: [...done] });
+    if (draft.cover) continue;
+    // Which language versions are published as they are (no pending edits): those get published again.
+    const republish = [];
+    for (const locale of ['en', 'de', 'fr', 'it']) {
+      const d = await docs.findOne({ documentId: draft.documentId, locale, status: 'draft', fields: ['updatedAt'] });
+      const live = d && (await docs.findOne({ documentId: draft.documentId, locale, status: 'published', fields: ['updatedAt'] }));
+      if (live && new Date(d.updatedAt) - new Date(live.updatedAt) <= 1000) republish.push(locale);
+    }
+    const filepath = path.join(dir, name);
+    const [file] = await strapi.plugin('upload').service('upload').upload({
+      data: { fileInfo: { name: `cover-${name}`, alternativeText: '', caption: draft.title } },
+      files: { filepath, originalFilename: `cover-${name}`, mimetype: 'image/png', size: fs.statSync(filepath).size },
+    });
+    await docs.update({ documentId: draft.documentId, locale: 'en', data: { cover: file.id } });
+    for (const locale of republish) await docs.publish({ documentId: draft.documentId, locale });
+    strapi.log.info(`[setup] Cover for the article ${slug}`);
+  }
+  return true;
+}
+
 /** The Kotlin card on the SDK page (follow-up: the live cards have no links, so the card is found by its title). */
 async function addKotlinCard(strapi) {
   const { populateAll } = require('./translate-site');
@@ -1336,4 +1379,4 @@ async function runContentUpdates(strapi) {
   }
 }
 
-module.exports = { runContentUpdates, integrationFaq };
+module.exports = { runContentUpdates, integrationFaq, articleCovers };

@@ -111,6 +111,14 @@ Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held b
 
 - `@hono/node-server` `^2.1.3` (GHSA-rmxm-3fg6-px4f, `serveStatic`), with `@modelcontextprotocol/node` `2.1.2` and `@modelcontextprotocol/server` `2.4.0`, the first versions that accept it. Strapi 5.63 pins `@modelcontextprotocol/node` 2.1.1. Only Strapi's MCP server uses them (`getRequestListener`, not `serveStatic`), and it's off here (`mcp.enabled` isn't set).
 
+### News covers
+
+`cms/src/seed/covers/<article slug>.png` (1600×800) become the article's cover on start (`articleCovers` in `content-updates.js`): once per slug (store key `coversDone`) and only when the article has no cover, so an editor's cover or a removed one stays. Making them, from the folder that holds the plugin repos' clones:
+
+- `node supertext-integrations-marketing/cms/scripts/own-covers.mjs /tmp/raw` renders the SDK code examples and screenshots of the support and roadmap pages;
+- `python3 supertext-integrations-marketing/cms/scripts/make-covers.py /tmp/raw` puts guide screenshots and those images on the background in the site's colours, centred so the card's 16:7 crop keeps them whole;
+- `node supertext-integrations-marketing/cms/scripts/swiss-guide-covers.mjs supertext-integrations-marketing/cms/src/seed/covers` draws the Swiss German guides' covers (the system's Simple Icons logo, Swiss flag, Alps, de-CH; no words, since one cover serves every language).
+
 ## Deployment
 
 Railway builds `cms/Dockerfile` and `web/Dockerfile` with the repo root as context (see [INSTALLATION.md](INSTALLATION.md)). Both start their server directly, not through `npm`, so the SIGTERM Railway sends to the old container on a redeploy ends it with exit code 0 (through `npm` it ended with an error, and Railway sent a *Deploy Crashed* email for every deploy). There are no releases or version tags: `main` is what runs. Both services deploy every push to `main` of `supertext/Supertext-Integrations-Marketing`; Railway's GitHub app needs access to that organisation (if a push doesn't start a build, check its access under the organisation's *Installed GitHub Apps*).

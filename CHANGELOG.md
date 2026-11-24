@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- News covers: 14 articles get their own image instead of the first integration's screenshot. These are the feature they're about from the plugin's guide (WPML string translations, the Supertext box, the export dialog …), illustrations for the Swiss German guides (the system's logo, the Swiss flag, the Matterhorn, de-CH), the code examples of the SDK articles and screenshots of the support and roadmap pages. They're set once per article on start, only where there is no cover, so editors' choices stay.
+- Fixed: the German starter content (`seed/german.js`) didn't load on a fresh setup (an apostrophe ended a string).
 - Integration pages show the newest three news articles about the integration (*News about WordPress (WPML)*), found by the article's systems; nothing to maintain by hand.
 - Integration pages and news articles: less space above the back link and below the header.
 - Integration screenshots that a plugin repo updates under the same file name are now imported again (e.g. WPML's, which still showed WPML's old site-key notice).

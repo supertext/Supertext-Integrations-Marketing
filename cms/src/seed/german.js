@@ -91,7 +91,7 @@ const swissGermanEn = {
       items: [
         {
           question: 'What is the language code for Swiss Standard German?',
-          answer: '**de-CH**. Most systems call it *German (Switzerland)*, often with the locale `de_CH`. Supertext's language list calls it *German (Switzerland)* too. Swiss German is the dialect: Zurich German is `gsw-u-sd-chzh`, Bernese German `gsw-u-sd-chbe`.',
+          answer: '**de-CH**. Most systems call it *German (Switzerland)*, often with the locale `de_CH`. Supertext’s language list calls it *German (Switzerland)* too. Swiss German is the dialect: Zurich German is `gsw-u-sd-chzh`, Bernese German `gsw-u-sd-chbe`.',
         },
         {
           question: 'Is Swiss Standard German the same as Swiss German?',
