@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Integration pages: the GitHub button says *Source code* (*Quellcode*, *Code source*, *Codice sorgente*); the guides have their own buttons below it.
 - German in Switzerland: running text says *Swiss Standard German* (de-CH) and *Swiss German* (dialect); lists of languages keep Supertext's list name *German (Switzerland)*. In German *Schweizer Hochdeutsch*, French *allemand standard suisse*, Italian *tedesco standard svizzero*.
 - The four Swiss German guides are titled "Localise … for German-speaking Switzerland" (in German "… für die Deutschschweiz lokalisieren", French "Localiser … pour la Suisse alémanique", Italian "Localizzare … per la Svizzera tedesca").
 - German in Switzerland is named as in Supertext's language list, in all four languages: *German (Switzerland)* for the written standard (de-CH), *Swiss German* for the dialect,. The four Swiss German guides name both in their titles and explain how to translate into Zurich or Bernese German instead of de-CH.
