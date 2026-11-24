@@ -1,6 +1,6 @@
 # Integration logos
 
-Official logos of systems that [Simple Icons](https://simpleicons.org) has no icon for, as
+Official logos of systems that [Simple Icons](https://simpleicons.org) has no (readable) icon for, as
 512×512 PNGs (converted from SVG, trimmed and centred, so no SVG from outside is served). On every
 start `integrationLogos` (`cms/src/content-updates.js`) uploads each one as the integration's logo
 where none is set, and replaces it when the file changes while it is still the automatic one; the
@@ -19,6 +19,7 @@ used, as the projects do for their favicons.
 | `atropim.png` | The symbol of `_assets/atropim-logo.svg` in [atrocore/atropim](https://github.com/atrocore/atropim) |
 | `magnolia.png` | Magnolia's app icon, supplied by Remy (224 px, scaled to 512) |
 | `claude-chatgpt-and-copilot.png` | Our own icon (a chat bubble with a connector), drawn by `cms/scripts/assistant-logo.mjs`: the integration covers three brands, so it uses none of their logos |
+| `pimcore.png` | Pimcore's symbol, supplied by Remy (558×530, extended with its purple to a square); replaces Simple Icons' wordmark, which is unreadable at small size |
 | `neos.png` | `Neos.Neos/Resources/Public/Images/Login/Logo.svg` in [neos/neos-development-collection](https://github.com/neos/neos-development-collection) |
 
 The logos are trademarks of their owners and are used only to name the system the plugin works with.
