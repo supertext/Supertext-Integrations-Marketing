@@ -24,9 +24,14 @@ const ROUNDUPS = {
   'hubspot-mailchimp': [['hubspot', 'HubSpot'], ['mailchimp', 'Mailchimp']],
 };
 
+// Official logos for systems without an icon (cms/src/seed/logos/<slug>.png), as on the site.
+const LOGOS = path.join(root, 'cms/src/seed/logos');
+const logoFile = (slug) => { const f = path.join(LOGOS, `${slug}.png`); return fs.existsSync(f) ? fs.readFileSync(f).toString('base64') : null; };
 const initials = (name) => name.split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 const isLight = (hex) => { const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255); return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.6; };
 function tile([slug, name], size) {
+  const png = logoFile(slug);
+  if (png) return `<div class="tile" style="width:${size}px;height:${size}px"><img src="data:image/png;base64,${png}" width="${size}" height="${size}"></div>`;
   const icon = SYSTEM_ICONS[slug];
   if (!icon) return `<div class="tile mono" style="width:${size}px;height:${size}px;font-size:${size * 0.3}px">${initials(name)}</div>`;
   const light = isLight(icon.hex);
@@ -72,7 +77,7 @@ covers['translation-mcp'] = page(`<div class="win" style="margin-top:-30px"><div
   <div class="msg me">${bars([90, 60])}</div><div class="msg ai">${bars([95, 80, 40])}</div>
   <div class="tool">${logo.replace('<svg', '<svg preserveAspectRatio="xMinYMid meet"')}<span style="margin-left:auto">MCP</span></div></div>`);
 // Design files: InDesign, Illustrator, CorelDRAW → an XLIFF file.
-covers['design-files-xliff'] = page(`<div class="row">${[['adobe-indesign', 'In Design'], ['adobe-illustrator', 'A Illustrator'], ['coreldraw', 'CorelDRAW']].map((s) => tile(s, 200)).join('')}${ARROW}
+covers['design-files-xliff'] = page(`<div class="row">${[['adobe-indesign', 'InDesign'], ['adobe-illustrator', 'Illustrator'], ['coreldraw', 'CorelDRAW']].map((s) => tile(s, 200)).join('')}${ARROW}
   <div class="file"><div class="lines"><b></b><b style="width:80%"></b><b></b><b style="width:60%"></b></div><span>XLIFF</span></div></div>`);
 
 const out = process.argv[2];

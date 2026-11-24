@@ -111,9 +111,13 @@ Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held b
 
 - `@hono/node-server` `^2.1.3` (GHSA-rmxm-3fg6-px4f, `serveStatic`), with `@modelcontextprotocol/node` `2.1.2` and `@modelcontextprotocol/server` `2.4.0`, the first versions that accept it. Strapi 5.63 pins `@modelcontextprotocol/node` 2.1.1. Only Strapi's MCP server uses them (`getRequestListener`, not `serveStatic`), and it's off here (`mcp.enabled` isn't set).
 
+### Integration logos
+
+Systems without a Simple Icons icon get their official logo from `cms/src/seed/logos/<slug>.png` (512×512 PNG, converted from the brand's SVG; sources in that folder's README), uploaded as the integration's logo by the content update `2026-11-integration-logos` where none is set. The site then shows it instead of the monogram tile, and `logo-covers.mjs` uses it on the covers. Magnolia has none yet.
+
 ### News covers
 
-`cms/src/seed/covers/<article slug>.png` (1600×800) become the article's cover on start (`articleCovers` in `content-updates.js`): once per slug (store key `coversDone`) and only when the article has no cover, so an editor's cover or a removed one stays. Making them, from the folder that holds the plugin repos' clones:
+`cms/src/seed/covers/<article slug>.png` (1600×800) become the article's cover on start (`articleCovers` in `content-updates.js`): when the article has no cover, and again when the file changes while the article still has the automatic cover (`cover-<slug>.png`; store key `coversDone` keeps each slug's image hash). An editor's own cover, or a removed one, stays. Making them, from the folder that holds the plugin repos' clones:
 
 - `node supertext-integrations-marketing/cms/scripts/own-covers.mjs /tmp/raw` renders the SDK code examples and screenshots of the support and roadmap pages;
 - `python3 supertext-integrations-marketing/cms/scripts/make-covers.py /tmp/raw` puts guide screenshots and those images on the background in the site's colours, centred so the card's 16:7 crop keeps them whole;

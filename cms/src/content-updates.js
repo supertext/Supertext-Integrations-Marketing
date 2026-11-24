@@ -1176,44 +1176,80 @@ const WPML_STRINGS_LABELS = {
 };
 
 /**
- * News covers: images from cms/src/seed/covers/<article slug>.png for articles without a cover
- * (cover isn't localized: one image for every language). Runs on every start, so an article
- * written later (e.g. a scheduled guide) gets its cover too; each slug only once (store key
- * coversDone), so a cover an editor removed doesn't come back, and an editor's own cover is
- * never replaced. Made by cms/scripts/make-covers.py, own-covers.mjs and swiss-guide-covers.mjs.
+ * Uploads a file and puts it into a non-localized media field of a document, then publishes the
+ * language versions that were published as they were (no pending edits).
+ */
+async function attachImage(strapi, uid, documentId, field, filepath, name, caption) {
+  const fs = require('fs');
+  const docs = strapi.documents(uid);
+  const republish = [];
+  for (const locale of ['en', 'de', 'fr', 'it']) {
+    const d = await docs.findOne({ documentId, locale, status: 'draft', fields: ['updatedAt'] });
+    const live = d && (await docs.findOne({ documentId, locale, status: 'published', fields: ['updatedAt'] }));
+    if (live && new Date(d.updatedAt) - new Date(live.updatedAt) <= 1000) republish.push(locale);
+  }
+  const [file] = await strapi.plugin('upload').service('upload').upload({
+    data: { fileInfo: { name, alternativeText: '', caption } },
+    files: { filepath, originalFilename: name, mimetype: 'image/png', size: fs.statSync(filepath).size },
+  });
+  await docs.update({ documentId, locale: 'en', data: { [field]: file.id } });
+  for (const locale of republish) await docs.publish({ documentId, locale });
+  return file;
+}
+
+/**
+ * News covers: images from cms/src/seed/covers/<article slug>.png. Runs on every start, so an
+ * article written later (e.g. a scheduled guide) gets its cover too. Remembers each slug with
+ * the image's hash (store key coversDone): a new image replaces the cover only while it is
+ * still the automatic one (named cover-<slug>.png); an editor's own cover is never replaced,
+ * and a cover an editor removed doesn't come back. Made by the scripts in cms/scripts/.
  */
 async function articleCovers(strapi) {
   const fs = require('fs');
   const path = require('path');
+  const crypto = require('crypto');
   const ARTICLE = 'api::article.article';
   const dir = path.join(__dirname, 'seed', 'covers');
   if (!fs.existsSync(dir)) return true;
   const docs = strapi.documents(ARTICLE);
   const store = strapi.store({ type: 'plugin', name: 'site-setup' });
-  const done = new Set((await store.get({ key: 'coversDone' })) || []);
+  const stored = (await store.get({ key: 'coversDone' })) || {};
+  // Before November 2026 this was a list of slugs.
+  const done = Array.isArray(stored) ? Object.fromEntries(stored.map((slug) => [slug, null])) : stored;
   for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.png'))) {
     const slug = name.slice(0, -4);
-    if (done.has(slug)) continue;
+    const filepath = path.join(dir, name);
+    const hash = crypto.createHash('sha1').update(fs.readFileSync(filepath)).digest('hex');
+    if (done[slug] === hash) continue;
     const draft = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate: ['cover'] });
     if (!draft) continue;
-    done.add(slug);
-    await store.set({ key: 'coversDone', value: [...done] });
-    if (draft.cover) continue;
-    // Which language versions are published as they are (no pending edits): those get published again.
-    const republish = [];
-    for (const locale of ['en', 'de', 'fr', 'it']) {
-      const d = await docs.findOne({ documentId: draft.documentId, locale, status: 'draft', fields: ['updatedAt'] });
-      const live = d && (await docs.findOne({ documentId: draft.documentId, locale, status: 'published', fields: ['updatedAt'] }));
-      if (live && new Date(d.updatedAt) - new Date(live.updatedAt) <= 1000) republish.push(locale);
-    }
-    const filepath = path.join(dir, name);
-    const [file] = await strapi.plugin('upload').service('upload').upload({
-      data: { fileInfo: { name: `cover-${name}`, alternativeText: '', caption: draft.title } },
-      files: { filepath, originalFilename: `cover-${name}`, mimetype: 'image/png', size: fs.statSync(filepath).size },
-    });
-    await docs.update({ documentId: draft.documentId, locale: 'en', data: { cover: file.id } });
-    for (const locale of republish) await docs.publish({ documentId: draft.documentId, locale });
+    const seen = slug in done;
+    done[slug] = hash;
+    await store.set({ key: 'coversDone', value: done });
+    const automatic = draft.cover && draft.cover.name === `cover-${name}`;
+    // First time: only without a cover. Later: only replace our own automatic cover (not a removed one).
+    if (seen ? !automatic : draft.cover) continue;
+    await attachImage(strapi, ARTICLE, draft.documentId, 'cover', filepath, `cover-${name}`, draft.title);
+    if (automatic) await strapi.plugin('upload').service('upload').remove({ id: draft.cover.id }).catch(() => undefined);
     strapi.log.info(`[setup] Cover for the article ${slug}`);
+  }
+  return true;
+}
+
+/**
+ * Integration logos (24 November 2026) for systems Simple Icons has no icon for: the official
+ * logos from cms/src/seed/logos/<slug>.png (see that folder's README), only where no logo is set.
+ */
+async function integrationLogos(strapi) {
+  const fs = require('fs');
+  const path = require('path');
+  const dir = path.join(__dirname, 'seed', 'logos');
+  for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.png'))) {
+    const slug = name.slice(0, -4);
+    const draft = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate: ['logo'] });
+    if (!draft || draft.logo) continue;
+    await attachImage(strapi, INTEGRATION, draft.documentId, 'logo', path.join(dir, name), `logo-${name}`, draft.system);
+    strapi.log.info(`[setup] Logo for ${slug}`);
   }
   return true;
 }
@@ -1360,6 +1396,7 @@ const UPDATES = [
   { id: '2026-11-swiss-text', run: (strapi) => swissTermsLive(strapi, 'TEXT', 'Swiss Standard German in text') },
   { id: '2026-11-wpml-strings', run: (strapi) => wpmlStrings(strapi) },
   { id: '2026-11-wpml-strings-labels', run: (strapi) => swissTermsLive(strapi, WPML_STRINGS_LABELS, 'WPML 1.2 article labels', 'wpml-strings') },
+  { id: '2026-11-integration-logos', run: (strapi) => integrationLogos(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
