@@ -1145,6 +1145,36 @@ async function wpmlStrings(strapi) {
   return true;
 }
 
+/** The WPML 1.2 article's machine translation, with the plugin's own labels (from its .po files) and WPML's terms. */
+const WPML_STRINGS_LABELS = {
+  de: [
+    ['WPML → Zeichenkettenübersetzung', 'WPML → String-Übersetzung'],
+    ['Zeichenkettenübersetzungen', 'String-Übersetzungen'],
+    ['WPML-Zeichenkettenpakete', 'WPML-String-Pakete'],
+    ['Zeichenketten', 'Strings'],
+    ['Nur leere Übersetzung anzeigen', 'Nur leere Übersetzungen'],
+    [', Suchen oder aktivieren Sie', ', suchen Sie oder aktivieren Sie'],
+  ],
+  fr: [
+    ['chaînes de caractères', 'chaînes'],
+    ['Seules les traductions manquantes', 'Traductions vides uniquement'],
+    [', Rechercher, ou cochez', ', faites une recherche ou cochez'],
+  ],
+  it: [
+    ['Supertext → Traduzioni di stringhe', 'Supertext → Traduzioni delle stringhe'],
+    ['WPML → Traduzioni di stringhe', 'WPML → Traduzione stringhe'],
+    ['Traduzione AI di Supertext', 'Traduzione IA Supertext'],
+    ['Traduzione umana di Supertext', 'Traduzione umana Supertext'],
+    ['Salva traduzioni', 'Salva le traduzioni'],
+    [', ricerca, oppure selezionare', ', cercare oppure selezionare'],
+    ['con l’AI', 'con l’IA'],
+    ['Con l’AI', 'Con l’IA'],
+    ['Plugins → Add New Plugin', 'Plugin → Aggiungi nuovo plugin'],
+    ['Aggiornarlo alla', 'Lo aggiorni alla'],
+    ['Crearlo su', 'Ne crei uno su'],
+  ],
+};
+
 /** The Kotlin card on the SDK page (follow-up: the live cards have no links, so the card is found by its title). */
 async function addKotlinCard(strapi) {
   const { populateAll } = require('./translate-site');
@@ -1200,12 +1230,12 @@ async function seedCalendar(strapi) {
  * "German (Switzerland)", "Swiss German" the dialect. Every text of articles, pages, integrations and
  * the global settings, in each language; published again where nobody is editing the draft.
  */
-async function swissTermsLive(strapi, which = 'RULES', label = 'German (Switzerland) / Swiss German') {
+async function swissTermsLive(strapi, which = 'RULES', label = 'German (Switzerland) / Swiss German', articleSlug = null) {
   const { populateAll } = require('./translate-site');
   const terms = require('./swiss-terms');
-  const rules = terms[which];
+  const rules = typeof which === 'string' ? terms[which] : which;
   let changed = 0;
-  for (const uid of ['api::article.article', PAGE, INTEGRATION, GLOBAL]) {
+  for (const uid of articleSlug ? ['api::article.article'] : ['api::article.article', PAGE, INTEGRATION, GLOBAL]) {
     const ct = strapi.contentType(uid);
     const populate = populateAll(strapi, ct.attributes);
     const fields = Object.keys(ct.attributes).filter((name) => name !== 'slug' && ['string', 'text', 'richtext', 'component', 'dynamiczone'].includes(ct.attributes[name].type));
@@ -1214,7 +1244,7 @@ async function swissTermsLive(strapi, which = 'RULES', label = 'German (Switzerl
       const docs = strapi.documents(uid);
       const drafts = ct.kind === 'singleType'
         ? [await docs.findFirst({ locale, status: 'draft', populate })].filter(Boolean)
-        : await docs.findMany({ locale, status: 'draft', populate, limit: 1000 });
+        : await docs.findMany({ locale, status: 'draft', populate, limit: 1000, ...(articleSlug ? { filters: { slug: articleSlug } } : {}) });
       for (const draft of drafts) {
         const data = {};
         for (const name of fields) {
@@ -1286,6 +1316,7 @@ const UPDATES = [
   { id: '2026-11-guide-titles', run: (strapi) => swissTermsLive(strapi, 'GUIDE_TITLES', 'Guide titles') },
   { id: '2026-11-swiss-text', run: (strapi) => swissTermsLive(strapi, 'TEXT', 'Swiss Standard German in text') },
   { id: '2026-11-wpml-strings', run: (strapi) => wpmlStrings(strapi) },
+  { id: '2026-11-wpml-strings-labels', run: (strapi) => swissTermsLive(strapi, WPML_STRINGS_LABELS, 'WPML 1.2 article labels', 'wpml-strings') },
 ];
 
 async function runContentUpdates(strapi) {
