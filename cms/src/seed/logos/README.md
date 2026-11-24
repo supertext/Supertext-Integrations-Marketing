@@ -17,7 +17,8 @@ used, as the projects do for their favicons.
 | `silverstripe.png` | The symbol of `.storybook/theme/images/logo.svg` in [silverstripe/silverstripe-admin](https://github.com/silverstripe/silverstripe-admin) |
 | `akeneo-pim.png` | `src/Akeneo/Platform/Bundle/UIBundle/Resources/public/images/logo.svg` in [akeneo/pim-community-dev](https://github.com/akeneo/pim-community-dev) |
 | `atropim.png` | The symbol of `_assets/atropim-logo.svg` in [atrocore/atropim](https://github.com/atrocore/atropim) |
+| `magnolia.png` | Magnolia's app icon, supplied by Remy (224 px, scaled to 512) |
+| `claude-chatgpt-and-copilot.png` | Our own icon (a chat bubble with a connector), drawn by `cms/scripts/assistant-logo.mjs`: the integration covers three brands, so it uses none of their logos |
 | `neos.png` | `Neos.Neos/Resources/Public/Images/Login/Logo.svg` in [neos/neos-development-collection](https://github.com/neos/neos-development-collection) |
 
 The logos are trademarks of their owners and are used only to name the system the plugin works with.
-Still missing: Magnolia (its logo isn't in any of these sources) and the *Claude, ChatGPT and Copilot* integration (three brands in one).

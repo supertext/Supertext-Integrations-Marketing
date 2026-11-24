@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Official logos instead of the initials tile for InDesign, Illustrator, Adobe Experience Manager (the Adobe logo), Magento, django CMS, Neos, Silverstripe, Akeneo PIM, AtroPIM and Microsoft 365, on their integration pages and on the news covers; automatic news covers and logos are replaced when their image changes. News cards no longer repeat the systems' logos over an article's own cover.
+- Official logos instead of the initials tile for InDesign, Illustrator, Adobe Experience Manager (the Adobe logo), Magento, django CMS, Neos, Silverstripe, Akeneo PIM, AtroPIM, Microsoft 365 and Magnolia, and our own icon for *Claude, ChatGPT and Copilot*, on their integration pages and on the news covers; automatic news covers and logos are replaced when their image changes. News cards no longer repeat the systems' logos over an article's own cover.
 - News covers for the remaining nine articles: the round-ups show their systems' logos with de-CH, fr-CH and it-CH, the Translation MCP an assistant's chat with Supertext as its tool, the design-files article InDesign, Illustrator and CorelDRAW turning into an XLIFF file.
 - News covers: 14 articles get their own image instead of the first integration's screenshot. These are the feature they're about from the plugin's guide (WPML string translations, the Supertext box, the export dialog …), illustrations for the Swiss German guides (the system's logo, the Swiss flag, the Matterhorn, de-CH), the code examples of the SDK articles and screenshots of the support and roadmap pages. They're set once per article on start, only where there is no cover, so editors' choices stay.
 - Fixed: the German starter content (`seed/german.js`) didn't load on a fresh setup (an apostrophe ended a string).

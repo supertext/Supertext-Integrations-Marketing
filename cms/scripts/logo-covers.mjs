@@ -45,7 +45,7 @@ body{margin:0;width:1600px;height:800px;position:relative;overflow:hidden;backgr
 .alps{position:absolute;left:0;top:0}
 .stage{position:absolute;left:0;right:0;top:175px;display:flex;flex-direction:column;align-items:center;gap:44px}
 .row{display:flex;align-items:center;gap:36px}
-.tile{display:flex;align-items:center;justify-content:center;background:#fff;border-radius:22%;box-shadow:0 14px 36px rgba(0,50,48,.18)}
+.tile{display:flex;align-items:center;justify-content:center;background:#fff;border-radius:22%;overflow:hidden;box-shadow:0 14px 36px rgba(0,50,48,.18)}
 .mono{background:#003230;color:#78ffaf;font-family:Ginto}
 .chips{display:flex;gap:18px}.chips span{background:#78ffaf;color:#003230;font:700 30px 'DejaVu Sans Mono',monospace;padding:14px 26px;border-radius:40px;box-shadow:0 10px 24px rgba(0,50,48,.15)}
 .arrow{width:84px;height:52px}
