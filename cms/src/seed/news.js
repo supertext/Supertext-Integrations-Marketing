@@ -490,6 +490,40 @@ You need WordPress 6.4 or later with WPML Multilingual CMS and PHP 8.2+. Downloa
   ),
 
   article(
+    'wpml-strings',
+    '2026-11-24T11:00:00.000Z',
+    'plugins',
+    ['wordpress-wpml'],
+    'Supertext for WPML 1.2: forms and other strings',
+    'Version 1.2 translates the texts outside your posts too: the fields, labels and messages of WPForms, Gravity Forms and Contact Form 7, and other WPML string packages. With AI, a professional order or by hand in a grid.',
+    `
+A contact form in English on a German page looks unfinished. Until now, [Supertext for WPML](/en/integrations/wordpress-wpml) translated posts, pages and ACF blocks, but not the texts WPML keeps as strings, such as a form's field labels, placeholders and confirmation messages. Version 1.2 translates those too.
+
+## Supertext → String translations
+
+A new page under **Supertext → String translations** lists the strings of your forms and other WPML string packages, with a text box for each language.
+
+- **Choose a group**, such as *WPForms: Newsletter*, search, or tick *Empty translation only* to see what is still missing.
+- **Translate with AI:** tick the rows and choose the bulk action **Supertext AI Translation**. Every other language is filled in at once.
+- **Order a professional translation:** choose **Supertext Human Translation**, then the language, translation type and delivery date, with the price shown before you order. The translations are saved when Supertext delivers them.
+- **Edit by hand:** change a text box and click *Save translations*.
+
+These are WPML's own string translations, the same ones you see under WPML → String Translation, so the form shows them right away. Strings of blocks inside posts aren't listed: they are translated together with the post.
+
+## Which forms
+
+WPForms, Gravity Forms and Contact Form 7, each with its WPML add-on (for example WPForms Multilingual), and any other plugin that registers its texts as a WPML string package. The page needs **WPML String Translation**.
+
+The [Polylang plugin](/en/integrations/wordpress-polylang) has had the same page for its strings; WPML sites now get it too.
+
+## Getting started
+
+Already using the plugin? Update to 1.2 from the [latest release on GitHub](https://github.com/Supertext/Wordpress-WPML-Supertext-Translation/releases/latest). New to it? You need WordPress 6.4 or later with WPML Multilingual CMS and PHP 8.2+; upload the zip under Plugins → Add New Plugin. No Supertext account yet? [Create one at supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).
+`,
+    { title: 'Translate WPForms, Gravity Forms and other WPML strings with Supertext', description: 'Supertext for WPML 1.2 translates form fields and other WPML string packages with AI, a professional order or by hand.' }
+  ),
+
+  article(
     'kotlin-sdk',
     '2026-11-14T10:00:00.000Z',
     'plugins',

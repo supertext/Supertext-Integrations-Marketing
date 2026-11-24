@@ -470,6 +470,7 @@
       "Translates many posts at once with the Supertext AI Translation bulk action",
       "Orders professional human translation with a live price quote, written back into WPML on delivery",
       "Translates ACF blocks, repeaters and groups included, following ACF Multilingual's field settings",
+      "Translates form fields and other WPML strings (WPForms, Gravity Forms, Contact Form 7) with AI, a professional order or by hand",
       "Respects WPML's custom field settings and taxonomies, and translates YOOtheme Pro layouts",
       "Translations are created as drafts, linked to their original in WPML"
     ],

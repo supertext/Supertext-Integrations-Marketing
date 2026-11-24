@@ -1108,6 +1108,43 @@ async function addNovemberNews(strapi) {
   return true;
 }
 
+/** WPML 1.2 (24 November 2026): string translations as a feature, and the news article. */
+async function wpmlStrings(strapi) {
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug: 'wordpress-wpml' }, populate: ['features'] });
+  if (doc) {
+    const TEXT = 'Translates form fields and other WPML strings (WPForms, Gravity Forms, Contact Form 7) with AI, a professional order or by hand';
+    const features = stripIds(doc.features || []);
+    if (!features.some((f) => /WPML strings/.test(f.text || ''))) {
+      const at = features.findIndex((f) => /ACF/.test(f.text || ''));
+      features.splice(at >= 0 ? at + 1 : features.length, 0, { text: TEXT, included: true });
+      const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+      const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+      await docs.update({ documentId: doc.documentId, locale: 'en', data: { features } });
+      if (!edited) {
+        await docs.publish({ documentId: doc.documentId, locale: 'en' });
+        const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+        const state = (await store.get({ key: 'autoTranslations' })) || {};
+        for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+        await store.set({ key: 'autoTranslations', value: state });
+      }
+    }
+  }
+  // searchTerms isn't localized: every language row gets it.
+  const seed = require('./seed/integrations').find((i) => i.slug === 'wordpress-wpml');
+  if (seed) {
+    const rows = await strapi.db.query(INTEGRATION).findMany({ where: { slug: 'wordpress-wpml' }, select: ['id'], limit: 100 });
+    for (const row of rows) await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { searchTerms: seed.searchTerms } });
+  }
+  const ARTICLE = 'api::article.article';
+  const data = require('./seed/news').find((a) => a.slug === 'wpml-strings');
+  if (data && !(await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: data.slug }, fields: ['id'] }))) {
+    await strapi.documents(ARTICLE).create({ locale: 'en', data, status: 'published' });
+  }
+  strapi.log.info('[setup] WPML 1.2: string translations');
+  return true;
+}
+
 /** The Kotlin card on the SDK page (follow-up: the live cards have no links, so the card is found by its title). */
 async function addKotlinCard(strapi) {
   const { populateAll } = require('./translate-site');
@@ -1248,6 +1285,7 @@ const UPDATES = [
   { id: '2026-11-swiss-terms', run: (strapi) => swissTermsLive(strapi) },
   { id: '2026-11-guide-titles', run: (strapi) => swissTermsLive(strapi, 'GUIDE_TITLES', 'Guide titles') },
   { id: '2026-11-swiss-text', run: (strapi) => swissTermsLive(strapi, 'TEXT', 'Swiss Standard German in text') },
+  { id: '2026-11-wpml-strings', run: (strapi) => wpmlStrings(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
