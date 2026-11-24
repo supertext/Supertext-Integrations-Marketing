@@ -113,7 +113,7 @@ Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held b
 
 ### Integration logos
 
-Systems without a Simple Icons icon get their official logo from `cms/src/seed/logos/<slug>.png` (512×512 PNG, converted from the brand's SVG; sources in that folder's README), uploaded as the integration's logo by the content update `2026-11-integration-logos` where none is set. The site then shows it instead of the monogram tile, and `logo-covers.mjs` uses it on the covers. Magnolia has none yet.
+Systems without a Simple Icons icon get their official logo from `cms/src/seed/logos/<slug>.png` (512×512 PNG, converted from the brand's SVG; sources in that folder's README), uploaded as the integration's logo on start (`integrationLogos` in `content-updates.js`) where none is set, and replaced when the file changes while it is still the automatic one (`logo-<slug>.png`, store key `logosDone`). The site then shows it instead of the monogram tile, and `logo-covers.mjs` uses it on the covers. Missing: Magnolia and the Claude/ChatGPT/Copilot integration. News cards lay the systems' logos over the image only when it is a borrowed screenshot, not over an article's own cover.
 
 ### News covers
 

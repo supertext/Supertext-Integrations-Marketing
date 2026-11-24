@@ -18,14 +18,16 @@ export const articleSystems = (article, systems) =>
 /** One article in the news list: cover image (else a screenshot of its first system, else the logos), date, title, excerpt. */
 export default function NewsCard({ article, locale, t, systems = [], featured = false }) {
   const marks = articleSystems(article, systems);
-  const cover = imageProps(article.cover) || marks.find((m) => m.screenshot)?.screenshot || null;
+  const own = imageProps(article.cover);
+  const cover = own || marks.find((m) => m.screenshot)?.screenshot || null;
   return (
     <Link href={`/${locale}/news/${article.slug}`} className={`tile news-card${featured ? ' featured' : ''}`}>
       <div className={`news-visual cat-${article.category}`} aria-hidden="true">
         {cover ? (
           <>
             <Image src={cover.src} alt="" width={cover.width} height={cover.height} sizes="(max-width: 720px) 100vw, 600px" />
-            {marks.length > 1 && (
+            {/* Logos over a borrowed screenshot; an article's own cover shows what it needs. */}
+            {!own && marks.length > 1 && (
               <span className="news-marks overlay">
                 {marks.slice(0, 6).map((m) => <Mark key={m.slug} slug={m.slug} name={m.system} logo={m.logoUrl} />)}
               </span>

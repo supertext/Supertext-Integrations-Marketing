@@ -1237,18 +1237,31 @@ async function articleCovers(strapi) {
 }
 
 /**
- * Integration logos (24 November 2026) for systems Simple Icons has no icon for: the official
- * logos from cms/src/seed/logos/<slug>.png (see that folder's README), only where no logo is set.
+ * Integration logos for systems Simple Icons has no icon for: the official logos from
+ * cms/src/seed/logos/<slug>.png (sources in that folder's README). Runs on every start, like
+ * the news covers: sets a logo where none is set, and replaces it when the file changes while
+ * it is still the automatic one (logo-<slug>.png; hashes in the store key logosDone).
  */
 async function integrationLogos(strapi) {
   const fs = require('fs');
   const path = require('path');
+  const crypto = require('crypto');
   const dir = path.join(__dirname, 'seed', 'logos');
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const done = (await store.get({ key: 'logosDone' })) || {};
   for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.png'))) {
     const slug = name.slice(0, -4);
+    const filepath = path.join(dir, name);
+    const hash = crypto.createHash('sha1').update(fs.readFileSync(filepath)).digest('hex');
+    if (done[slug] === hash) continue;
     const draft = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate: ['logo'] });
-    if (!draft || draft.logo) continue;
-    await attachImage(strapi, INTEGRATION, draft.documentId, 'logo', path.join(dir, name), `logo-${name}`, draft.system);
+    if (!draft) continue;
+    done[slug] = hash;
+    await store.set({ key: 'logosDone', value: done });
+    const automatic = draft.logo && draft.logo.name === `logo-${name}`;
+    if (draft.logo && !automatic) continue;
+    await attachImage(strapi, INTEGRATION, draft.documentId, 'logo', filepath, `logo-${name}`, draft.system);
+    if (automatic) await strapi.plugin('upload').service('upload').remove({ id: draft.logo.id }).catch(() => undefined);
     strapi.log.info(`[setup] Logo for ${slug}`);
   }
   return true;
@@ -1396,7 +1409,6 @@ const UPDATES = [
   { id: '2026-11-swiss-text', run: (strapi) => swissTermsLive(strapi, 'TEXT', 'Swiss Standard German in text') },
   { id: '2026-11-wpml-strings', run: (strapi) => wpmlStrings(strapi) },
   { id: '2026-11-wpml-strings-labels', run: (strapi) => swissTermsLive(strapi, WPML_STRINGS_LABELS, 'WPML 1.2 article labels', 'wpml-strings') },
-  { id: '2026-11-integration-logos', run: (strapi) => integrationLogos(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
@@ -1416,4 +1428,4 @@ async function runContentUpdates(strapi) {
   }
 }
 
-module.exports = { runContentUpdates, integrationFaq, articleCovers };
+module.exports = { runContentUpdates, integrationFaq, articleCovers, integrationLogos };
