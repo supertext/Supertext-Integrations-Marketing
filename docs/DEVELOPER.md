@@ -117,6 +117,7 @@ Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held b
 
 - `node supertext-integrations-marketing/cms/scripts/own-covers.mjs /tmp/raw` renders the SDK code examples and screenshots of the support and roadmap pages;
 - `python3 supertext-integrations-marketing/cms/scripts/make-covers.py /tmp/raw` puts guide screenshots and those images on the background in the site's colours, centred so the card's 16:7 crop keeps them whole;
+- `node supertext-integrations-marketing/cms/scripts/logo-covers.mjs supertext-integrations-marketing/cms/src/seed/covers` draws the covers of the round-up articles (the systems' logos, else the site's monogram tile, with de-CH, fr-CH, it-CH), the Translation MCP (an assistant's chat with Supertext as its tool) and the design-files article (InDesign, Illustrator, CorelDRAW → XLIFF);
 - `node supertext-integrations-marketing/cms/scripts/swiss-guide-covers.mjs supertext-integrations-marketing/cms/src/seed/covers` draws the Swiss German guides' covers (the system's Simple Icons logo, Swiss flag, Alps, de-CH; no words, since one cover serves every language).
 
 ## Deployment
