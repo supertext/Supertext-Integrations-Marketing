@@ -31,4 +31,5 @@ module.exports = {
   umbraco: ['qb1VQMNFVmw', 'X3wiNP3XZkc'],
   wagtail: ['TGILaBW6Jdc', 'YASU2mW4SfM'],
   wix: ['JN6_eBphirU', 'Wc6ilpXicVo'],
+  'wordpress-wpml': ['UZoDNVq1PmI', '_HxbMIh2UXY'],
 };
