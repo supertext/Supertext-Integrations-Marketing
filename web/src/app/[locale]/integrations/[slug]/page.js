@@ -7,11 +7,12 @@ import SectionHead from '@/components/blocks/SectionHead';
 import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
 import IntegrationCard from '@/components/IntegrationCard';
+import NewsCard, { articleSystems } from '@/components/NewsCard';
 import PlannedIntegration from '@/components/PlannedIntegration';
 import { Check } from '@/components/Icons';
 import VideoPlayer from '@/components/VideoPlayer';
 import { posterFor, youtubeId } from '@/lib/video';
-import { getIntegration, getIntegrations, getRequestCounts, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
+import { getArticles, getIntegration, getIntegrations, getRequestCounts, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
 import { ogCard } from '@/lib/og-cards';
 import { JsonLd, ORG, SITE_URL, alternates, brandTitle, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { plainText } from '@/lib/page';
@@ -90,6 +91,11 @@ export default async function IntegrationPage({ params }) {
   ].filter((v) => v.id);
   const related = all.filter((i) => i.category === item.category && i.slug !== slug && hasPlugin(i)).slice(0, 4)
     .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
+  // News about this integration: every article that lists it in its systems, newest first.
+  const systems = all.map((i) => ({ slug: i.slug, system: i.system, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
+  const news = (await getArticles(locale).catch(() => []))
+    .filter((a) => articleSystems(a, systems).some((m) => m.slug === slug))
+    .slice(0, 3);
   const screenshot = imageProps(item.screenshot);
   const pageUrl = `${SITE_URL}/${locale}/integrations/${slug}`;
   const jsonLd = {
@@ -279,6 +285,18 @@ export default async function IntegrationPage({ params }) {
       </section>
 
       <Blocks blocks={item.blocks} locale={locale} t={t} />
+
+      {news.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <SectionHead title={format(t, 'integrationNews', { system: item.system })} />
+            <div className="news-grid">
+              {news.map((a) => <NewsCard key={a.slug} article={a} locale={locale} t={t} systems={systems} />)}
+            </div>
+            <p className="roadmap-link"><Link href={`/${locale}/news`} className="btn btn-text">{t.allNewsLink} →</Link></p>
+          </div>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="section">

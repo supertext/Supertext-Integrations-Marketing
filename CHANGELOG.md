@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Integration pages show the newest three news articles about the integration (*News about WordPress (WPML)*), found by the article's systems; nothing to maintain by hand.
 - Integration pages and news articles: less space above the back link and below the header.
 - Integration screenshots that a plugin repo updates under the same file name are now imported again (e.g. WPML's, which still showed WPML's old site-key notice).
 - News article *Supertext for WPML 1.2: forms and other strings*; the WPML page lists string translations as a feature and finds WPForms, Gravity Forms and Contact Form 7 in the search (content update `2026-11-wpml-strings`).
