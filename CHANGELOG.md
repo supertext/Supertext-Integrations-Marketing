@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- News articles: the header has the page background, so the colour no longer changes between the introduction and the text.
 - Integration pages: the GitHub button says *Source code* (*Quellcode*, *Code source*, *Codice sorgente*); the guides have their own buttons below it.
 - German in Switzerland: running text says *Swiss Standard German* (de-CH) and *Swiss German* (dialect); lists of languages keep Supertext's list name *German (Switzerland)*. In German *Schweizer Hochdeutsch*, French *allemand standard suisse*, Italian *tedesco standard svizzero*.
 - The four Swiss German guides are titled "Localise … for German-speaking Switzerland" (in German "… für die Deutschschweiz lokalisieren", French "Localiser … pour la Suisse alémanique", Italian "Localizzare … per la Svizzera tedesca").

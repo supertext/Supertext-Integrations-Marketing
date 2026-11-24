@@ -577,7 +577,7 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
   .news-card.featured h2 { font-size: 26px; }
 }
 .article-container { max-width: 760px; }
-.article-hero { padding-bottom: 32px; }
+.article-hero { padding-bottom: 32px; background: var(--page-bg); } /* one surface: the article continues below the header */
 .article-title { font-size: clamp(30px, 4.2vw, 46px); margin: 12px 0 16px; }
 .article-cover { width: 100%; height: auto; border-radius: var(--radius-panel); margin-bottom: 32px; }
 .article-body { font-size: 17px; line-height: 1.7; padding-bottom: 32px; }
