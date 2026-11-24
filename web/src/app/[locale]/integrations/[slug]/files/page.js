@@ -70,7 +70,7 @@ export default async function FilesPage({ params }) {
   return (
     <>
       <JsonLd data={jsonLd} />
-      <section className="hero">
+      <section className="hero hero-compact">
         <div className="container">
           <p style={{ marginBottom: 24 }}>
             <Link href={`/${locale}/integrations/${slug}`} className="btn btn-text">← {format(t, 'filesBack', { system: item.system })}</Link>

@@ -133,7 +133,7 @@ export default async function IntegrationPage({ params }) {
     <>
       <JsonLd data={jsonLd} />
       {faq && <JsonLd data={faq} />}
-      <section className="hero">
+      <section className="hero hero-compact">
         <div className="container">
           <p style={{ marginBottom: 24 }}>
             <Link href={`/${locale}/integrations`} className="btn btn-text">← {t.allIntegrations}</Link>

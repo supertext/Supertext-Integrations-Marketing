@@ -76,7 +76,7 @@ export default async function ArticlePage({ params }) {
     <>
       <JsonLd data={jsonLd} />
       <article>
-        <header className="hero article-hero">
+        <header className="hero hero-compact article-hero">
           <div className="container article-container">
             <p style={{ marginBottom: 24 }}>
               <Link href={`/${locale}/news`} className="btn btn-text">← {t.newsAll}</Link>
