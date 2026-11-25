@@ -490,6 +490,40 @@ You need WordPress 6.4 or later with WPML Multilingual CMS and PHP 8.2+. Downloa
   ),
 
   article(
+    'craft-1-1',
+    '2026-11-25T09:00:00.000Z',
+    'plugins',
+    ['craft-cms'],
+    'Supertext for Craft CMS 1.1: categories, global sets, assets and SEOmatic',
+    'Version 1.1 translates more than entries: categories, global sets and assets, entries nested in CKEditor, table cells, link labels and SEOmatic texts. Same box, same rules.',
+    `
+A translated entry with an English footer, English category names and an English SEO title still looks half done. Until now, [Supertext for Craft CMS](/en/integrations/craft-cms) translated entries and their Matrix content. Version 1.1 covers the rest of a typical Craft site.
+
+## More than entries
+
+- **Categories, global sets and assets** have the same *Translate with Supertext* box on their edit page (for global sets, below the fields). Categories and assets can also be translated in bulk from their index.
+- **Images:** the alternative text, and the title when it is words rather than a file name like \`IMG_1234\`.
+- **Global sets** such as a footer or a site-wide banner: every text field, translated once for all pages.
+
+## More fields
+
+- **Entries nested in CKEditor**, the way Craft 5 builds pages: the text around them and the nested entries themselves. When the field is translated per site, each site keeps its own nested entries, in the same order.
+- **Table fields:** text cells and row headings; numbers, dates and checkboxes stay as they are.
+- **Link fields:** the label, title text and ARIA label; the address stays.
+- **SEOmatic:** SEO titles, descriptions, keywords and image descriptions, also for Facebook and X, when you wrote them yourself. Texts SEOmatic takes from other fields or templates stay as they are.
+
+## Same rules as before
+
+Sites that already have their own text are skipped unless you choose to overwrite them. Entries get a new revision for every translation, so you can go back. Formal or informal address per site, Swiss variants, and export and import of XLIFF and HTML files work for every kind of content.
+
+## Getting started
+
+Already using the plugin? Update to 1.1 with Composer; see the [1.1.0 release](https://github.com/Supertext/CraftCms-Supertext-Translation/releases/tag/v1.1.0) for everything that changed. New to it? You need Craft CMS 5 with one site per language and PHP 8.2 or later; the [installation guide](https://github.com/Supertext/CraftCms-Supertext-Translation/blob/main/docs/INSTALLATION.md) has the Composer commands. No Supertext account yet? [Create one at supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).
+`,
+    { title: 'Translate Craft CMS categories, global sets, assets and SEOmatic with Supertext', description: 'Supertext for Craft CMS 1.1 translates categories, global sets and assets, entries nested in CKEditor, tables, links and SEOmatic texts into your other sites.' }
+  ),
+
+  article(
     'wpml-strings',
     '2026-11-24T11:00:00.000Z',
     'plugins',

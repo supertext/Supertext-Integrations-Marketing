@@ -35,6 +35,7 @@ R=''
 cover('wpml-strings', R+'wordpress-wpml-supertext-translation/docs/images/string-translations.png', crop=(0,0,1398,620))
 cover('wordpress-wpml', R+'wordpress-wpml-supertext-translation/docs/images/editor-box-after.png')
 cover('plugin-updates-november-2026', R+'joomla-supertext-translation/docs/images/export-dialog.png')
+cover('craft-1-1', R+'craftcms-supertext-translation/docs/images/09-german-page.png', crop=(0,0,1030,940))
 cover('craft-silverstripe-grav', R+'craftcms-supertext-translation/docs/images/01-translate-box.png')
 cover('akeneo-pimcore-atropim', R+'akeneo-supertext-translation/docs/images/02-translate-dialog.png')
 # Code examples (no interface to show) and this site's own pages.

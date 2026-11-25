@@ -1145,7 +1145,7 @@ async function wpmlStrings(strapi) {
   return true;
 }
 
-/** Craft CMS 1.1 (25 November 2026): categories, global sets, assets, CKEditor entries, tables, links, SEOmatic. */
+/** Craft CMS 1.1 (25 November 2026): categories, global sets, assets, CKEditor entries, tables, links, SEOmatic; and the news article. */
 async function craft11(strapi) {
   const docs = strapi.documents(INTEGRATION);
   const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug: 'craft-cms' }, populate: ['features'] });
@@ -1196,7 +1196,12 @@ async function craft11(strapi) {
       for (const row of rows) await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { searchTerms: seed.searchTerms } });
     }
   }
-  strapi.log.info('[setup] Craft CMS 1.1: more content types');
+  const ARTICLE = 'api::article.article';
+  const article = require('./seed/news').find((a) => a.slug === 'craft-1-1');
+  if (article && !(await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: article.slug }, fields: ['id'] }))) {
+    await strapi.documents(ARTICLE).create({ locale: 'en', data: article, status: 'published' });
+  }
+  strapi.log.info('[setup] Craft CMS 1.1: more content types, news article');
   return true;
 }
 
