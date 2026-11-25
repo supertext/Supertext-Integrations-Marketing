@@ -1145,6 +1145,61 @@ async function wpmlStrings(strapi) {
   return true;
 }
 
+/** Craft CMS 1.1 (25 November 2026): categories, global sets, assets, CKEditor entries, tables, links, SEOmatic. */
+async function craft11(strapi) {
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug: 'craft-cms' }, populate: ['features'] });
+  if (doc) {
+    const seed = require('./seed/integrations').find((i) => i.slug === 'craft-cms');
+    const details = require('./seed/integration-details.json')['craft-cms'] || {};
+    const { builtIn } = require('./seed/comparison');
+    // Old 1.0 wording → 1.1 wording; texts an editor has changed stay.
+    const OLD = {
+      integrationType: 'Craft plugin (Composer) with a panel on the entry page.',
+      summary: 'Translates entries into your other sites, Matrix and rich text included',
+      description: "Editors open an entry in the source site, save it and use the *Translate with Supertext* box in the sidebar to tick the target sites. Supertext translates the title, slug, text and rich-text fields and Matrix content, and saves each result as that site's version of the entry, as a new revision.\n\nSites that already have their own text are skipped unless the editor chooses to overwrite them. Several entries can be translated at once from the entry index, in the background. Editors review and adjust translations in Craft as usual.",
+      builtInTranslation: 'Craft CMS has no built-in machine translation: you retype content per site or add a plugin with DeepL, Google or OpenAI. Supertext translates entries into your other sites from the entry page, Matrix and rich text included, with Swiss variants and hosting in Switzerland.',
+    };
+    const NEW = { integrationType: seed?.integrationType, summary: seed?.summary, description: details.description, builtInTranslation: builtIn['craft-cms'] };
+    const data = {};
+    for (const [field, old] of Object.entries(OLD)) if (doc[field] === old && NEW[field]) data[field] = NEW[field];
+    const FEATURES = {
+      'Translates entries into your other sites, right on the entry page': 'Translates entries, categories, global sets and assets into your other sites, right on their edit page',
+      'Translates Matrix content and slugs for translated URLs': 'Translates Matrix content, entries nested in CKEditor and slugs for translated URLs',
+      'Bulk translation from the entry index, formal or informal tone per site': 'Bulk translation from the entry, category and asset indexes, formal or informal tone per site',
+    };
+    const ADDED = 'Translates table cells, link labels, image alt texts and SEOmatic texts';
+    const features = stripIds(doc.features || []);
+    let changed = false;
+    for (const f of features) if (FEATURES[f.text]) { f.text = FEATURES[f.text]; changed = true; }
+    if (!features.some((f) => f.text === ADDED)) {
+      const at = features.findIndex((f) => /Matrix/.test(f.text || ''));
+      features.splice(at >= 0 ? at + 1 : features.length, 0, { text: ADDED, included: true });
+      changed = true;
+    }
+    if (changed) data.features = features;
+    if (Object.keys(data).length) {
+      const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+      const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+      await docs.update({ documentId: doc.documentId, locale: 'en', data });
+      if (!edited) {
+        await docs.publish({ documentId: doc.documentId, locale: 'en' });
+        const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+        const state = (await store.get({ key: 'autoTranslations' })) || {};
+        for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+        await store.set({ key: 'autoTranslations', value: state });
+      }
+    }
+    // searchTerms isn't localized: every language row gets it.
+    if (seed) {
+      const rows = await strapi.db.query(INTEGRATION).findMany({ where: { slug: 'craft-cms' }, select: ['id'], limit: 100 });
+      for (const row of rows) await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { searchTerms: seed.searchTerms } });
+    }
+  }
+  strapi.log.info('[setup] Craft CMS 1.1: more content types');
+  return true;
+}
+
 /** The WPML 1.2 article's machine translation, with the plugin's own labels (from its .po files) and WPML's terms. */
 const WPML_STRINGS_LABELS = {
   de: [
@@ -1409,6 +1464,7 @@ const UPDATES = [
   { id: '2026-11-swiss-text', run: (strapi) => swissTermsLive(strapi, 'TEXT', 'Swiss Standard German in text') },
   { id: '2026-11-wpml-strings', run: (strapi) => wpmlStrings(strapi) },
   { id: '2026-11-wpml-strings-labels', run: (strapi) => swissTermsLive(strapi, WPML_STRINGS_LABELS, 'WPML 1.2 article labels', 'wpml-strings') },
+  { id: '2026-11-craft-1-1', run: (strapi) => craft11(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

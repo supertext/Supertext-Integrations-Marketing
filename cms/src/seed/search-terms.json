@@ -2,7 +2,7 @@
   "adobe-experience-manager": "AEM, Adobe, enterprise, Java, Sling, Translation Integration Framework, TIF, human translation",
   "apostrophecms": "Apostrophe, Node.js, npm, JavaScript, localize, widgets",
   "contao": "PHP, Symfony, Composer, site structure, Seitenstruktur",
-  "craft-cms": "Craft, PHP, Matrix, entries, sites, Pixel & Tonic",
+  "craft-cms": "Craft, PHP, Matrix, entries, categories, global sets, assets, CKEditor, SEOmatic, sites, Pixel & Tonic",
   "directus": "headless, Node.js, npm, Vue, flows, Translations field",
   "django-cms": "Django, Python, pip, toolbar, plugins",
   "drupal": "TMGMT, Translation Management Tool, MD Systems, PHP, tmgmt_supertext_ai",

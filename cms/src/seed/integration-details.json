@@ -117,13 +117,14 @@
     "license": "MIT",
     "aboutSystem": "Craft CMS is a content management system written in PHP on the Yii framework, made by Pixel & Tonic. It is known for flexible custom content modelling and is widely used by agencies building bespoke websites. Its source is available, with a free Solo edition and paid Team and Pro editions.",
     "features": [
-      "Translates entries into your other sites, right on the entry page",
+      "Translates entries, categories, global sets and assets into your other sites, right on their edit page",
       "Rich text keeps headings, bold text, links and lists",
-      "Translates Matrix content and slugs for translated URLs",
+      "Translates Matrix content, entries nested in CKEditor and slugs for translated URLs",
+      "Translates table cells, link labels, image alt texts and SEOmatic texts",
       "Asks before overwriting sites with their own text",
-      "Bulk translation from the entry index, formal or informal tone per site"
+      "Bulk translation from the entry, category and asset indexes, formal or informal tone per site"
     ],
-    "description": "Editors open an entry in the source site, save it and use the *Translate with Supertext* box in the sidebar to tick the target sites. Supertext translates the title, slug, text and rich-text fields and Matrix content, and saves each result as that site's version of the entry, as a new revision.\n\nSites that already have their own text are skipped unless the editor chooses to overwrite them. Several entries can be translated at once from the entry index, in the background. Editors review and adjust translations in Craft as usual."
+    "description": "Editors open an entry, category, global set or asset in the source site, save it and use the *Translate with Supertext* box to tick the target sites. Supertext translates the title, slug, text and rich-text fields, Matrix content and entries nested in CKEditor, table cells, link labels, image alt texts and SEOmatic texts, and saves each result as that site's version (entries as a new revision).\n\nSites that already have their own text are skipped unless the editor chooses to overwrite them. Several entries, categories or assets can be translated at once from their index, in the background. Editors review and adjust translations in Craft as usual."
   },
   "directus": {
     "technology": "TypeScript · npm package (Directus extension bundle)",

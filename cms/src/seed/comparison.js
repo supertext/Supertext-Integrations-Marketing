@@ -113,7 +113,7 @@ const builtIn = {
   contao:
     'Contao has no machine translation: a language is a copied page tree that you translate by hand. The common extension adds DeepL field by field. Supertext translates single pages or whole websites in one step from the site structure, into Swiss variants with formal address.',
   'craft-cms':
-    'Craft CMS has no built-in machine translation: you retype content per site or add a plugin with DeepL, Google or OpenAI. Supertext translates entries into your other sites from the entry page, Matrix and rich text included, with Swiss variants and hosting in Switzerland.',
+    'Craft CMS has no built-in machine translation: you retype content per site or add a plugin with DeepL, Google or OpenAI. Supertext translates entries, categories, global sets and assets into your other sites from their edit page, Matrix, CKEditor and SEOmatic included, with Swiss variants and hosting in Switzerland.',
   directus:
     'Directus can translate with AI using your own provider key (OpenAI, Anthropic or Google), guided by a style guide and glossary. Supertext adds a service made for translation: Swiss variants, formal address, hosting in Switzerland and a professional translator when it matters.',
   'django-cms':
