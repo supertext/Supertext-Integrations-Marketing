@@ -1145,7 +1145,7 @@ async function wpmlStrings(strapi) {
   return true;
 }
 
-/** Craft CMS 1.1 (25 November 2026): categories, global sets, assets, CKEditor entries, tables, links, SEOmatic; and the news article. */
+/** Craft CMS 1.1 (25 November 2026): categories, global sets, assets, CKEditor entries, tables, links, SEOmatic */
 async function craft11(strapi) {
   const docs = strapi.documents(INTEGRATION);
   const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug: 'craft-cms' }, populate: ['features'] });
@@ -1196,12 +1196,17 @@ async function craft11(strapi) {
       for (const row of rows) await strapi.db.query(INTEGRATION).update({ where: { id: row.id }, data: { searchTerms: seed.searchTerms } });
     }
   }
+  strapi.log.info('[setup] Craft CMS 1.1: more content types');
+  return true;
+}
+
+/** The Craft CMS 1.1 news article (its own update: 2026-11-craft-1-1 may have run before the article existed). */
+async function addCraft11News(strapi) {
   const ARTICLE = 'api::article.article';
   const article = require('./seed/news').find((a) => a.slug === 'craft-1-1');
   if (article && !(await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: article.slug }, fields: ['id'] }))) {
     await strapi.documents(ARTICLE).create({ locale: 'en', data: article, status: 'published' });
   }
-  strapi.log.info('[setup] Craft CMS 1.1: more content types, news article');
   return true;
 }
 
@@ -1470,6 +1475,7 @@ const UPDATES = [
   { id: '2026-11-wpml-strings', run: (strapi) => wpmlStrings(strapi) },
   { id: '2026-11-wpml-strings-labels', run: (strapi) => swissTermsLive(strapi, WPML_STRINGS_LABELS, 'WPML 1.2 article labels', 'wpml-strings') },
   { id: '2026-11-craft-1-1', run: (strapi) => craft11(strapi) },
+  { id: '2026-11-craft-1-1-news', run: (strapi) => addCraft11News(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
