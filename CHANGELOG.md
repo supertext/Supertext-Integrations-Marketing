@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- News article *Indonesian, Romanian, Thai and Vietnamese in every Supertext plugin*, with the new version of each plugin (content update `2026-11-new-languages-news`).
 - Craft CMS page for plugin 1.1: categories, global sets and assets, entries nested in CKEditor, table cells, link labels, image alt texts and SEOmatic texts, in the summary, features, description, comparison and search (content update `2026-11-craft-1-1`; only texts nobody has edited are replaced), and the news article (`2026-11-craft-1-1-news`) *Supertext for Craft CMS 1.1: categories, global sets, assets and SEOmatic* with a cover from the plugin's guide.
 - Official logos instead of the initials tile for InDesign, Illustrator, Adobe Experience Manager (the Adobe logo), Magento, django CMS, Neos, Silverstripe, Akeneo PIM, AtroPIM, Microsoft 365, Magnolia and Pimcore (its symbol instead of the wordmark), and our own icon for *Claude, ChatGPT and Copilot*, on their integration pages and on the news covers; automatic news covers and logos are replaced when their image changes. News cards no longer repeat the systems' logos over an article's own cover.
 - News covers for the remaining nine articles: the round-ups show their systems' logos with de-CH, fr-CH and it-CH, the Translation MCP an assistant's chat with Supertext as its tool, the design-files article InDesign, Illustrator and CorelDRAW turning into an XLIFF file.

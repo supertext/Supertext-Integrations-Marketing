@@ -490,6 +490,66 @@ You need WordPress 6.4 or later with WPML Multilingual CMS and PHP 8.2+. Downloa
   ),
 
   article(
+    'new-languages-id-ro-th-vi',
+    '2026-11-26T22:30:00.000Z',
+    'plugins',
+    ['akeneo-pim', 'apostrophecms', 'atropim', 'contao', 'craft-cms', 'directus', 'django-cms', 'ghost', 'grav', 'hubspot', 'joomla', 'magento', 'magnolia', 'mailchimp', 'neos', 'orchard-core', 'payload-cms', 'pimcore', 'prestashop', 'shopify', 'silverstripe', 'strapi', 'typo3', 'umbraco', 'wagtail', 'wix', 'wordpress-polylang', 'wordpress-wpml'],
+    'Indonesian, Romanian, Thai and Vietnamese in every Supertext plugin',
+    'Supertext AI now translates from and into Indonesian, Romanian, Thai and Vietnamese, with formal or informal address. New versions of all 28 Supertext plugins let you choose them.',
+    `
+Supertext's AI translation now speaks four more languages: **Indonesian, Romanian, Thai and Vietnamese**. All four work in both directions, as the language you translate from and the one you translate into, and all four offer formal or informal address.
+
+## In every Supertext plugin
+
+The new versions released today let you choose them in each plugin's language settings, next to German, French, Japanese and the rest. A site language such as `ro`, `ro-RO`, `vi-VN`, `th-TH` or `id-ID` is recognized on its own; you only open the settings to pick formal or informal address.
+
+| Plugin | Version |
+| --- | --- |
+| [Akeneo PIM](/en/integrations/akeneo-pim) | 1.1.0 |
+| [ApostropheCMS](/en/integrations/apostrophecms) | 1.1.0 |
+| [AtroPIM](/en/integrations/atropim) | 1.1.0 |
+| [Contao](/en/integrations/contao) | 1.1.0 |
+| [Craft CMS](/en/integrations/craft-cms) | 1.2.0 |
+| [Directus](/en/integrations/directus) | 1.1.0 |
+| [django CMS](/en/integrations/django-cms) | 1.1.0 |
+| [Ghost](/en/integrations/ghost) | 1.1.0 |
+| [Grav](/en/integrations/grav) | 1.1.0 |
+| [HubSpot](/en/integrations/hubspot) | 1.2.0 |
+| [Joomla](/en/integrations/joomla) | 1.1.0 |
+| [Magento](/en/integrations/magento) | 1.1.0 |
+| [Magnolia](/en/integrations/magnolia) | 1.1.0 |
+| [Mailchimp](/en/integrations/mailchimp) | 0.2.0 |
+| [Neos](/en/integrations/neos) | 1.1.0 |
+| [Orchard Core](/en/integrations/orchard-core) | 1.1.0 |
+| [Payload CMS](/en/integrations/payload-cms) | 1.1.0 |
+| [Pimcore](/en/integrations/pimcore) | 1.1.0 |
+| [PrestaShop](/en/integrations/prestashop) | 1.1.0 |
+| [Shopify](/en/integrations/shopify) | 1.1.0 |
+| [Silverstripe](/en/integrations/silverstripe) | 1.1.0 |
+| [Strapi](/en/integrations/strapi) | 1.1.0 |
+| [TYPO3](/en/integrations/typo3) | 1.1.0 |
+| [Umbraco](/en/integrations/umbraco) | 1.1.0 |
+| [Wagtail](/en/integrations/wagtail) | 1.1.0 |
+| [Wix](/en/integrations/wix) | 0.2.0 |
+| [WordPress (Polylang)](/en/integrations/wordpress-polylang) | 1.2.0 |
+| [WordPress (WPML)](/en/integrations/wordpress-wpml) | 1.4.0 |
+
+The [Drupal module](/en/integrations/drupal), maintained by MD Systems, follows with its own releases.
+
+## How to get them
+
+Update the plugin the way you installed it: Composer, npm, NuGet, PyPI or the zip from GitHub. The hosted Shopify, Wix, HubSpot and Mailchimp apps update themselves. Then open the plugin's language settings: the four languages are in the list. Your existing settings stay as they are.
+
+## What else is in these versions
+
+Most plugins also bring the **Send configuration to Supertext** button, which sends Supertext support your installed extensions and language settings when you ask for help. Each plugin's changelog on GitHub lists the details.
+
+No Supertext account yet? [Create one at supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).
+`,
+    { title: 'Supertext AI adds Indonesian, Romanian, Thai and Vietnamese', description: 'Indonesian, Romanian, Thai and Vietnamese are now Supertext AI languages, with formal and informal address, in new versions of all 28 Supertext plugins.' }
+  ),
+
+  article(
     'craft-1-1',
     '2026-11-25T09:00:00.000Z',
     'plugins',

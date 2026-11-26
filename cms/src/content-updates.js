@@ -1200,6 +1200,16 @@ async function craft11(strapi) {
   return true;
 }
 
+/** The news article on Indonesian, Romanian, Thai and Vietnamese (26 November 2026). */
+async function addNewLanguagesNews(strapi) {
+  const ARTICLE = 'api::article.article';
+  const article = require('./seed/news').find((a) => a.slug === 'new-languages-id-ro-th-vi');
+  if (article && !(await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: article.slug }, fields: ['id'] }))) {
+    await strapi.documents(ARTICLE).create({ locale: 'en', data: article, status: 'published' });
+  }
+  return true;
+}
+
 /** The Craft CMS 1.1 news article (its own update: 2026-11-craft-1-1 may have run before the article existed). */
 async function addCraft11News(strapi) {
   const ARTICLE = 'api::article.article';
@@ -1476,6 +1486,7 @@ const UPDATES = [
   { id: '2026-11-wpml-strings-labels', run: (strapi) => swissTermsLive(strapi, WPML_STRINGS_LABELS, 'WPML 1.2 article labels', 'wpml-strings') },
   { id: '2026-11-craft-1-1', run: (strapi) => craft11(strapi) },
   { id: '2026-11-craft-1-1-news', run: (strapi) => addCraft11News(strapi) },
+  { id: '2026-11-new-languages-news', run: (strapi) => addNewLanguagesNews(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
