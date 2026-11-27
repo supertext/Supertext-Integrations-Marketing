@@ -59,3 +59,17 @@ test('every video belongs to a seeded integration with a plugin and is a YouTube
     for (const id of ids) assert.ok(id === null || YOUTUBE_ID.test(id), `${slug}: ${id}`);
   }
 });
+
+test('news articles load, have unique slugs and refer to known integrations', () => {
+  // A backtick left unescaped in an article's body breaks the whole file (and every news update with it).
+  const news = require('../src/seed/news');
+  const slugs = news.map((a) => a.slug);
+  assert.equal(new Set(slugs).size, slugs.length);
+  const known = new Set(integrations.map((i) => i.slug));
+  for (const a of news) {
+    assert.ok(a.title && a.body && a.excerpt, a.slug);
+    for (const s of String(a.systems || '').split(',').filter(Boolean)) assert.ok(known.has(s), `${a.slug}: ${s}`);
+  }
+  const fs = require('fs');
+  assert.ok(fs.existsSync(require('path').join(__dirname, '../src/seed/covers/hubspot-links-follow-the-language.png')));
+});

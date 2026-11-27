@@ -17,6 +17,56 @@ const article = (slug, date, category, systems, title, excerpt, body, seo) => ({
 
 module.exports = [
   article(
+    'hubspot-links-follow-the-language',
+    '2026-11-27T15:00:00.000Z',
+    'plugins',
+    ['hubspot'],
+    'Supertext for HubSpot 1.3: links that follow the language',
+    'Translate website pages, blog posts and Knowledge Base articles in any order: links between them now point to the version in the same language, and new versions get their web address in their language.',
+    `
+A Spanish help article that sends readers to an English one isn't finished. In a HubSpot Knowledge Base, articles link to each other all the time, website pages link to the help, blog posts link to product pages, newsletters link to all of them. Until now, [Supertext for HubSpot](/en/integrations/hubspot) kept every link as it was, so each translation still pointed to the English originals and someone had to fix the links by hand. Version 1.3 does it for you.
+
+## Links point to the same language
+
+When the app translates an item, every link to another website page, landing page, blog post or Knowledge Base article of your HubSpot account is pointed to that item in the same language:
+
+| In the English original | In the Spanish translation |
+| --- | --- |
+| \`/en/knowledge-base/troubleshooting-orders#missing-order\` | \`/es/knowledge-base/solucion-de-problemas-con-pedidos#missing-order\` |
+| \`https://www.example.com/en/about-us\` | \`https://www.example.com/es/sobre-nosotros\` |
+
+- **In all directions:** a page to an article, an article to a blog post, a post to a landing page, and marketing emails to any of them.
+- **Wherever the link is:** in the text, and in HubSpot's link fields such as buttons, images and calls to action. Where HubSpot stores the linked page's ID with the link, the ID is updated too.
+- **As you wrote it:** full and relative addresses both work, anchors (\`#missing-order\`) and query strings are kept. Links to other websites and anchors on the same page stay as they are.
+
+## Translate in any order
+
+Several hundred articles that link to each other can't all be translated at once. So the app doesn't need you to. A link to an item that has no Spanish version yet stays on the original for the moment and **waits**. When the app later translates that item, it goes back to the drafts that were waiting for it and updates their links.
+
+Only the links change: if a reviewer has already corrected the Spanish text in HubSpot, those corrections stay. And as always, the app only writes drafts. A translation that is already published gets a new draft with the updated links, ready for you to publish.
+
+## Every link at a glance
+
+*Settings → Translation* says how many links there are between your translations and how many are still waiting, and opens the list of all of them:
+
+- **Filter** by *Waiting*, *Translated* or *Kept on the original*. Every row shows the language, the translation and what it links to, each with a link to HubSpot's editor.
+- **Keep the original link** when a link should stay on the original, for example because the target won't be translated. *Wait for the translation* undoes it.
+- **Update links now** checks the waiting links again, for when some items were translated by hand in HubSpot.
+
+## Web addresses in the language of the page
+
+New language versions now also get a web address in their language: \`/es/about-us\` becomes \`/es/sobre-nosotros\`, \`/es/blog/how-we-roast-our-beans\` becomes \`/es/blog/como-tostamos-nuestros-granos\`, and Knowledge Base articles get a translated path. The addresses are clean, without accents or special characters, and HubSpot's language prefix stays. Versions that exist already keep their address, so links that are already published don't break. Languages written in other scripts, such as Japanese or Russian, keep the original address.
+
+## Getting started
+
+Supertext for HubSpot is a hosted app, so you already have version 1.3. Both features are on by default and can be switched off under *Settings → Translation*: *Translate the addresses (URLs) of new versions* and *Point links to the translated pages, posts and articles*. The [1.3.0 release](https://github.com/Supertext/HubSpot-Supertext-Translation/releases/tag/v1.3.0) lists everything that changed.
+
+New to Supertext for HubSpot? It translates website pages, landing pages, blog posts, marketing emails and, with Service Hub Professional or Enterprise, Knowledge Base articles into draft language versions. No Supertext account yet? [Create one at supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role). Want to see it first? [Book a demo](https://calendar.app.google/KGTKqfmc7FxoN6Xn7).
+`,
+    { title: 'HubSpot translation with links that follow the language | Supertext', description: 'Supertext for HubSpot 1.3: links between pages, blog posts and Knowledge Base articles point to the same language, in any order, and new versions get translated web addresses.' }
+  ),
+
+  article(
     'design-files-xliff',
     '2026-10-05T09:00:00.000Z',
     'plugins',
@@ -501,7 +551,7 @@ Supertext's AI translation now speaks four more languages: **Indonesian, Romania
 
 ## In every Supertext plugin
 
-The new versions released today let you choose them in each plugin's language settings, next to German, French, Japanese and the rest. A site language such as `ro`, `ro-RO`, `vi-VN`, `th-TH` or `id-ID` is recognized on its own; you only open the settings to pick formal or informal address.
+The new versions released today let you choose them in each plugin's language settings, next to German, French, Japanese and the rest. A site language such as \`ro\`, \`ro-RO\`, \`vi-VN\`, \`th-TH\` or \`id-ID\` is recognized on its own; you only open the settings to pick formal or informal address.
 
 | Plugin | Version |
 | --- | --- |

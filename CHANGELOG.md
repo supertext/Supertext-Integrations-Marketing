@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- News: *Supertext for HubSpot 1.3: links that follow the language* (links between pages, posts and Knowledge Base articles in the same language, the list of links, translated web addresses), with its cover (content update `2026-11-hubspot-links-news`).
+- HubSpot page: the answer *Do internal links point to the translated pages and articles?* now says yes, since 1.3, and links to the news (`2026-11-hubspot-links-answer`, only where the old answer is unchanged).
+- Fixed: the news *Indonesian, Romanian, Thai and Vietnamese in every Supertext plugin* never appeared: unescaped backticks in its text broke `cms/src/seed/news.js`, so its content update failed. A test now loads every news article.
 - HubSpot page: nine more questions, from a prospect localizing their Knowledge Base: production readiness (HubSpot's Knowledge Base API is a beta), regional variants such as es-ES, glossaries, formatting, drafts, updates to the original, internal links, costs and a demo link (content update `2026-11-hubspot-knowledge-base-questions`; `EXTRA_QUESTIONS` in `cms/src/content-updates.js`, also used for a new site). German, French and Italian are translated automatically.
 - News article *Indonesian, Romanian, Thai and Vietnamese in every Supertext plugin*, with the new version of each plugin (content update `2026-11-new-languages-news`).
 - Craft CMS page for plugin 1.1: categories, global sets and assets, entries nested in CKEditor, table cells, link labels, image alt texts and SEOmatic texts, in the summary, features, description, comparison and search (content update `2026-11-craft-1-1`; only texts nobody has edited are replaced), and the news article (`2026-11-craft-1-1-news`) *Supertext for Craft CMS 1.1: categories, global sets, assets and SEOmatic* with a cover from the plugin's guide.

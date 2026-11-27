@@ -270,8 +270,9 @@ const EXTRA_QUESTIONS = {
         "Translating an article again replaces the whole translated draft, including changes made by hand in HubSpot, such as replaced screenshots; it doesn't translate only the changed parts. With our translation review, texts translated and reviewed before are reused, so your reviewers' corrections carry over. For articles with localized screenshots, we recommend making small changes by hand or translating again before the screenshots are swapped in. We're working on a way to update only what changed.",
     },
     {
-      question: 'Do internal links point to the translated articles?',
-      answer: "Not yet: links are kept as they are, so internal links still point to the original articles and need to be updated in the translations. We're looking into doing this automatically.",
+      question: 'Do internal links point to the translated pages and articles?',
+      answer:
+        "Yes, since version 1.3. Links between website pages, landing pages, blog posts and Knowledge Base articles, and from marketing emails to them, point to the version in the same language, in the text and in HubSpot's link fields such as buttons. You can translate in any order: a link to something that isn't translated yet waits and is updated automatically once it is. A list in the app's settings shows every link and the ones still waiting, and lets you keep a link on the original. New versions also get their web address in their language, for example /es/sobre-nosotros for /about-us. [Read more](/en/news/hubspot-links-follow-the-language).",
     },
     {
       question: 'What does a large translation project cost?',
@@ -1176,6 +1177,42 @@ async function addExtraQuestions(strapi, slug) {
   return true;
 }
 
+/**
+ * Replaces extra questions that changed (EXTRA_QUESTIONS) where the integration still has the old
+ * wording: `changes` lists the old question and answer and the new question. An editor's own
+ * wording stays.
+ */
+async function updateExtraQuestions(strapi, slug, changes) {
+  const zone = strapi.contentType(INTEGRATION).attributes.blocks.components;
+  const populate = { blocks: { on: Object.fromEntries(zone.map((uid) => [uid, { populate: '*' }])) } };
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate });
+  if (!doc) return true;
+  const blocks = stripIds(mediaToIds(doc.blocks || []));
+  const faq = blocks.find((b) => b.__component === 'blocks.faq' && /^Questions about Supertext for /.test(b.title || ''));
+  if (!faq) return true;
+  let count = 0;
+  faq.items = (faq.items || []).map((item) => {
+    const change = changes.find((c) => c.question === item.question && c.answer === item.answer);
+    const now = change && (EXTRA_QUESTIONS[slug] || []).find((q) => q.question === change.to);
+    if (!now) return item;
+    count++;
+    return { ...item, question: now.question, answer: now.answer };
+  });
+  if (!count) return true;
+  const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+  const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+  await docs.update({ documentId: doc.documentId, locale: 'en', data: { blocks } });
+  if (edited) return true;
+  await docs.publish({ documentId: doc.documentId, locale: 'en' });
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+  await store.set({ key: 'autoTranslations', value: state });
+  strapi.log.info(`[setup] ${slug}: ${count} questions updated`);
+  return true;
+}
+
 /** News (14 November 2026): WPML with ACF blocks, and the Kotlin SDK. Only these two, so deleted articles stay deleted. */
 async function addNovemberNews(strapi) {
   const ARTICLE = 'api::article.article';
@@ -1283,6 +1320,16 @@ async function addNewLanguagesNews(strapi) {
   const ARTICLE = 'api::article.article';
   const article = require('./seed/news').find((a) => a.slug === 'new-languages-id-ro-th-vi');
   if (article && !(await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: article.slug }, fields: ['id'] }))) {
+    await strapi.documents(ARTICLE).create({ locale: 'en', data: article, status: 'published' });
+  }
+  return true;
+}
+
+/** One news article from the seed, by slug, unless it exists (so a deleted one stays deleted after its update ran). */
+async function addNewsArticle(strapi, slug) {
+  const ARTICLE = 'api::article.article';
+  const article = require('./seed/news').find((a) => a.slug === slug);
+  if (article && !(await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug }, fields: ['id'] }))) {
     await strapi.documents(ARTICLE).create({ locale: 'en', data: article, status: 'published' });
   }
   return true;
@@ -1566,6 +1613,18 @@ const UPDATES = [
   { id: '2026-11-craft-1-1-news', run: (strapi) => addCraft11News(strapi) },
   { id: '2026-11-new-languages-news', run: (strapi) => addNewLanguagesNews(strapi) },
   { id: '2026-11-hubspot-knowledge-base-questions', run: (strapi) => addExtraQuestions(strapi, 'hubspot') },
+  { id: '2026-11-hubspot-links-news', run: (strapi) => addNewsArticle(strapi, 'hubspot-links-follow-the-language') },
+  {
+    id: '2026-11-hubspot-links-answer',
+    run: (strapi) =>
+      updateExtraQuestions(strapi, 'hubspot', [
+        {
+          question: 'Do internal links point to the translated articles?',
+          answer: "Not yet: links are kept as they are, so internal links still point to the original articles and need to be updated in the translations. We're looking into doing this automatically.",
+          to: 'Do internal links point to the translated pages and articles?',
+        },
+      ]),
+  },
 ];
 
 async function runContentUpdates(strapi) {

@@ -32,6 +32,7 @@ def cover(name, path, crop=None, maxw=1280, maxh=600):
     c.paste(im,(x,y),m)
     c.save(OUT+name+'.png', optimize=True)
 R=''
+cover('hubspot-links-follow-the-language', R+'hubspot-supertext-translation/docs/images/links.png', crop=(0,0,1060,720))
 cover('wpml-strings', R+'wordpress-wpml-supertext-translation/docs/images/string-translations.png', crop=(0,0,1398,620))
 cover('wordpress-wpml', R+'wordpress-wpml-supertext-translation/docs/images/editor-box-after.png')
 cover('plugin-updates-november-2026', R+'joomla-supertext-translation/docs/images/export-dialog.png')
