@@ -73,3 +73,7 @@ test('news articles load, have unique slugs and refer to known integrations', ()
   const fs = require('fs');
   assert.ok(fs.existsSync(require('path').join(__dirname, '../src/seed/covers/hubspot-links-follow-the-language.png')));
 });
+
+test("news articles fit the CMS's systems field (255 characters)", () => {
+  for (const a of require('../src/seed/news')) assert.ok(String(a.systems).length <= 255, `${a.slug}: ${String(a.systems).length}`);
+});

@@ -543,7 +543,8 @@ You need WordPress 6.4 or later with WPML Multilingual CMS and PHP 8.2+. Downloa
     'new-languages-id-ro-th-vi',
     '2026-11-26T22:30:00.000Z',
     'plugins',
-    ['akeneo-pim', 'apostrophecms', 'atropim', 'contao', 'craft-cms', 'directus', 'django-cms', 'ghost', 'grav', 'hubspot', 'joomla', 'magento', 'magnolia', 'mailchimp', 'neos', 'orchard-core', 'payload-cms', 'pimcore', 'prestashop', 'shopify', 'silverstripe', 'strapi', 'typo3', 'umbraco', 'wagtail', 'wix', 'wordpress-polylang', 'wordpress-wpml'],
+    // All 28 plugins (the table links each one); too many for the 255-character systems field, as for other news about every plugin.
+    [],
     'Indonesian, Romanian, Thai and Vietnamese in every Supertext plugin',
     'Supertext AI now translates from and into Indonesian, Romanian, Thai and Vietnamese, with formal or informal address. New versions of all 28 Supertext plugins let you choose them.',
     `
