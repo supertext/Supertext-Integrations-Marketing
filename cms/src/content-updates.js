@@ -262,7 +262,8 @@ const EXTRA_QUESTIONS = {
     },
     {
       question: 'Are translations created as unpublished drafts linked to the original?',
-      answer: 'Yes. Each translation is created as an unpublished draft, linked to the original page, post or article. The app never publishes anything and never changes the original.',
+      answer:
+        "By default, yes. Each translation is created as an unpublished draft, linked to the original page, post or article, so you can review it before it goes live. If you prefer, turn on *Publish translations right away* in the app's settings: website pages, landing pages, blog posts and Knowledge Base articles are then published as soon as they are translated. Marketing emails are never sent; they always stay drafts. The original is never changed.",
     },
     {
       question: 'What happens when the original article changes later?',
@@ -1674,6 +1675,17 @@ const UPDATES = [
           question: 'Do internal links point to the translated articles?',
           answer: "Not yet: links are kept as they are, so internal links still point to the original articles and need to be updated in the translations. We're looking into doing this automatically.",
           to: 'Do internal links point to the translated pages and articles?',
+        },
+      ]),
+  },
+  {
+    id: '2026-11-hubspot-drafts-answer',
+    run: (strapi) =>
+      updateExtraQuestions(strapi, 'hubspot', [
+        {
+          question: 'Are translations created as unpublished drafts linked to the original?',
+          answer: 'Yes. Each translation is created as an unpublished draft, linked to the original page, post or article. The app never publishes anything and never changes the original.',
+          to: 'Are translations created as unpublished drafts linked to the original?',
         },
       ]),
   },
