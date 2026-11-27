@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- HubSpot: links that follow the language are a beta, off by default; the news article and the FAQ answer say so (`2026-11-hubspot-links-beta`).
 - HubSpot page: *What does a large translation project cost?* links *pricing* to Supertext's subscriptions (https://www.supertext.com/en/subscriptions) instead of this site's pricing page (`2026-11-hubspot-cost-answer`).
 - News: *Supertext for HubSpot 1.3: links that follow the language* (links between pages, posts and Knowledge Base articles in the same language, the list of links, translated web addresses), with its cover (content update `2026-11-hubspot-links-news`).
 - HubSpot page: the answer *Do internal links point to the translated pages and articles?* now says yes, since 1.3, and links to the news (`2026-11-hubspot-links-answer`, only where the old answer is unchanged).

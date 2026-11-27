@@ -24,7 +24,7 @@ module.exports = [
     'Supertext for HubSpot 1.3: links that follow the language',
     'Translate website pages, blog posts and Knowledge Base articles in any order: links between them now point to the version in the same language, and new versions get their web address in their language.',
     `
-A Spanish help article that sends readers to an English one isn't finished. In a HubSpot Knowledge Base, articles link to each other all the time, website pages link to the help, blog posts link to product pages, newsletters link to all of them. Until now, [Supertext for HubSpot](/en/integrations/hubspot) kept every link as it was, so each translation still pointed to the English originals and someone had to fix the links by hand. Version 1.3 does it for you.
+A Spanish help article that sends readers to an English one isn't finished. In a HubSpot Knowledge Base, articles link to each other all the time, website pages link to the help, blog posts link to product pages, newsletters link to all of them. Until now, [Supertext for HubSpot](/en/integrations/hubspot) kept every link as it was, so each translation still pointed to the English originals and someone had to fix the links by hand. Version 1.3 does it for you, as a beta you can turn on in the settings.
 
 ## Links point to the same language
 
@@ -59,7 +59,7 @@ New language versions now also get a web address in their language: \`/es/about-
 
 ## Getting started
 
-Supertext for HubSpot is a hosted app, so you already have version 1.3. Both features are on by default and can be switched off under *Settings → Translation*: *Translate the addresses (URLs) of new versions* and *Point links to the translated pages, posts and articles*. The [1.3.0 release](https://github.com/Supertext/HubSpot-Supertext-Translation/releases/tag/v1.3.0) lists everything that changed.
+Supertext for HubSpot is a hosted app, so you already have version 1.3. Translated web addresses are on by default (*Translate the addresses (URLs) of new versions*). Links that follow the language are a beta for now: turn them on under *Settings → Translation* → *Point links to the translated pages, posts and articles*, and the **Links** tab shows what they do. The [1.3.0 release](https://github.com/Supertext/HubSpot-Supertext-Translation/releases/tag/v1.3.0) lists everything that changed.
 
 New to Supertext for HubSpot? It translates website pages, landing pages, blog posts, marketing emails and, with Service Hub Professional or Enterprise, Knowledge Base articles into draft language versions. No Supertext account yet? [Create one at supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role). Want to see it first? [Book a demo](https://calendar.app.google/KGTKqfmc7FxoN6Xn7).
 `,

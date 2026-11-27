@@ -272,7 +272,7 @@ const EXTRA_QUESTIONS = {
     {
       question: 'Do internal links point to the translated pages and articles?',
       answer:
-        "Yes, since version 1.3. Links between website pages, landing pages, blog posts and Knowledge Base articles, and from marketing emails to them, point to the version in the same language, in the text and in HubSpot's link fields such as buttons. You can translate in any order: a link to something that isn't translated yet waits and is updated automatically once it is. A list in the app's settings shows every link and the ones still waiting, and lets you keep a link on the original. New versions also get their web address in their language, for example /es/sobre-nosotros for /about-us. [Read more](/en/news/hubspot-links-follow-the-language).",
+        "Yes, since version 1.3, as a beta you turn on in the app's settings. Links between website pages, landing pages, blog posts and Knowledge Base articles, and from marketing emails to them, point to the version in the same language, in the text and in HubSpot's link fields such as buttons. You can translate in any order: a link to something that isn't translated yet waits and is updated automatically once it is. A list in the app's settings shows every link and the ones still waiting, and lets you keep a link on the original. New versions also get their web address in their language, for example /es/sobre-nosotros for /about-us. [Read more](/en/news/hubspot-links-follow-the-language).",
     },
     {
       question: 'What does a large translation project cost?',
@@ -1325,6 +1325,31 @@ async function addNewLanguagesNews(strapi) {
   return true;
 }
 
+/**
+ * Replaces sentences in a news article's English text where it still has them (an editor's own
+ * wording stays), publishes it and translates it again.
+ */
+async function replaceInArticle(strapi, slug, pairs) {
+  const ARTICLE = 'api::article.article';
+  const docs = strapi.documents(ARTICLE);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug } });
+  if (!doc) return true;
+  let body = doc.body || '';
+  for (const [from, to] of pairs) body = body.replace(from, to);
+  if (body === doc.body) return true;
+  const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+  const edited = live && new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+  await docs.update({ documentId: doc.documentId, locale: 'en', data: { body } });
+  if (edited || !live) return true;
+  await docs.publish({ documentId: doc.documentId, locale: 'en' });
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  for (const locale of ['de', 'fr', 'it']) state[`${ARTICLE}:${doc.documentId}:${locale}`] = 'started';
+  await store.set({ key: 'autoTranslations', value: state });
+  strapi.log.info(`[setup] ${slug}: text updated`);
+  return true;
+}
+
 /** One news article from the seed, by slug, unless it exists (so a deleted one stays deleted after its update ran). */
 async function addNewsArticle(strapi, slug) {
   const ARTICLE = 'api::article.article';
@@ -1614,6 +1639,22 @@ const UPDATES = [
   { id: '2026-11-new-languages-news', run: (strapi) => addNewLanguagesNews(strapi) },
   { id: '2026-11-hubspot-knowledge-base-questions', run: (strapi) => addExtraQuestions(strapi, 'hubspot') },
   { id: '2026-11-hubspot-links-news', run: (strapi) => addNewsArticle(strapi, 'hubspot-links-follow-the-language') },
+  {
+    id: '2026-11-hubspot-links-beta',
+    run: async (strapi) => {
+      await replaceInArticle(strapi, 'hubspot-links-follow-the-language', [
+        ['Version 1.3 does it for you.', 'Version 1.3 does it for you, as a beta you can turn on in the settings.'],
+        ['Supertext for HubSpot is a hosted app, so you already have version 1.3. Both features are on by default and can be switched off under *Settings → Translation*: *Translate the addresses (URLs) of new versions* and *Point links to the translated pages, posts and articles*.', 'Supertext for HubSpot is a hosted app, so you already have version 1.3. Translated web addresses are on by default (*Translate the addresses (URLs) of new versions*). Links that follow the language are a beta for now: turn them on under *Settings → Translation* → *Point links to the translated pages, posts and articles*, and the **Links** tab shows what they do.'],
+      ]);
+      return updateExtraQuestions(strapi, 'hubspot', [
+        {
+          question: 'Do internal links point to the translated pages and articles?',
+          answer: "Yes, since version 1.3. Links between website pages, landing pages, blog posts and Knowledge Base articles, and from marketing emails to them, point to the version in the same language, in the text and in HubSpot's link fields such as buttons. You can translate in any order: a link to something that isn't translated yet waits and is updated automatically once it is. A list in the app's settings shows every link and the ones still waiting, and lets you keep a link on the original. New versions also get their web address in their language, for example /es/sobre-nosotros for /about-us. [Read more](/en/news/hubspot-links-follow-the-language).",
+          to: 'Do internal links point to the translated pages and articles?',
+        },
+      ]);
+    },
+  },
   {
     id: '2026-11-hubspot-cost-answer',
     run: (strapi) =>
