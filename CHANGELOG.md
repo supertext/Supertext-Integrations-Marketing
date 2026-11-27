@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- HubSpot page: *What does a large translation project cost?* links *pricing* to Supertext's subscriptions (https://www.supertext.com/en/subscriptions) instead of this site's pricing page (`2026-11-hubspot-cost-answer`).
 - News: *Supertext for HubSpot 1.3: links that follow the language* (links between pages, posts and Knowledge Base articles in the same language, the list of links, translated web addresses), with its cover (content update `2026-11-hubspot-links-news`).
 - HubSpot page: the answer *Do internal links point to the translated pages and articles?* now says yes, since 1.3, and links to the news (`2026-11-hubspot-links-answer`, only where the old answer is unchanged).
 - Fixed: the news *Indonesian, Romanian, Thai and Vietnamese in every Supertext plugin* never appeared: unescaped backticks in its text broke `cms/src/seed/news.js`, so its content update failed. A test now loads every news article. Its list of all 28 plugins was also too long for the article's *systems* field (255 characters); like other news about every plugin, it now lists none (its table links each plugin).

@@ -276,7 +276,7 @@ const EXTRA_QUESTIONS = {
     },
     {
       question: 'What does a large translation project cost?',
-      answer: 'That depends on the volume and the languages. See our [pricing](/en/pricing) or [talk to our sales team](https://www.supertext.com/en/contact).',
+      answer: 'That depends on the volume and the languages. See our [pricing](https://www.supertext.com/en/subscriptions) or [talk to our sales team](https://www.supertext.com/en/contact).',
     },
     {
       question: 'Can we get a demo or a trial?',
@@ -1614,6 +1614,17 @@ const UPDATES = [
   { id: '2026-11-new-languages-news', run: (strapi) => addNewLanguagesNews(strapi) },
   { id: '2026-11-hubspot-knowledge-base-questions', run: (strapi) => addExtraQuestions(strapi, 'hubspot') },
   { id: '2026-11-hubspot-links-news', run: (strapi) => addNewsArticle(strapi, 'hubspot-links-follow-the-language') },
+  {
+    id: '2026-11-hubspot-cost-answer',
+    run: (strapi) =>
+      updateExtraQuestions(strapi, 'hubspot', [
+        {
+          question: 'What does a large translation project cost?',
+          answer: 'That depends on the volume and the languages. See our [pricing](/en/pricing) or [talk to our sales team](https://www.supertext.com/en/contact).',
+          to: 'What does a large translation project cost?',
+        },
+      ]),
+  },
   {
     id: '2026-11-hubspot-links-answer',
     run: (strapi) =>
