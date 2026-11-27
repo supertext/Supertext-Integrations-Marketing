@@ -268,7 +268,12 @@ const EXTRA_QUESTIONS = {
     {
       question: 'What happens when the original article changes later?',
       answer:
-        "Translating an article again replaces the whole translated draft, including changes made by hand in HubSpot, such as replaced screenshots; it doesn't translate only the changed parts. With our translation review, texts translated and reviewed before are reused, so your reviewers' corrections carry over. For articles with localized screenshots, we recommend making small changes by hand or translating again before the screenshots are swapped in. We're working on a way to update only what changed.",
+        "Translate it again with *Update existing versions*, and the translated drafts are updated. Since version 1.4, localized screenshots stay: an image a translation has of its own is kept as long as the original's image in that place doesn't change. If the original's screenshot is replaced, the translation gets the new one, and the app lists it as *to check* on its Links/Images page. The text is translated again as a whole; with our translation review, texts reviewed before are reused, so your reviewers' corrections carry over. Translating only the changed paragraphs is on our roadmap.",
+    },
+    {
+      question: 'Can we translate many pages or articles at once?',
+      answer:
+        "Yes. Since version 1.4, you tick up to 50 pages, blog posts, emails or Knowledge Base articles and translate them into all your languages in one go. Search and a *Languages missing* filter show what still needs translating, also in accounts with thousands of items, and the History tab lists every translation with its results.",
     },
     {
       question: 'Do internal links point to the translated pages and articles?',
@@ -1164,7 +1169,16 @@ async function addExtraQuestions(strapi, slug) {
   const asked = new Set((faq.items || []).map((i) => i.question));
   const added = (EXTRA_QUESTIONS[slug] || []).filter((q) => !asked.has(q.question));
   if (!added.length) return true;
-  faq.items = [...(faq.items || []), ...added];
+  // In the order of EXTRA_QUESTIONS: a new question goes before the next one already on the page.
+  const items = [...(faq.items || [])];
+  const extra = EXTRA_QUESTIONS[slug] || [];
+  for (const question of added) {
+    const later = extra.slice(extra.indexOf(question) + 1).map((q) => q.question);
+    const at = items.findIndex((item) => later.includes(item.question));
+    if (at === -1) items.push(question);
+    else items.splice(at, 0, question);
+  }
+  faq.items = items;
   const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
   const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
   await docs.update({ documentId: doc.documentId, locale: 'en', data: { blocks } });
@@ -1688,6 +1702,20 @@ const UPDATES = [
           to: 'Are translations created as unpublished drafts linked to the original?',
         },
       ]),
+  },
+  {
+    // Version 1.4: localized screenshots stay on updates, and batches (a new question).
+    id: '2026-11-hubspot-1-4-faq',
+    run: async (strapi) => {
+      await updateExtraQuestions(strapi, 'hubspot', [
+        {
+          question: 'What happens when the original article changes later?',
+          answer: "Translating an article again replaces the whole translated draft, including changes made by hand in HubSpot, such as replaced screenshots; it doesn't translate only the changed parts. With our translation review, texts translated and reviewed before are reused, so your reviewers' corrections carry over. For articles with localized screenshots, we recommend making small changes by hand or translating again before the screenshots are swapped in. We're working on a way to update only what changed.",
+          to: 'What happens when the original article changes later?',
+        },
+      ]);
+      return addExtraQuestions(strapi, 'hubspot');
+    },
   },
 ];
 
