@@ -234,6 +234,56 @@ const LANGUAGE_LIST = {
 /** Integrations that come with a Supertext subscription and a login, not an open-source plugin and an API key. */
 const IN_SUBSCRIPTION = new Set(['microsoft-365']);
 
+/**
+ * Questions only some integrations get, after the generated ones (HubSpot, November 2026: asked by a
+ * prospect localizing several hundred Knowledge Base articles).
+ */
+const EXTRA_QUESTIONS = {
+  hubspot: [
+    {
+      question: 'Is the HubSpot Knowledge Base integration ready for production?',
+      answer:
+        "Knowledge Base support uses HubSpot's Knowledge Base API, which HubSpot currently offers as a beta: its documentation says it is still under development and may change. HubSpot's knowledge base itself requires Service Hub Professional or Enterprise. We suggest a pilot with a few dozen articles before translating the full set.",
+    },
+    {
+      question: 'Can translations target a regional variant, such as European Spanish (es-ES) rather than generic or Latin American Spanish?',
+      answer:
+        'For German, French and Italian, regional variants such as Swiss German (de-CH) are supported out of the box. For other languages, our AI translation produces a neutral variety of the language rather than a regional one. For European Spanish, we can train an engine on your content and terminology. Our human translators work with the locale in mind, so their translations follow the local conventions in vocabulary, spelling and style.',
+    },
+    {
+      question: 'Can we import our company glossary and apply it to all HubSpot translations?',
+      answer:
+        'Yes. We add your existing glossary to your Supertext account, and every translation made with your account then uses your terms, including everything you translate in HubSpot. Send it to us as a spreadsheet; we help you set it up and keep it up to date as your terminology grows.',
+    },
+    {
+      question: 'Does the integration keep formatting, screenshots, embedded videos, tables, anchors and links?',
+      answer:
+        "Yes. Headings, lists, tables, bold and italic text, links and anchor links are kept. Screenshots and embedded videos stay exactly as in the original article, so you can replace screenshots in the translated drafts later.",
+    },
+    {
+      question: 'Are translations created as unpublished drafts linked to the original?',
+      answer: 'Yes. Each translation is created as an unpublished draft, linked to the original page, post or article. The app never publishes anything and never changes the original.',
+    },
+    {
+      question: 'What happens when the original article changes later?',
+      answer:
+        "Translating an article again replaces the whole translated draft, including changes made by hand in HubSpot, such as replaced screenshots; it doesn't translate only the changed parts. With our translation review, texts translated and reviewed before are reused, so your reviewers' corrections carry over. For articles with localized screenshots, we recommend making small changes by hand or translating again before the screenshots are swapped in. We're working on a way to update only what changed.",
+    },
+    {
+      question: 'Do internal links point to the translated articles?',
+      answer: "Not yet: links are kept as they are, so internal links still point to the original articles and need to be updated in the translations. We're looking into doing this automatically.",
+    },
+    {
+      question: 'What does a large translation project cost?',
+      answer: 'That depends on the volume and the languages. See our [pricing](/en/pricing) or [talk to our sales team](https://www.supertext.com/en/contact).',
+    },
+    {
+      question: 'Can we get a demo or a trial?',
+      answer: 'Absolutely. [Book a demo](https://calendar.app.google/KGTKqfmc7FxoN6Xn7) and we show you the HubSpot integration, Knowledge Base included.',
+    },
+  ],
+};
+
 /** Questions for an integration's page, built from its own fields. */
 function integrationFaq(item) {
   const s = item.system;
@@ -264,6 +314,7 @@ function integrationFaq(item) {
       'Support and localization services are available as [subscriptions](/en/pricing).',
     ].filter(Boolean).join(' '),
   });
+  items.push(...(EXTRA_QUESTIONS[item.slug] || []));
   return { __component: 'blocks.faq', title: `Questions about Supertext for ${s}`, items };
 }
 
@@ -1098,6 +1149,33 @@ async function wpmlAcf(strapi) {
   return true;
 }
 
+/** The extra questions (EXTRA_QUESTIONS) added to an integration's FAQ, after the ones it has; already asked ones are skipped. */
+async function addExtraQuestions(strapi, slug) {
+  const zone = strapi.contentType(INTEGRATION).attributes.blocks.components;
+  const populate = { blocks: { on: Object.fromEntries(zone.map((uid) => [uid, { populate: '*' }])) } };
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate });
+  if (!doc) return true;
+  const blocks = stripIds(mediaToIds(doc.blocks || []));
+  const faq = blocks.find((b) => b.__component === 'blocks.faq' && /^Questions about Supertext for /.test(b.title || ''));
+  if (!faq) return true;
+  const asked = new Set((faq.items || []).map((i) => i.question));
+  const added = (EXTRA_QUESTIONS[slug] || []).filter((q) => !asked.has(q.question));
+  if (!added.length) return true;
+  faq.items = [...(faq.items || []), ...added];
+  const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+  const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+  await docs.update({ documentId: doc.documentId, locale: 'en', data: { blocks } });
+  if (edited) return true;
+  await docs.publish({ documentId: doc.documentId, locale: 'en' });
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+  await store.set({ key: 'autoTranslations', value: state });
+  strapi.log.info(`[setup] ${slug}: ${added.length} questions added`);
+  return true;
+}
+
 /** News (14 November 2026): WPML with ACF blocks, and the Kotlin SDK. Only these two, so deleted articles stay deleted. */
 async function addNovemberNews(strapi) {
   const ARTICLE = 'api::article.article';
@@ -1487,6 +1565,7 @@ const UPDATES = [
   { id: '2026-11-craft-1-1', run: (strapi) => craft11(strapi) },
   { id: '2026-11-craft-1-1-news', run: (strapi) => addCraft11News(strapi) },
   { id: '2026-11-new-languages-news', run: (strapi) => addNewLanguagesNews(strapi) },
+  { id: '2026-11-hubspot-knowledge-base-questions', run: (strapi) => addExtraQuestions(strapi, 'hubspot') },
 ];
 
 async function runContentUpdates(strapi) {
