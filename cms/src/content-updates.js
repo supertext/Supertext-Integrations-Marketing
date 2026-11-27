@@ -268,7 +268,7 @@ const EXTRA_QUESTIONS = {
     {
       question: 'What happens when the original article changes later?',
       answer:
-        "Translate it again with *Update existing versions*, and the translated drafts are updated. Since version 1.4, localized screenshots stay: an image a translation has of its own is kept as long as the original's image in that place doesn't change. If the original's screenshot is replaced, the translation gets the new one, and the app lists it as *to check* on its Links/Images page. The text is translated again as a whole; with our translation review, texts reviewed before are reused, so your reviewers' corrections carry over. Translating only the changed paragraphs is on our roadmap.",
+        "Translate it again with *Update existing versions*, and the translated drafts are updated. Since version 1.4, localized images stay: an image a translation has of its own, such as a screenshot of the translated interface, is kept as long as the original's image in that place doesn't change. If the original's image is replaced, the translation gets the new one, and the app lists it as *to check* on its Links/Images page. The text is translated again as a whole; with our translation review, texts reviewed before are reused, so your reviewers' corrections carry over. Translating only the changed paragraphs is on our roadmap.",
     },
     {
       question: 'Can we translate many pages or articles at once?',
@@ -1716,6 +1716,18 @@ const UPDATES = [
       ]);
       return addExtraQuestions(strapi, 'hubspot');
     },
+  },
+  {
+    // "Images", not only screenshots.
+    id: '2026-11-hubspot-images-answer',
+    run: (strapi) =>
+      updateExtraQuestions(strapi, 'hubspot', [
+        {
+          question: 'What happens when the original article changes later?',
+          answer: "Translate it again with *Update existing versions*, and the translated drafts are updated. Since version 1.4, localized screenshots stay: an image a translation has of its own is kept as long as the original's image in that place doesn't change. If the original's screenshot is replaced, the translation gets the new one, and the app lists it as *to check* on its Links/Images page. The text is translated again as a whole; with our translation review, texts reviewed before are reused, so your reviewers' corrections carry over. Translating only the changed paragraphs is on our roadmap.",
+          to: 'What happens when the original article changes later?',
+        },
+      ]),
   },
 ];
 
