@@ -288,6 +288,33 @@ const EXTRA_QUESTIONS = {
       question: 'Can we get a demo or a trial?',
       answer: 'Absolutely. [Book a demo](https://calendar.app.google/KGTKqfmc7FxoN6Xn7) and we show you the HubSpot integration, Knowledge Base included.',
     },
+  ],  // Craft CMS 1.3 (November 2026): drafts, localized images, links and page addresses.
+  'craft-cms': [
+    {
+      question: 'Are translations saved as drafts or published right away?',
+      answer:
+        "You choose. By default, a translation is saved straight into the target site's version of the entry, as a new revision, and keeps that site's status: live if it was live. Since version 1.3, turn on *Save translations as drafts* in the plugin's settings: entries are then translated into a draft of each site, such as *Supertext: Deutsch*, for your editors to review and apply, and the live entry doesn't change until then. Categories, global sets and assets have no drafts in Craft and are always saved directly. The original is never changed.",
+    },
+    {
+      question: 'What happens when the original entry changes later?',
+      answer:
+        "Translate it again with *Overwrite existing translations*, and each site's version is updated. Since version 1.3, localized images stay: an image a site has of its own, such as a screenshot of the translated interface, is kept as long as the original's image in that place doesn't change. If the original's image is replaced, the site gets the new one, and *Utilities → Supertext images* lists it as *to check*. The page's address stays too (see below). The text is translated again as a whole; translating only the changed paragraphs is on our roadmap.",
+    },
+    {
+      question: 'Do internal links point to the translated pages?',
+      answer:
+        "Yes, since version 1.3. Links to your own entries and categories, in rich text and in Link fields, point to the same page in the target language, also links typed as a full address, with their anchors kept. They point to the page itself, not to its address, so they keep working when a translated page's address changes. You can turn this off in the plugin's settings.",
+    },
+    {
+      question: 'Are the page addresses (URLs) translated too?',
+      answer:
+        "Yes. The slug is translated with the entry, so /en/articles/swiss-chocolate becomes /de/articles/schweizer-schokolade. By default only the first time: once a site has its own address, translating again keeps it, so links and bookmarks to a live page don't break. Under *Translate page addresses (slugs)* you can choose *Always* or *Never* instead.",
+    },
+    {
+      question: 'Can we translate many entries at once?',
+      answer:
+        "Yes. Select entries, categories or assets in Craft's index and choose *Translate with Supertext*: they are translated into the sites you pick in the background, skipping sites that already have their own text. Developers can also translate from the command line.",
+    },
   ],
 };
 
@@ -1717,6 +1744,8 @@ const UPDATES = [
       return addExtraQuestions(strapi, 'hubspot');
     },
   },
+  // Craft CMS 1.3: questions about drafts, images, links, page addresses and translating many entries.
+  { id: '2026-11-craft-1-3-faq', run: (strapi) => addExtraQuestions(strapi, 'craft-cms') },
   {
     // "Images", not only screenshots.
     id: '2026-11-hubspot-images-answer',
