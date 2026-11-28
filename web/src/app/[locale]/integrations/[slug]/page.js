@@ -229,6 +229,12 @@ export default async function IntegrationPage({ params }) {
                 <p><Link href={`/${locale}/compare`} className="btn btn-text">{t.compareLink} →</Link></p>
               </section>
             )}
+            {item.security && (
+              <section className="card detail-section" id="security">
+                <h2>{t.securityTitle}</h2>
+                <Markdown locale={locale}>{item.security}</Markdown>
+              </section>
+            )}
             <div className="notice highlight" style={{ margin: 0, maxWidth: 'none' }}>
               <h2 style={{ fontSize: 20, marginBottom: 8 }}>{t.gettingStarted}</h2>
               <Markdown locale={locale}>{format(t, IN_SUBSCRIPTION.has(item.slug) ? 'gettingStartedSignIn' : 'gettingStartedText', { account: ACCOUNT_URL, apiKey: API_KEY_URL })}</Markdown>

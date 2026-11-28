@@ -238,6 +238,53 @@ const IN_SUBSCRIPTION = new Set(['microsoft-365']);
  * Questions only some integrations get, after the generated ones (HubSpot, November 2026: asked by a
  * prospect localizing several hundred Knowledge Base articles).
  */
+/**
+ * The *Security and privacy* section of an integration page (field `security`, Markdown), from the
+ * plugin's docs and code. English; the other languages are translated automatically.
+ */
+const SECURITY = {
+  hubspot: `### Who can use the app
+
+- **Only people from your HubSpot account.** You log in with HubSpot, and HubSpot only lets people through who may install apps in your account (usually Super Admins).
+- **Everyone has their own session.** The app shows who is logged in and records who started each translation. *Log out* ends your session.
+- **Sessions end after 7 days.** Then you log in with HubSpot again. Someone you remove from your HubSpot account, such as a colleague who left, loses access to the app within 7 days at the latest.
+- **Disconnect ends every session** and removes the app from your HubSpot account.
+- Everyone who is logged in has the same rights: translating, the settings and *Disconnect*.
+
+### What the app may do in HubSpot
+
+It reads your pages, posts, emails and knowledge base articles and creates their language versions, as drafts unless you turn on *Publish translations right away*. It never sends an email, and it never changes the original.
+
+### Your data
+
+- **Stored per HubSpot account:** your settings, the HubSpot access and your Supertext API key (both encrypted with AES-256), which language versions belong together, and the history of translations (names and results). Not your content, and no contacts.
+- **Texts to translate** go to the Supertext API in Switzerland and are deleted there right after the translation is downloaded. With *Translation review* on, they go through Supertext's review service, which keeps them so your reviewers can correct them.
+- **Hosting:** the app and its database run in the EU (Amsterdam).
+- **Deleting:** *Disconnect* deletes everything right away. If you uninstall the app in HubSpot instead, it notices within a day and deletes your data 30 days later; connecting again before that keeps everything.
+
+### How it is protected
+
+Encrypted connections only, a separate signed session per person, protection against forged requests on every change, a strict Content-Security-Policy, and pages that can't be shown inside other websites. Every request only reaches the HubSpot account of your session. The app is open source ([GitHub](https://github.com/Supertext/HubSpot-Supertext-Translation)), so anyone can review the code. Found a security problem? Report it privately on GitHub or to support@supertext.com.`,
+};
+
+/** Fills an integration's empty `security` field (SECURITY), publishes it if nobody edited the page, and starts its translations. */
+async function addSecurity(strapi, slug) {
+  const docs = strapi.documents(INTEGRATION);
+  const doc = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug }, fields: ['security', 'updatedAt'] });
+  if (!doc || doc.security || !SECURITY[slug]) return true;
+  const live = await docs.findOne({ documentId: doc.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+  const edited = !live || new Date(doc.updatedAt) - new Date(live.updatedAt) > 1000;
+  await docs.update({ documentId: doc.documentId, locale: 'en', data: { security: SECURITY[slug] } });
+  if (edited) return true;
+  await docs.publish({ documentId: doc.documentId, locale: 'en' });
+  const store = strapi.store({ type: 'plugin', name: 'site-setup' });
+  const state = (await store.get({ key: 'autoTranslations' })) || {};
+  for (const locale of ['de', 'fr', 'it']) state[`${INTEGRATION}:${doc.documentId}:${locale}`] = 'started';
+  await store.set({ key: 'autoTranslations', value: state });
+  strapi.log.info(`[setup] ${slug}: security section added`);
+  return true;
+}
+
 const EXTRA_QUESTIONS = {
   hubspot: [
     {
@@ -1780,6 +1827,8 @@ const UPDATES = [
   // WordPress (WPML 1.5, Polylang 1.3): links and localized images.
   { id: '2026-11-wpml-1-5-faq', run: (strapi) => addExtraQuestions(strapi, 'wordpress-wpml') },
   { id: '2026-11-polylang-1-3-faq', run: (strapi) => addExtraQuestions(strapi, 'wordpress-polylang') },
+  // HubSpot: the Security and privacy section (access, sessions, data, deleting, protection).
+  { id: '2026-11-hubspot-security', run: (strapi) => addSecurity(strapi, 'hubspot') },
   {
     // "Images", not only screenshots.
     id: '2026-11-hubspot-images-answer',

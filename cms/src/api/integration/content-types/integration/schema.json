@@ -215,6 +215,14 @@
         }
       }
     },
+    "security": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "fileFormats": {
       "type": "string",
       "pluginOptions": {
