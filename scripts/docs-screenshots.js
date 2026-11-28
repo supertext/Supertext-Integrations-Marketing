@@ -6,20 +6,25 @@ const path = require('path');
 
 const WEB = process.env.WEB_URL || 'http://localhost:3000';
 const CMS = process.env.CMS_URL || 'http://localhost:1337';
+// nosemgrep: path-join-resolve-traversal -- fixed screenshot file names from this script
 const out = (name) => path.join(__dirname, '..', 'docs', 'images', name);
 
 (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1 });
 
+  // nosemgrep: playwright-goto-injection -- local docs script, base URL from the person running it
   await page.goto(`${WEB}/en`, { waitUntil: 'networkidle' });
   await page.screenshot({ path: out('home.png') });
+  // nosemgrep: playwright-goto-injection -- local docs script, base URL from the person running it
   await page.goto(`${WEB}/en/pricing`, { waitUntil: 'networkidle' });
   await page.screenshot({ path: out('pricing.png'), clip: { x: 0, y: 380, width: 1280, height: 780 } });
+  // nosemgrep: playwright-goto-injection -- local docs script, base URL from the person running it
   await page.goto(`${WEB}/en/integrations/strapi`, { waitUntil: 'networkidle' });
   await page.screenshot({ path: out('integration.png') });
 
   if (process.env.DEMO_ADMIN_EMAIL) {
+    // nosemgrep: playwright-goto-injection -- local docs script, base URL from the person running it
     await page.goto(`${CMS}/admin/auth/login`);
     await page.fill('input[name=email]', process.env.DEMO_ADMIN_EMAIL);
     await page.fill('input[name=password]', process.env.DEMO_ADMIN_PASSWORD);
@@ -29,6 +34,7 @@ const out = (name) => path.join(__dirname, '..', 'docs', 'images', name);
       headers: { Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}` },
     });
     const id = (await res.json()).data?.[0]?.documentId;
+    // nosemgrep: playwright-goto-injection -- local docs script, base URL from the person running it
     await page.goto(`${CMS}/admin/content-manager/collection-types/api::page.page/${id}?plugins[i18n][locale]=en`);
     await page.waitForTimeout(4000);
     await page.keyboard.press('Escape');

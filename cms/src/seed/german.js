@@ -9,6 +9,7 @@
 // - German titles and descriptions for the integration pages of the systems used most in the region.
 // Swiss spelling throughout: "ss" instead of "ß", «Guillemets».
 
+// nosemgrep: node_api_key -- a public URL (the page where the key is generated), not a key
 const API_KEY_URL = 'https://www.supertext.com/en/integrations/api';
 const ACCOUNT_URL = 'https://www.supertext.com/person/en/account/signin';
 const link = (label, url, style = 'primary', newTab = false) => ({ label, url, style, newTab });
@@ -239,6 +240,7 @@ const article = (slug, date, systems, title, excerpt, body, seo) => ({
   seo: { metaTitle: seo.title, metaDescription: seo.description || excerpt },
 });
 
+// nosemgrep: node_api_key -- seed text with the account and key page links, not a key
 const apiKey = `[Melden Sie sich bei Supertext an oder erstellen Sie ein Konto](${ACCOUNT_URL}) und erzeugen Sie unter [Integrations → API](${API_KEY_URL}) einen API-Key. Dafür brauchen Sie die Admin-Rolle in Ihrem Supertext-Konto; sonst fragen Sie die Person, die Ihr Konto verwaltet.`;
 
 const swissNote = `> **Schweizer Hochdeutsch:** Wählen Sie als Zielsprache **de-CH**, dann schreibt Supertext «Strasse» statt «Straße», «Velo» statt «Fahrrad» und Preise als «CHF 1’250.50». Mehr dazu: [Schweizer Hochdeutsch und Schweizerdeutsch übersetzen](/de/swiss-german).`;

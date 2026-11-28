@@ -159,6 +159,7 @@ const TEXT = {
 function swissTerms(text, locale, rules = RULES) {
   if (typeof text !== 'string') return text;
   const kept = [];
+  // nosemgrep: detect-non-literal-regexp -- patterns from the fixed Swiss terms list; strings are escaped first
   const keep = (t, pattern) => t.replace(typeof pattern === 'string' ? new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g') : new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g'), (m) => `\u0000${kept.push(m) - 1}\u0000`);
   const out = (rules[locale] || []).reduce((t, [from, to]) => {
     if (from === 'keep') return keep(t, to);

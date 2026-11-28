@@ -70,8 +70,8 @@ export function JsonLd({ data }) {
   return (
     <script
       type="application/ld+json"
-      // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}
+      // nosemgrep: react-dangerouslysetinnerhtml -- JSON-LD: JSON.stringify with < escaped can't close the script element
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }} // eslint-disable-line react/no-danger
     />
   );
 }

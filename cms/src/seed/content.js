@@ -4,6 +4,7 @@
 // Service plans are placeholders until the real offer is defined.
 
 const ACCOUNT_URL = 'https://www.supertext.com/person/en/account/signin';
+// nosemgrep: node_api_key -- a public URL (the page where the key is generated), not a key
 const API_KEY_URL = 'https://www.supertext.com/en/integrations/api';
 
 const plans = [

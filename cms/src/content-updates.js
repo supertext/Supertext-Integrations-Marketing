@@ -1107,6 +1107,7 @@ async function removeRepeatedQuestions(strapi) {
     const faqIndex = (en.blocks || []).findIndex((b) => b.__component === 'blocks.faq' && /^Questions about Supertext for /.test(b.title || ''));
     if (faqIndex < 0) continue;
     const enItems = en.blocks[faqIndex].items || [];
+    // nosemgrep: regex_dos -- fixed patterns on short FAQ questions from the seed
     const drop = enItems.map((item, i) => (REPEATED.some((r) => r.test(item.question || '')) ? i : -1)).filter((i) => i >= 0);
     if (!drop.length) continue;
     for (const locale of ['en', 'de', 'fr', 'it']) {
@@ -1564,7 +1565,9 @@ async function articleCovers(strapi) {
   for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.png'))) {
     const slug = name.slice(0, -4);
     const filepath = path.join(dir, name);
+    // nosemgrep: node_sha1, node_timing_attack -- a change check of a bundled image file, not a secret
     const hash = crypto.createHash('sha1').update(fs.readFileSync(filepath)).digest('hex');
+    // nosemgrep: node_timing_attack -- compares a file hash with the stored one, not a secret
     if (done[slug] === hash) continue;
     const draft = await docs.findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate: ['cover'] });
     if (!draft) continue;
@@ -1597,7 +1600,9 @@ async function integrationLogos(strapi) {
   for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.png'))) {
     const slug = name.slice(0, -4);
     const filepath = path.join(dir, name);
+    // nosemgrep: node_sha1, node_timing_attack -- a change check of a bundled image file, not a secret
     const hash = crypto.createHash('sha1').update(fs.readFileSync(filepath)).digest('hex');
+    // nosemgrep: node_timing_attack -- compares a file hash with the stored one, not a secret
     if (done[slug] === hash) continue;
     const draft = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'draft', filters: { slug }, populate: ['logo'] });
     if (!draft) continue;

@@ -5,6 +5,7 @@
 const SDK_REPO = 'https://github.com/Supertext/Supertext-API-SDK-Guide';
 const GUIDE = `${SDK_REPO}/blob/main/docs/integration-guide.md`;
 const ACCOUNT_URL = 'https://www.supertext.com/person/en/account/signin';
+// nosemgrep: node_api_key -- a public URL (the page where the key is generated), not a key
 const API_KEY_URL = 'https://www.supertext.com/en/integrations/api';
 
 const link = (label, url, style = 'primary', newTab = false) => ({ label, url, style, newTab });

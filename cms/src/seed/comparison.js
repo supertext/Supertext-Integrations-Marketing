@@ -4,6 +4,7 @@
 // compares with the system's own translation options. Sources: claude/comparison-research.md
 // in the project (vendor docs as of October 2026). No prices.
 
+// nosemgrep: node_api_key -- a public URL (the page where the key is generated), not a key
 const API_KEY_URL = 'https://www.supertext.com/en/integrations/api';
 
 const STUDY = 'https://aclanthology.org/2025.mtsummit-2.6/';

@@ -5,6 +5,7 @@ const { Client } = require('pg');
 const { databaseUrl } = require('../lib/database-url');
 
 (async () => {
+  // nosemgrep: node_sqli_injection -- the name is checked against ^[a-z_][a-z0-9_]*$ below before it is used
   const name = process.env.INTEGRATIONS_DB_NAME;
   if (!process.env.DATABASE_URL || !name) return;
   if (!/^[a-z_][a-z0-9_]*$/.test(name)) throw new Error('INTEGRATIONS_DB_NAME: lower-case letters, digits and _ only');

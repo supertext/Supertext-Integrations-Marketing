@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Security: Semgrep in CI (weekly and on code changes); the website's container no longer runs as root; Dependabot waits 7 days before proposing a new release.
 - Security: every page sends a strict Content-Security-Policy (scripts only with a per-request nonce, frames only YouTube's privacy-enhanced player and Cloudflare Turnstile, forms only to the site), HSTS and a `Permissions-Policy`.
 
 - Security: support emails no longer turn the sender's name from the form into links (Markdown links and bare addresses are removed from the greeting, and `"` is escaped in the email's HTML), so the form can't be used to send links from Supertext's address. Nodemailer 10.6.1 (several advisories in 7.x: address parsing, header and SMTP injection).

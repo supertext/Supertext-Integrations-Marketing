@@ -2,6 +2,9 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/cms"
+    # New versions wait a week before Dependabot proposes them (time for a bad release to be pulled).
+    cooldown:
+      default-days: 7
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
@@ -22,6 +25,9 @@ updates:
         update-types: ["minor", "patch"]
   - package-ecosystem: "npm"
     directory: "/web"
+    # New versions wait a week before Dependabot proposes them (time for a bad release to be pulled).
+    cooldown:
+      default-days: 7
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
@@ -35,6 +41,9 @@ updates:
         update-types: ["minor", "patch"]
   - package-ecosystem: "github-actions"
     directory: "/"
+    # New versions wait a week before Dependabot proposes them (time for a bad release to be pulled).
+    cooldown:
+      default-days: 7
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5

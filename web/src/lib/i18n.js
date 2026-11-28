@@ -1110,6 +1110,7 @@ const STRINGS = {
 };
 
 export const ACCOUNT_URL = 'https://www.supertext.com/person/en/account/signin';
+// nosemgrep: node_api_key -- a public URL (the page where the key is generated), not a key
 export const API_KEY_URL = 'https://www.supertext.com/en/integrations/api';
 
 /** The string table of a language (plain object, so it can be passed to client components). */
