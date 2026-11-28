@@ -6,6 +6,7 @@ test('pages run scripts only with the nonce, frame only YouTube and Turnstile', 
   const csp = contentSecurityPolicy('abc', { strapiUrl: 'https://cms.example' });
   assert.match(csp, /script-src 'self' 'nonce-abc' 'strict-dynamic'(;|$)/);
   assert.doesNotMatch(csp, /unsafe-eval/);
+  assert.match(csp, /report-uri https:\/\/pluginhealth\.supertext\.com\/api\/v1\/csp-report; report-to csp$/);
   assert.match(csp, /frame-src 'self' https:\/\/www\.youtube-nocookie\.com https:\/\/challenges\.cloudflare\.com/);
   assert.match(csp, /frame-ancestors 'self' https:\/\/cms\.example/);
   assert.match(csp, /img-src 'self' data: https:\/\/cms\.example/);

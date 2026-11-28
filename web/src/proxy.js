@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { DEFAULT_LOCALE, LOCALES } from '@/lib/i18n';
-import { contentSecurityPolicy, newNonce } from '@/lib/csp';
+import { CSP_REPORT_URL, contentSecurityPolicy, newNonce } from '@/lib/csp';
 
 const strapiUrl = (process.env.STRAPI_PUBLIC_URL || process.env.STRAPI_URL || 'http://localhost:1337').replace(/\/$/, '');
 
@@ -18,6 +18,7 @@ export function proxy(request) {
     headers.set('Content-Security-Policy', csp);
     const response = NextResponse.next({ request: { headers } });
     response.headers.set('Content-Security-Policy', csp);
+    response.headers.set('Reporting-Endpoints', `csp="${CSP_REPORT_URL}"`);
     return response;
   }
   const wanted = (request.headers.get('accept-language') || '')

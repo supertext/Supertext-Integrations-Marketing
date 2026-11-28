@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Security: what the Content-Security-Policy blocks in a browser is reported to Supertext Plugin Health (*CSP reports*).
 - Security: `Referrer-Policy: strict-origin-when-cross-origin` (was `origin-when-cross-origin`, which also sent the origin to plain-HTTP sites; Mozilla Observatory).
 - Security: Semgrep in CI (weekly and on code changes); the website's container no longer runs as root; Dependabot waits 7 days before proposing a new release.
 - Security: every page sends a strict Content-Security-Policy (scripts only with a per-request nonce, frames only YouTube's privacy-enhanced player and Cloudflare Turnstile, forms only to the site), HSTS and a `Permissions-Policy`.

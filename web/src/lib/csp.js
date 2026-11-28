@@ -6,6 +6,9 @@
  * (privacy-enhanced, after a click) and Turnstile. Only the Strapi admin may show the site in a frame
  * (its preview pane). No plugins, no other <base>, forms only to the site.
  */
+/** Where browsers report what the policy blocked: Supertext Plugin Health. */
+export const CSP_REPORT_URL = 'https://pluginhealth.supertext.com/api/v1/csp-report';
+
 export function contentSecurityPolicy(nonce, { strapiUrl, dev = false }) {
   return [
     "default-src 'self'",
@@ -20,6 +23,9 @@ export function contentSecurityPolicy(nonce, { strapiUrl, dev = false }) {
     "object-src 'none'",
     "base-uri 'none'",
     "form-action 'self'",
+    // Violations go to Supertext Plugin Health's collector (its CSP reports page).
+    `report-uri ${CSP_REPORT_URL}`,
+    'report-to csp',
   ].join('; ');
 }
 
