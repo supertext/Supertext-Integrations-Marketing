@@ -288,7 +288,38 @@ const EXTRA_QUESTIONS = {
       question: 'Can we get a demo or a trial?',
       answer: 'Absolutely. [Book a demo](https://calendar.app.google/KGTKqfmc7FxoN6Xn7) and we show you the HubSpot integration, Knowledge Base included.',
     },
-  ],  // Craft CMS 1.3 (November 2026): drafts, localized images, links and page addresses.
+  ],  // WPML 1.5 (November 2026): links and localized images.
+  'wordpress-wpml': [
+    {
+      question: 'Are translations created as drafts?',
+      answer:
+        "Yes. A new AI translation is created as a draft, linked to its original in WPML, so you can review it before publishing. *Translate again* updates an existing translation and keeps its status. Professional translations are written back as drafts, or published if your administrator chooses so in the settings. The original is never changed.",
+    },
+    {
+      question: 'What happens when the original page changes later?',
+      answer:
+        "Click *Translate again* in the Supertext box, and the translation is updated. Since version 1.5, localized images stay: an image a translation has of its own, such as a screenshot of the translated interface, is kept as long as the original's image in that place doesn't change. If the original's image is replaced, the translation gets the new one, and *Supertext → Images* lists it as *to check*. The text is translated again as a whole; with our translation review, texts reviewed before are reused, so your reviewers' corrections carry over.",
+    },
+    {
+      question: 'Do internal links point to the translated pages?',
+      answer:
+        "Yes, since version 1.5. Links to your own posts and pages point to their translation in the same language, with their anchors kept, in AI translations, professional translations and imported files. A link to a page that isn't translated yet stays on the original. You can turn this off in the plugin's settings.",
+    },
+  ],
+  // Polylang 1.3 (November 2026): links and localized images.
+  'wordpress-polylang': [
+    {
+      question: 'Do internal links point to the translated pages?',
+      answer:
+        "Yes, since version 1.3. Links to your own posts and pages point to their translation in the same language, with their anchors kept, for example /de/ueber-uns/ for /about-us/, in AI translations, professional translations and imported files. A link to a page that isn't translated yet stays on the original. You can turn this off in the plugin's settings.",
+    },
+    {
+      question: 'What happens when the original page changes later?',
+      answer:
+        "Update the translation with a new professional translation or an imported translation file. Since version 1.3, localized images stay: an image a translation has of its own, such as a screenshot of the translated interface, is kept as long as the original's image in that place doesn't change. If the original's image is replaced, the translation gets the new one, and *Supertext → Images* lists it as *to check*.",
+    },
+  ],
+  // Craft CMS 1.3 (November 2026): drafts, localized images, links and page addresses.
   'craft-cms': [
     {
       question: 'Are translations saved as drafts or published right away?',
@@ -1746,6 +1777,9 @@ const UPDATES = [
   },
   // Craft CMS 1.3: questions about drafts, images, links, page addresses and translating many entries.
   { id: '2026-11-craft-1-3-faq', run: (strapi) => addExtraQuestions(strapi, 'craft-cms') },
+  // WordPress (WPML 1.5, Polylang 1.3): links and localized images.
+  { id: '2026-11-wpml-1-5-faq', run: (strapi) => addExtraQuestions(strapi, 'wordpress-wpml') },
+  { id: '2026-11-polylang-1-3-faq', run: (strapi) => addExtraQuestions(strapi, 'wordpress-polylang') },
   {
     // "Images", not only screenshots.
     id: '2026-11-hubspot-images-answer',
