@@ -89,6 +89,7 @@ The plugin isn't on npm. `cms/scripts/fetch-plugin.sh` clones [Strapi-Supertext-
 
 ## Code quality and security checks
 
+- **Base images** in the Dockerfiles are pinned by digest (`image:tag@sha256:…`, OpenSSF Scorecard: *Pinned-Dependencies*), so a build always gets the image that was tested; Dependabot's `docker` entry updates the digests and minor/patch tags weekly (majors are ignored: a new Node or PHP line is a decision). To change a base image by hand, take the new tag's digest from the registry.
 - **Scorecard** workflow (`.github/workflows/scorecard.yml`; weekly, on every push to `main` and when branch protection changes): [OpenSSF Scorecard](https://scorecard.dev) scores the repo's security practices (pinned actions, token permissions, branch protection, dependency updates, static analysis); findings appear under *Security → Code scanning*, results are published to the public Scorecard API.
 - `.github/workflows/ci.yml`: builds the CMS (with the plugin) and the website, runs the tests.
 - `.github/workflows/checks.yml`: actionlint and zizmor on every push and PR, dependency review on PRs.

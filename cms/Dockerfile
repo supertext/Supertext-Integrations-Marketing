@@ -1,6 +1,6 @@
 # Strapi CMS. Railway: Dockerfile path cms/Dockerfile, build context = repo root.
 # Locally: docker build -f cms/Dockerfile -t supertext-integrations-cms . && docker run -p 1337:1337 --env-file cms/.env supertext-integrations-cms
-FROM node:22-bookworm-slim AS build
+FROM node:22-bookworm-slim@sha256:be979e5523c76fa4d5ca4ebd3099078f220aa47ec39c48ad5b5df9314debd6eb AS build
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY cms/package.json cms/package-lock.json cms/.npmrc ./
@@ -13,7 +13,7 @@ RUN npm ci --no-audit --no-fund
 COPY cms/ ./
 RUN NODE_ENV=production npm run build
 
-FROM node:22-bookworm-slim
+FROM node:22-bookworm-slim@sha256:be979e5523c76fa4d5ca4ebd3099078f220aa47ec39c48ad5b5df9314debd6eb
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build /app ./
