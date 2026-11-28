@@ -110,6 +110,8 @@ Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held b
 
 `overrides` in `cms/package.json` lift packages Strapi pins below a security fix. Remove each one once a Strapi release ships the same or a newer version (`npm ls <package>` shows *overridden* while it still applies):
 
+- `fast-uri` `^3.1.9` and `zod@^4` `^4.6.6` (Dependabot alerts, November 2026; patch and minor updates within the line Strapi asks for).
+- Not lifted, because the fix is a major Strapi doesn't support: `react-router` 6 (admin), `zod` 3, `glob` 13 and `minimatch` 10 (build and file tools). Their Dependabot alerts stay open until Strapi moves on.
 - `@hono/node-server` `^2.1.3` (GHSA-rmxm-3fg6-px4f, `serveStatic`), with `@modelcontextprotocol/node` `2.1.2` and `@modelcontextprotocol/server` `2.4.0`, the first versions that accept it. Strapi 5.63 pins `@modelcontextprotocol/node` 2.1.1. Only Strapi's MCP server uses them (`getRequestListener`, not `serveStatic`), and it's off here (`mcp.enabled` isn't set).
 
 ### Integration logos
