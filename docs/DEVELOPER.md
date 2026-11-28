@@ -80,7 +80,7 @@ The plugin isn't on npm. `cms/scripts/fetch-plugin.sh` clones [Strapi-Supertext-
 
 ## Tests
 
-- `cd web && npm test`: every UI language has the same keys, placeholders and links as English; YouTube ids and links are read correctly (`test/video.test.mjs`).
+- `cd web && npm test`: every UI language has the same keys, placeholders and links as English; YouTube ids and links are read correctly (`test/video.test.mjs`); the Content-Security-Policy (`test/csp.test.mjs`).
 - `cd cms && npm test`: seed integrations (unique slugs, valid categories and repos), seed videos (valid YouTube ids of integrations with a plugin), preview paths, support redaction (contact details and secrets removed, versions and dates kept) and support emails (all languages, no unfilled placeholders).
 
 ## Screenshots
@@ -93,6 +93,7 @@ The plugin isn't on npm. `cms/scripts/fetch-plugin.sh` clones [Strapi-Supertext-
 - `.github/workflows/checks.yml`: actionlint and zizmor on every push and PR, dependency review on PRs.
 - `.github/workflows/support-triage.yml`: Claude triage for support issues (see *Architecture → Support*); also in every plugin repo.
 - `.github/workflows/links.yml`: lychee weekly and on docs changes; broken links open the issue "Broken links in the docs".
+- **Headers:** every page gets a Content-Security-Policy with a fresh nonce per request (`web/src/proxy.js`, which also sends paths without a language to one, and `web/src/lib/csp.js`): scripts only with the nonce (Next.js puts it on its own scripts) or added by them (`'strict-dynamic'`: the support form adds Cloudflare Turnstile's script); styles, fonts, videos and images from the site (images also from Strapi's uploads); frames only the YouTube player (youtube-nocookie.com) and Turnstile; only the Strapi admin may frame the site (its preview); no plugins, no other `<base>`, forms only to the site. The nonce needs dynamic rendering, which every page has (draft mode; Strapi content is still cached for 60 seconds). `next.config.mjs` adds HSTS (a year), a `Permissions-Policy`, `nosniff` and, for API answers and files, a short policy (frame-ancestors, no plugins). The policy uses `STRAPI_PUBLIC_URL`, so it is set at build time (Dockerfile).
 - All actions are pinned to commit SHAs; checkouts use `persist-credentials: false`; workflows default to `permissions: contents: read`.
 - GitHub settings (About box, ruleset "Protect main", Dependabot alerts, private vulnerability reporting, secret scanning, CodeQL) are applied with Remy's `set-github-about` script.
 

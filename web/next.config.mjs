@@ -18,9 +18,12 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: [
-          // Only the Strapi admin may show the site in a frame (its preview pane).
-          // Frames on the site: only the YouTube player (privacy-enhanced, after a click) and Cloudflare Turnstile.
-          { key: 'Content-Security-Policy', value: `frame-ancestors 'self' ${strapiUrl}; frame-src 'self' https://www.youtube-nocookie.com https://challenges.cloudflare.com` },
+          // Pages get the full Content-Security-Policy with a nonce in src/proxy.js (src/lib/csp.js); everything
+          // else (API answers, files) this one: only the Strapi admin may show it in a frame, no plugins.
+          { key: 'Content-Security-Policy', value: `frame-ancestors 'self' ${strapiUrl}; object-src 'none'; base-uri 'none'` },
+          // HTTPS only, for a year (browsers ignore it over plain HTTP, e.g. locally).
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
         ],

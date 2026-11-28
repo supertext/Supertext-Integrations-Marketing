@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Security: every page sends a strict Content-Security-Policy (scripts only with a per-request nonce, frames only YouTube's privacy-enhanced player and Cloudflare Turnstile, forms only to the site), HSTS and a `Permissions-Policy`.
+
 - Security: support emails no longer turn the sender's name from the form into links (Markdown links and bare addresses are removed from the greeting, and `"` is escaped in the email's HTML), so the form can't be used to send links from Supertext's address. Nodemailer 10.6.1 (several advisories in 7.x: address parsing, header and SMTP injection).
 
 - Integrations get a *Security and privacy* section (new field `security`, Markdown, per language, after *Compared with built-in translation*). The HubSpot page has one: who can use the app (log in with HubSpot, own sessions, 7 days, Log out, Disconnect), what it may do in HubSpot, the data it stores (encrypted keys and tokens, no content), where texts go, hosting in the EU (Amsterdam), deleting (right away on Disconnect, 30 days after an uninstall) and how it is protected (content update `2026-11-hubspot-security`; German, French and Italian are translated automatically).

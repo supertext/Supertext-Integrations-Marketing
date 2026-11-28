@@ -1,10 +1,25 @@
 import { NextResponse } from 'next/server';
 import { DEFAULT_LOCALE, LOCALES } from '@/lib/i18n';
+import { contentSecurityPolicy, newNonce } from '@/lib/csp';
 
-/** Paths without a language go to the visitor's language (Accept-Language), else English. */
+const strapiUrl = (process.env.STRAPI_PUBLIC_URL || process.env.STRAPI_URL || 'http://localhost:1337').replace(/\/$/, '');
+
+/**
+ * Paths without a language go to the visitor's language (Accept-Language), else English.
+ * Pages get a fresh nonce and the Content-Security-Policy (src/lib/csp.js).
+ */
 export function proxy(request) {
   const { pathname, search } = request.nextUrl;
-  if (LOCALES.some((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`))) return NextResponse.next();
+  if (LOCALES.some((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`))) {
+    const nonce = newNonce();
+    const csp = contentSecurityPolicy(nonce, { strapiUrl, dev: process.env.NODE_ENV === 'development' });
+    const headers = new Headers(request.headers);
+    headers.set('x-nonce', nonce);
+    headers.set('Content-Security-Policy', csp);
+    const response = NextResponse.next({ request: { headers } });
+    response.headers.set('Content-Security-Policy', csp);
+    return response;
+  }
   const wanted = (request.headers.get('accept-language') || '')
     .split(',')
     .map((part) => part.split(';')[0].trim().slice(0, 2).toLowerCase());
