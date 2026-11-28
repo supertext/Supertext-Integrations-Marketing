@@ -33,3 +33,12 @@ test('support emails exist in every language with the same placeholders', () => 
     }
   }
 });
+
+test('the sender name in support emails carries no links or markup', () => {
+  const { plainName, toHtml } = require('../src/api/support/services/support');
+  assert.strictEqual(plainName('[Click here](https://evil.example/login) Anna'), 'Click here Anna');
+  assert.strictEqual(plainName('Visit https://evil.example now'), 'Visit now');
+  assert.strictEqual(plainName('  Remy  Blättler '), 'Remy Blättler');
+  assert.ok(!toHtml('Hello Click here,').includes('<a'));
+  assert.ok(toHtml('See [docs](https://x.example/a"b)').includes('&quot;'));
+});

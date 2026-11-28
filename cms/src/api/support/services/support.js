@@ -78,7 +78,7 @@ async function github(path, options = {}) {
 
 /** Markdown-ish text → minimal HTML for the email (paragraphs, links, line breaks). */
 function toHtml(text) {
-  const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   return escape(text)
     .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2">$1</a>')
     .replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g, '$1<a href="$2">$2</a>')
@@ -86,6 +86,20 @@ function toHtml(text) {
     .split(/\n{2,}/)
     .map((p) => `<p>${p.replace(/\n/g, '<br>')}</p>`)
     .join('\n');
+}
+
+/**
+ * The sender's name for the greeting: it comes from the form, and the email goes out from
+ * Supertext's address, so no links (Markdown or bare addresses) or brackets that toHtml() would
+ * turn into markup.
+ */
+function plainName(name) {
+  return String(name || '')
+    .replace(/(?:https?:\/\/|www\.)\S*/gi, '')
+    .replace(/[\[\]()<>*]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 120);
 }
 
 module.exports = ({ strapi }) => {
@@ -115,7 +129,7 @@ module.exports = ({ strapi }) => {
       page: request.platform ? `${site}/${locale}/integrations/${request.platform}` : site,
     };
     const parts = [
-      request.name ? `${{ de: 'Guten Tag', fr: 'Bonjour', it: 'Buongiorno' }[locale] || 'Hello'} ${request.name},` : null,
+      plainName(request.name) ? `${{ de: 'Guten Tag', fr: 'Bonjour', it: 'Buongiorno' }[locale] || 'Hello'} ${plainName(request.name)},` : null,
       ...paragraphs.map((p) => (typeof p === 'string' ? p : message(locale, p.key, values))),
       message(locale, 'signature'),
     ].filter(Boolean);
@@ -481,3 +495,6 @@ module.exports = ({ strapi }) => {
     _issueBody: issueBody,
   };
 };
+
+module.exports.toHtml = toHtml;
+module.exports.plainName = plainName;
