@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Security: `/.well-known/security.txt` says where to report a vulnerability (RFC 9116).
 - Security: what the Content-Security-Policy blocks in a browser is reported to Supertext Plugin Health (*CSP reports*).
 - Security: `Referrer-Policy: strict-origin-when-cross-origin` (was `origin-when-cross-origin`, which also sent the origin to plain-HTTP sites; Mozilla Observatory).
 - Security: Semgrep in CI (weekly and on code changes); the website's container no longer runs as root; Dependabot waits 7 days before proposing a new release.
